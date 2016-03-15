@@ -18,19 +18,24 @@ SEARCH Media in Instagram
 OPTIONS: { [min_timestamp], [max_timestamp], [distance] };
 */
 //
-exports.get_images = function(req, res) {
-
+function searchInstagram(callback) {
   var options = [];
-
   console.log(config.location.lat, config.location.lng);
 
   api.media_search( config.location.lat, config.location.lng, options, function(err, medias, remaining, limit) {
+    console.log("API limit: " , remaining, "/", limit);
+    callback(err, medias);
+  });
+}
+
+
+// api endpoint to get instagram feed
+exports.get_images = function(req, res) {
+  searchInstagram(function(err, medias){
     if (err) {
-      res.sendStatus(403);
+      res.status(403);
       res.send(err.body);
     } else {
-      
-      console.log("API limit: " , remaining, "/", limit);
       res.send(medias);
     }
   });
@@ -39,7 +44,6 @@ exports.get_images = function(req, res) {
 // This is where you would initially send users to authorize
 app.get('/get_images', exports.get_images);
 
-
 server.listen( port, function( ) {
     console.log( 'Server listening at port %d', port );
 } );
@@ -47,6 +51,16 @@ server.listen( port, function( ) {
 app.use( express.static( __dirname + '/public' ) );
 
 io.on( 'connection', function( socket ) {
+
+    console.log("connected");
+
+    socket.on( 'getInstagramPhotos', function() {
+      console.log("getInstagramPhotos");
+      searchInstagram(function(err, medias){
+        if(err) console.log(err);
+        socket.emit("receiveInstagramPhotos", medias)
+      })
+    });
 
     socket.on( 'click', function( data ) {
     	console.log('click', data);
