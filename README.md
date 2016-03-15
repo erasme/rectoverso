@@ -16,12 +16,12 @@ Simple server using Nodejs & socket.io
 2. Get the list of locations via API : https://api.instagram.com/v1/locations/search?lat=LAT&lng=LNG&access_token=YOUR_TOKEN
 3. copy the id
 
-  {
-  latitude: 48.85867696,
-  id: "274044375",
-  longitude: 2.294464218,
-  name: "la Tour Eiffel"
-  }
+    {
+    latitude: 48.85867696,
+    id: "274044375",
+    longitude: 2.294464218,
+    name: "la Tour Eiffel"
+    }
 
 ### Get recent images by location ID
 
