@@ -1,20 +1,23 @@
-<!doctype html>
-<html lang="en">
-
+<!DOCTYPE html>
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Socket.IO Chat Example</title>
-    <link rel="stylesheet" href="style.css">
+	<meta charset="utf-8">
+	<title>#jouerlaville</title>
+	<link rel="stylesheet" type="text/css" href="css/styles.css">
 </head>
-
 <body>
+	<div id="result">
+		<h2 id="win">You win!</h2>
+		<h2 id="lose">You lose!</h2>
+	</div>
+	<div id="score">
+		<p id="foundScore">Paires trouvées : 0 / 9</p>
+		<p id="foundByOtherScore">Paires trouvées par l'adversaire : 0 / 9</p>
+	</div>
 
-    <div id="gallery"></div>
 
-
-    <script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
     <script src="/socket.io/socket.io.js"></script>
-    <script src="/main.js"></script>
+	<script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="js/main3.js"></script>
 </body>
-
 </html>

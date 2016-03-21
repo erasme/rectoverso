@@ -1,0 +1,95 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+	background: url("../data/bg.jpg") no-repeat center fixed;
+	background-size: cover;
+	cursor: url("../data/cursor.png"), pointer;
+/*	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-items: flex-start;*/
+	z-index: 1;
+}
+
+div {
+
+}
+
+.card {
+	display: inline-block;
+	background-color: black;
+	opacity: .8;
+	margin: 5px;
+	height: 300px;
+	width: 300px;
+}
+
+img {
+	height: 100%;
+	width: 100%;
+}
+
+.card.hidden > img {
+	opacity: 0;
+}
+
+.card.visible > img, .card.found > img, .card.visibleByOther > img{
+	opacity: 1;
+}
+
+.card.visible{
+   outline:5px solid #ffa61d;
+}
+
+.card.visibleByOther{
+   outline:5px solid #ff6666;
+}
+
+
+.card.found {
+	filter: blur(1px);
+	/*transition: all .2s ease-in;*/
+}
+
+
+#score {
+	z-index: 1000;
+	position: absolute;
+	bottom: 10px;
+	width: 100%;
+	text-align: center;
+}
+#score p {
+
+	display: inline-block;
+	width: 40%;
+	background: rgba(255,255,255, .2);
+	padding: 20px;
+	text-align: center;
+	font-family: sans-serif;
+	font-size: 20px;
+}
+
+#result {
+	position: absolute;
+	top: 200px;
+	z-index: 2000;
+	visibility: hidden;
+}
+
+#result #win {
+	background: green;
+	width: 500px;
+	height: 500px;
+	visibility: hidden;
+}
+
+#result #lose {
+	background: red;
+	width: 500px;
+	height: 500px;
+	visibility: hidden;
+}
