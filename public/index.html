@@ -2,19 +2,30 @@
 <html>
 <head>
 	<meta charset="utf-8">
-	<title>#jouerlaville</title>
+	<title>recto verso</title>
 	<link rel="stylesheet" type="text/css" href="css/styles.css">
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
 </head>
 <body>
-	<div id="result">
-		<h2 id="win">You win!</h2>
-		<h2 id="lose">You lose!</h2>
-	</div>
-	<div id="score">
-		<p id="foundScore">Paires trouvées : 0 / 9</p>
-		<p id="foundByOtherScore">Paires trouvées par l'adversaire : 0 / 9</p>
-	</div>
+	<div id="all">
 
+		<div id="container"></div>
+
+		<div id="inactive"></div>
+		<div id="waiting"></div>
+		<div id="win">
+			<h3>Rapide !</3>
+			<h3>Vous avez gagné !</3>
+		</div>
+		<div id="lose">
+			<h3>Zut !</h3>
+			<h3>Vous avez perdu !</h3>
+		</div>
+		<div id="score"> 
+			<p><span id="foundScore">Vous <strong>0</strong></span> <span id="foundByOtherScore"><strong>0</strong> Adversaire</span></p>
+		</div>
+		
+	</div>
 
     <script src="/socket.io/socket.io.js"></script>
 	<script type="text/javascript" src="js/jquery.min.js"></script>

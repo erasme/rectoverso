@@ -1,9 +1,7 @@
 var totalPairs = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'];
-var totalPairs_temp = totalPairs;
 var pairs = [];
 var actives = [];
 var randoms = [];
-
 
 function getRandomIndex() {
 	var random = Math.round(Math.random()*totalPairs.length);
@@ -15,12 +13,26 @@ function getRandomIndex() {
 	}
 }
 
-for(var i=0; i<9; i++){
-	var random = getRandomIndex();
-	pairs.push(random);
+function get9RandomPairs(){
+	for(var i=0; i<9; i++){
+		var random = getRandomIndex();
+		pairs.push(random);
+	}
+	for(var i=0; i<pairs.length; i++){
+		pairs[i] = totalPairs[pairs[i]];
+	}
+	console.log(pairs);
 }
-for(var i=0; i<pairs.length; i++){
-	pairs[i] = totalPairs[pairs[i]];
+
+function getBackgroundPic() {
+	var randomBg = getRandomIndex();
+	console.log(randomBg);
+	$('body').css({
+		"background" : "url('../data/" + (getRandomIndex() - 1) + "/0.jpg') no-repeat center fixed",
+		"background-size": "cover"
+	});
+	$('#all:before').css("filter", "blur(10px)");
+	$('#all').css("background", "rgba(255,120,94,0.8");
 }
 
 function shuffle(a) {
@@ -47,14 +59,17 @@ $(document).ready(function(){
 	} );
 
 	socket.on( 'foundByOther', function( data ) {
-		$("#foundByOtherScore").html( "Paires trouvées par l'adversaire : " + $(".foundByOther").length / 2 + " / 9" );
+		$("#foundByOtherScore").html( "<strong>" + $(".foundByOther").length / 2 + "</strong> Adversaire" );
 	} );
 
 	socket.on( 'found', function( data ) {
-		$("#foundScore").html( "Paires trouvées : " + $(".found").length / 2 + " / 9" );
+		$("#foundScore").html( "Vous <strong>" + $(".found").length / 2 + "</strong>" );
 	} );
 
-	
+	getBackgroundPic();
+
+	get9RandomPairs();
+
 	//création des cartes
 	for(var i = 0; i < pairs.length; i++){
 		// On crée les cartes qui vont accueillir la première image de chaque paire
@@ -62,7 +77,7 @@ $(document).ready(function(){
 		card0.className += 'card';
 		card0.className += ' hidden';
 		card0.id = 'card0' + pairs[i];
-		$('body').append(card0);
+		$('#container').append(card0);
 
 		// On insère chaque première image dans les cartes
 		var img0 = document.createElement('img');
@@ -77,7 +92,7 @@ $(document).ready(function(){
 		card1.className += 'card';
 		card1.className += ' hidden';
 		card1.id = 'card1' + pairs[i];
-		$('body').append(card1);
+		$('#container').append(card1);
 
 		// On insère chaque deuxième image dans les cartes
 		var img1 = document.createElement('img');
@@ -91,13 +106,14 @@ $(document).ready(function(){
 	var cards = $('.card');
 	shuffle(cards);
 	$('.card').remove();
+
 	for( var i=0, l = cards.length; i<l;i++){
 		$(cards[i]).attr("data-order", i);
-		$('body').append(cards[i]);
+		$('#container').append(cards[i]);
 	}
 
 	cards.on('click', function(){ 
-		$("#foundScore").html( "Paires trouvées : " + $(".found").length / 2 + " / 9" );
+		$("#foundScore").html( "Vous <strong>" + $(".found").length / 2 + "</strong>" );
 		// $("#foundByOtherScore").html( "Paires trouvées par l'adversaire : " + $(".foundByOther").length / 2 + " / 9" );
 
 
@@ -141,13 +157,13 @@ $(document).ready(function(){
 		}
 
 		if( $(".found").length == 18 ){
-			$("#result").css("visibility", "visible");
 			$("#win").css("visibility", "visible");
+			$("#win").append("<h3>9 " + $('.foundByOther').length / 2 + "</h3>");
 		}
 
 		if( $(".foundByOther").length == 18 ){
-			$("#result").css("visibility", "visible");
 			$("#lose").css("visibility", "visible");
+			$("#lose").append("<h3>9 " + $('.found').length / 2 + "</h3>");
 		}
 
 	});
