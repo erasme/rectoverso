@@ -22,6 +22,10 @@ io.on( 'connection', function( socket ) {
         socket.broadcast.emit( 'foundByOther', data );
     } );
 
+    socket.on ( 'foundOpponent', function( data ){
+        socket.broadcast.emit( 'foundOpponent', data);
+    } );
+
     // when the user disconnects.. perform this
     socket.on( 'disconnect', function( ) {
     } );

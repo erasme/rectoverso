@@ -13,7 +13,6 @@ body {
 	justify-content: space-between;
 	align-items: flex-start;*/
 	overflow: hidden;
-
 }
 
 /*#all:before{
@@ -21,9 +20,61 @@ body {
 	z-index: 1;
 }*/
 
-#all {
-	margin: -50px 0;
-	height: 1919px;
+.colorBg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1920px;
+	width: 1080px;
+}
+
+#inactive, #rules, #waiting {
+	position: absolute;
+	height: 1920px;
+	width: 1080px;
+	z-index: 2000;
+	top: 0;
+	left: 0;
+
+	background: white;
+	text-align: center;
+	padding-top: 300px;
+}
+
+#inactive #logo {
+	height: 700px;
+	margin-top: 400px;
+}
+
+#inactive h2 {
+	display: block;
+	font-size: 72px;
+	font-weight: normal;
+	width: 500px;
+	margin: 0 auto;
+	margin-top: 100px;
+}
+
+#rules {
+	visibility: hidden;
+}
+
+#waiting {
+	visibility: hidden;
+}
+
+#waiting h2, #rules h2 {
+	font-size: 54px;
+	display: inline-block;
+	padding: 40px;
+	border: dotted 5px;
+}
+
+#waiting p, #inactive p, #rules p {
+	font-size: 36px;
+	width: 400px;
+	margin: 0 auto;
+	margin-top: 150px;
 }
 
 #container {

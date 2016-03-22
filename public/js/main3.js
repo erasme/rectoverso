@@ -1,7 +1,11 @@
 var totalPairs = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'];
+var colors = ["0, 0, 24", "255, 80, 80", "255, 231, 104", "159, 236, 255", "160, 160, 160", "100, 241, 142"];
+var color1 = colors[Math.floor(Math.random() * colors.length - 1)];
+var color2 = colors[Math.floor(Math.random() * colors.length - 1)];
 var pairs = [];
 var actives = [];
 var randoms = [];
+var waitingAdv = true;
 
 function getRandomIndex() {
 	var random = Math.round(Math.random()*totalPairs.length);
@@ -28,11 +32,23 @@ function getBackgroundPic() {
 	var randomBg = getRandomIndex();
 	console.log(randomBg);
 	$('body').css({
-		"background" : "url('../data/" + (getRandomIndex() - 1) + "/0.jpg') no-repeat center fixed",
+		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
 		"background-size": "cover"
 	});
-	$('#all:before').css("filter", "blur(10px)");
-	$('#all').css("background", "rgba(255,120,94,0.8");
+	$('#inactive').css({
+		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
+		"background-size": "cover"	
+	});
+	$('#rules').css({
+		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
+		"background-size": "cover"	
+	});
+	$('#waiting').css({
+		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
+		"background-size": "cover"	
+	});
+	$('.colorBg').css("background", "rgba(" + color1 + ",0.4");
+
 }
 
 function shuffle(a) {
@@ -66,9 +82,28 @@ $(document).ready(function(){
 		$("#foundScore").html( "Vous <strong>" + $(".found").length / 2 + "</strong>" );
 	} );
 
+	$('body').css("color", "rgb("+ color2 +")");
+	$('path').css("fill", "rgb("+ color2 +")");
+
 	getBackgroundPic();
 
 	get9RandomPairs();
+
+	$('#inactive').on('click', function(){
+		$(this).css("visibility", "hidden");
+		$('#rules').css("visibility", "visible");
+	});
+
+	$('#rules').on('click', function(){
+		$(this).css("visibility", "hidden");
+		if( waitingAdv ) $('#waiting').css("visibility", "visible");
+		socket.emit( 'foundOpponent', null );
+	});
+
+	socket.on( 'foundOpponent', function() {
+		waitingAdv = false;
+		$('#waiting').css("visibility", "hidden");
+	});
 
 	//création des cartes
 	for(var i = 0; i < pairs.length; i++){
