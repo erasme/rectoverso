@@ -1,14 +1,19 @@
-var totalPairs = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25'];
-var colors = ["0, 0, 24", "255, 80, 80", "255, 231, 104", "159, 236, 255", "160, 160, 160", "100, 241, 142"];
-var color1 = colors[Math.floor(Math.random() * colors.length - 1)];
-var color2 = colors[Math.floor(Math.random() * colors.length - 1)];
+var totalPairs = ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11', '12', '13', '14', '15', '16', '17', '18', '19', '20', '21', '22', '23', '24', '25', '26'];
+var bg = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17", "18", "19", "20", "21", "22", "23", "24", "25", "26", "27", "28", "29", "30", "31", "32", "33", "34", "35", "36", "37", "38", "39", "40"];
+var colors1 = ["0, 0, 54", "0, 0, 122", "113, 10, 169", "0, 132, 108", "255, 16, 52"];
+var colors2 = ["255, 102, 102", "255, 197, 99", "255, 255, 116", "110, 151, 255", "159, 236, 255", "159, 236, 255", "160, 160, 160", "160, 128, 189", "100, 241, 142"];
+var color1 = colors1[Math.floor(Math.random() * colors1.length)];
+var color2 = colors2[Math.floor(Math.random() * colors2.length)];
+var rewardPatterns = ['0', '1', '2'];
+var rewardPattern = rewardPatterns[Math.floor(Math.random() * rewardPatterns.length)];
+console.log("valeur du rewardPattern : " + rewardPattern);
 var pairs = [];
 var actives = [];
 var randoms = [];
-var waitingAdv = true;
+var waitingOpponent = true;
 
 function getRandomIndex() {
-	var random = Math.round(Math.random()*totalPairs.length);
+	var random = Math.floor(Math.random()*totalPairs.length);
 	if (randoms.indexOf(random) == -1) {
 		randoms.push(random);
 		return random;
@@ -29,22 +34,30 @@ function get9RandomPairs(){
 }
 
 function getBackgroundPic() {
-	var randomBg = getRandomIndex();
+	var randomBg = Math.round(Math.random()*bg.length -1);
 	console.log(randomBg);
 	$('body').css({
-		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
+		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center fixed",
 		"background-size": "cover"
 	});
 	$('#inactive').css({
-		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
+		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center fixed",
 		"background-size": "cover"	
 	});
 	$('#rules').css({
-		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
+		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center fixed",
 		"background-size": "cover"	
 	});
 	$('#waiting').css({
-		"background" : "url('../data/bg/" + (getRandomIndex() - 1) + ".jpg') no-repeat center fixed",
+		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center fixed",
+		"background-size": "cover"	
+	});
+	$('#win').css({
+		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center fixed",
+		"background-size": "cover"	
+	});
+	$('#lose').css({
+		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center fixed",
 		"background-size": "cover"	
 	});
 	$('.colorBg').css("background", "rgba(" + color1 + ",0.4");
@@ -85,6 +98,7 @@ $(document).ready(function(){
 	$('body').css("color", "rgb("+ color2 +")");
 	$('path').css("fill", "rgb("+ color2 +")");
 
+
 	getBackgroundPic();
 
 	get9RandomPairs();
@@ -96,12 +110,12 @@ $(document).ready(function(){
 
 	$('#rules').on('click', function(){
 		$(this).css("visibility", "hidden");
-		if( waitingAdv ) $('#waiting').css("visibility", "visible");
+		if( waitingOpponent ) $('#waiting').css("visibility", "visible");
 		socket.emit( 'foundOpponent', null );
 	});
 
 	socket.on( 'foundOpponent', function() {
-		waitingAdv = false;
+		waitingOpponent = false;
 		$('#waiting').css("visibility", "hidden");
 	});
 
@@ -154,6 +168,7 @@ $(document).ready(function(){
 
 		if((! $(this).hasClass("visible")) && (actives.length < 2)  && (! $(this).hasClass("found") ) && (! $(this).hasClass("visibleByOther") ) ){
 			$(this).toggleClass("visible");
+			$('.visible').css("outline", "10px solid rgb(" + color2 + ")");
 			console.log('click', { id:$(this).attr("data-order") } );
 			socket.emit('click', { id:$(this).attr("data-order") } );
 
@@ -165,13 +180,16 @@ $(document).ready(function(){
 
 			if( actives.length == 2 ){
 				window.setTimeout( function(){
+					$('.visible').css("outline", "0");
+					$('.visibleByOther').css("outline", "solid 10px white");
 					$(actives[0]).toggleClass("visible");
 					$(actives[1]).toggleClass("visible");
 
 					if( Math.abs(parseInt("" + actives[0].id[actives[0].id.length - 3] + actives[0].id[actives[0].id.length - 2] + actives[0].id[actives[0].id.length - 1] ) - parseInt("" + actives[1].id[actives[1].id.length - 3] + actives[1].id[actives[1].id.length - 2] + actives[1].id[actives[1].id.length - 1] ) ) === 100 ){
 						console.log( "found pair" );
-						$(actives[0]).addClass("found");
-						$(actives[1]).addClass("found");
+						$(actives[0]).addClass("found").append('<div class="foundReward"></div>');
+						$(actives[1]).addClass("found").append('<div class="foundReward"></div>');
+						$('.foundReward').css("background", "url('../data/rewards/" + rewardPattern + ".png') no-repeat,  rgba(255,255,255,.3)");
 						/*socket.emit('click', function( data ){
 							  $(".card[data-order="+data.id+"]").toggleClass("foundByOther");
 						}*/
@@ -193,14 +211,17 @@ $(document).ready(function(){
 
 		if( $(".found").length == 18 ){
 			$("#win").css("visibility", "visible");
-			$("#win").append("<h3>9 " + $('.foundByOther').length / 2 + "</h3>");
+			$("#win").append("<strong>9 " + $('.foundByOther').length / 2 + "</strong>");
+			window.setTimeout( function(){ location.assign(location); }, 30000 );
 		}
 
 		if( $(".foundByOther").length == 18 ){
 			$("#lose").css("visibility", "visible");
-			$("#lose").append("<h3>9 " + $('.found').length / 2 + "</h3>");
+			$("#lose").append("<strong>9 " + $('.found').length / 2 + "</strong>");
+			window.setTimeout( function(){ location.assign(location); }, 30000 );
 		}
 
 	});
+
 
 });

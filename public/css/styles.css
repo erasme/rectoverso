@@ -4,21 +4,12 @@
 }
 
 body {
-/*	background: url("../data/bg.jpg") no-repeat center fixed;
-	background-size: cover;*/
+
 	cursor: url("../data/cursor.png"), pointer;
 	font-family: 'Varela Round', sans-serif;
-/*	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
-	align-items: flex-start;*/
+
 	overflow: hidden;
 }
-
-/*#all:before{
-	filter: blur(10px);
-	z-index: 1;
-}*/
 
 .colorBg {
 	position: absolute;
@@ -28,7 +19,7 @@ body {
 	width: 1080px;
 }
 
-#inactive, #rules, #waiting {
+#inactive, #rules, #waiting, #win, #lose {
 	position: absolute;
 	height: 1920px;
 	width: 1080px;
@@ -43,10 +34,10 @@ body {
 
 #inactive #logo {
 	height: 700px;
-	margin-top: 400px;
+	margin-top: 300px;
 }
 
-#inactive h2 {
+#hashtag {
 	display: block;
 	font-size: 72px;
 	font-weight: normal;
@@ -55,24 +46,26 @@ body {
 	margin-top: 100px;
 }
 
-#rules {
+#rules, #waiting, #win, #lose {
 	visibility: hidden;
 }
 
-#waiting {
-	visibility: hidden;
-}
-
-#waiting h2, #rules h2 {
+.colorBg h2 {
+	margin-top: 300px;
 	font-size: 54px;
 	display: inline-block;
 	padding: 40px;
 	border: dotted 5px;
 }
 
-#waiting p, #inactive p, #rules p {
+.colorBg h3 {
+	font-size: 54px;
+	margin-top: 100px;
+}
+
+.colorBg p {
 	font-size: 36px;
-	width: 400px;
+	width: 700px;
 	margin: 0 auto;
 	margin-top: 150px;
 }
@@ -86,8 +79,8 @@ body {
 	/*position: absolute;*/
 	/*overflow: hidden;*/
 	display: inline-block;
-	background-color: #fff;
-	opacity: .9;
+	background: url('../data/dos.png');
+    background-size: 240px, 240px;
 	margin: 20px 30px;
 	height: 240px;
 	width: 240px;
@@ -108,23 +101,24 @@ img {
 	opacity: 1;
 }
 
-.card.visible{
+/*.card.visible{
    outline:5px solid #ffa61d;
-}
+}*/
 
 .card.visibleByOther{
-   outline:5px solid #ff6666;
+   outline: 10px solid white;
 }
 
-
-.card.found {
-	filter: grayscale(75%);
-	/*transition: all .2s ease-in;*/
+.foundReward {
+	position: relative;
+	top: -245px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-size: 240px, 240px;
 }
-
 
 #score {
-	z-index: 2;
 	position: absolute;
 	bottom: 50px;
 	width: 100%;
@@ -138,42 +132,6 @@ img {
 	font-size: 24px;
 }
 
-#score p strong {
+.colorBg strong, #score strong {
 	font-size: 50px;
-}
-
-
- #win {
-	position: absolute;
-	height: 1920px;
-	width: 1080px;
-	z-index: 2000;
-	top: 0;
-	left: 0;
-
-	visibility: hidden;
-
-	background: green;
-	text-align: center;
-	padding-top: 300px;
-}
-
-#lose {
-	position: absolute;
-	height: 1920px;
-	width: 1080px;
-	z-index: 2000;
-	top: 0;
-	left: 0;
-
-	visibility: hidden;
-
-	background: red;
-	text-align: center;
-	padding-top: 300px;
-}
-
-#win h3, #lose h3 {
-	color: white;
-	font-size: 54px;
 }
