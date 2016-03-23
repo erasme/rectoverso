@@ -92,7 +92,7 @@ $(document).ready(function(){
 	} );
 
 	socket.on( 'found', function( data ) {
-		$("#foundScore").html( "Vous <strong>" + $(".found").length / 2 + "</strong>" );
+		$("#foundScore").html( "Vous <strong>" + $(".found").length / 2 + "</strong> -" );
 	} );
 
 	$('body').css("color", "rgb("+ color2 +")");
@@ -162,7 +162,7 @@ $(document).ready(function(){
 	}
 
 	cards.on('click', function(){ 
-		$("#foundScore").html( "Vous <strong>" + $(".found").length / 2 + "</strong>" );
+		$("#foundScore").html( "Vous <strong>" + $(".found").length / 2 + "</strong> -" );
 		// $("#foundByOtherScore").html( "Paires trouvées par l'adversaire : " + $(".foundByOther").length / 2 + " / 9" );
 
 
@@ -211,16 +211,20 @@ $(document).ready(function(){
 
 		if( $(".found").length == 18 ){
 			$("#win").css("visibility", "visible");
-			$("#win").append("<strong>9 " + $('.foundByOther').length / 2 + "</strong>");
+			$("#win h2").append("<h3><strong>9 à " + $('.foundByOther').length / 2 + "</strong></h3>");
 			window.setTimeout( function(){ location.assign(location); }, 30000 );
 		}
 
 		if( $(".foundByOther").length == 18 ){
 			$("#lose").css("visibility", "visible");
-			$("#lose").append("<strong>9 " + $('.found').length / 2 + "</strong>");
+			$("#lose h2").append("<h3><strong>9 à " + $('.found').length / 2 + "</strong></h3>");
 			window.setTimeout( function(){ location.assign(location); }, 30000 );
 		}
 
+	});
+
+	$('.rejouer').on('click', function(){
+		location.assign(location);
 	});
 
 

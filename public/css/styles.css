@@ -70,6 +70,17 @@ body {
 	margin-top: 150px;
 }
 
+.colorBg .tap {
+	display: inline-block;
+	padding: 40px;
+	width: 700px;
+	background: rgba(255, 255, 255, 0.1);
+	border-radius: 100px;
+	position: absolute;
+	bottom: 100px;
+	margin: 0 auto;
+}
+
 #container {
 	margin: 50px 20px;
 	text-align: center;
