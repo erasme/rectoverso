@@ -2,7 +2,7 @@ var express = require( 'express' );
 var app = express( );
 var server = require( 'http' ).createServer( app );
 var io = require( 'socket.io' )( server );
-var port = process.env.WEB_PORT || 3000;
+var port = process.env.RECTO_VERSO_PORT || 5000;
 
 server.listen( port, function( ) {
     console.log( 'Server listening at port %d', port );
