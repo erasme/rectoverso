@@ -4,32 +4,93 @@
 }
 
 body {
-	background: url("../data/bg.jpg") no-repeat center fixed;
-	background-size: cover;
+
 	cursor: url("../data/cursor.png"), pointer;
-/*	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
-	align-items: flex-start;*/
-	z-index: 1;
+	font-family: 'Varela Round', sans-serif;
+
+	overflow: hidden;
 }
 
-div {
+.colorBg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1920px;
+	width: 1080px;
+}
 
+#inactive, #rules, #waiting, #win, #lose {
+	position: absolute;
+	height: 1920px;
+	width: 1080px;
+	z-index: 2000;
+	top: 0;
+	left: 0;
+
+	background: white;
+	text-align: center;
+	padding-top: 300px;
+}
+
+#inactive #logo {
+	height: 700px;
+	margin-top: 300px;
+}
+
+#hashtag {
+	display: block;
+	font-size: 72px;
+	font-weight: normal;
+	width: 500px;
+	margin: 0 auto;
+	margin-top: 100px;
+}
+
+#rules, #waiting, #win, #lose {
+	visibility: hidden;
+}
+
+.colorBg h2 {
+	margin-top: 300px;
+	font-size: 54px;
+	display: inline-block;
+	padding: 40px;
+	border: dotted 5px;
+}
+
+.colorBg h3 {
+	font-size: 54px;
+	margin-top: 100px;
+}
+
+.colorBg p {
+	font-size: 36px;
+	width: 700px;
+	margin: 0 auto;
+	margin-top: 150px;
+}
+
+#container {
+	margin: 50px 20px;
+	text-align: center;
 }
 
 .card {
+	/*position: absolute;*/
+	/*overflow: hidden;*/
 	display: inline-block;
-	background-color: black;
-	opacity: .8;
-	margin: 5px;
-	height: 300px;
-	width: 300px;
+	background: url('../data/dos.png');
+    background-size: 240px, 240px;
+	margin: 20px 30px;
+	height: 240px;
+	width: 240px;
 }
 
 img {
-	height: 100%;
 	width: 100%;
+	height: 100%;
+/*	max-height: 100%;
+	max-width: 100%;*/
 }
 
 .card.hidden > img {
@@ -40,56 +101,37 @@ img {
 	opacity: 1;
 }
 
-.card.visible{
+/*.card.visible{
    outline:5px solid #ffa61d;
-}
+}*/
 
 .card.visibleByOther{
-   outline:5px solid #ff6666;
+   outline: 10px solid white;
 }
 
-
-.card.found {
-	filter: blur(1px);
-	/*transition: all .2s ease-in;*/
+.foundReward {
+	position: relative;
+	top: -245px;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-size: 240px, 240px;
 }
-
 
 #score {
-	z-index: 1000;
 	position: absolute;
-	bottom: 10px;
+	bottom: 50px;
 	width: 100%;
 	text-align: center;
 }
-#score p {
 
+#score p {
 	display: inline-block;
-	width: 40%;
-	background: rgba(255,255,255, .2);
 	padding: 20px;
 	text-align: center;
-	font-family: sans-serif;
-	font-size: 20px;
+	font-size: 24px;
 }
 
-#result {
-	position: absolute;
-	top: 200px;
-	z-index: 2000;
-	visibility: hidden;
-}
-
-#result #win {
-	background: green;
-	width: 500px;
-	height: 500px;
-	visibility: hidden;
-}
-
-#result #lose {
-	background: red;
-	width: 500px;
-	height: 500px;
-	visibility: hidden;
+.colorBg strong, #score strong {
+	font-size: 50px;
 }
