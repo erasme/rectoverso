@@ -31,3 +31,24 @@ https://api.instagram.com/v1/locations/LOCATION_ID/media/recent?access_token=YOU
 ## Integrate Instagram to the server
 
 https://www.npmjs.com/package/instagram-node
+
+# Setup screens
+
+## Retourner l'écran Ubuntu / écran de droite
+Lien du tutoriel [en anglais] : https://www.thefanclub.co.za/how-to/how-ubuntu-1204-touchscreen-calibration
+
+* Paramètres système > Affichage > Rotation > Sens antihoraire > Appliquer
+* Installler uTouch : `sudo apt-get install utouch`
+* Installer xinput calibrator : `sudo apt-get install xinput-calibrator`
+* Lancer Calibrate Touchscreen et toucher les 4 croix l'une après l'autre
+* Faire `sudo gedit /usr/share/X11/xorg.conf.d/10-evdev.conf`
+* Coller les valeurs trouvées dans le terminal de Calibrate Touchscreen commençant par Option dans la dernière section
+
+## Retourner l'écran Ubuntu / écran de gauche
+Méthode manuelle à faire à chaque démarrage (TODO : à automatiser)
+Issu de http://ubuntuforums.org/showthread.php?t=1493407&p=9380642#post9380642 (essayer différentes combinaisons selon la rotation souhaitée)
+
+* Dans la console : `xinput list`
+* Noter l'id du TouchScreen
+* Dans la console : `xinput set-prop xx "Evdev Axis Inversion" 1, 0` avec xx l'id du TouchScreen
+* Dans la console : `xinput set-prop xx "Evdev Axes Swap" 1`
