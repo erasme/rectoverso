@@ -1,3 +1,3 @@
 #### Dispositif
 
-(Vue frontale)[RectoVerso1.jpg]
+![Vue frontale](RectoVerso1.jpg)
