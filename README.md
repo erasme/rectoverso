@@ -45,10 +45,12 @@ Lien du tutoriel [en anglais] : https://www.thefanclub.co.za/how-to/how-ubuntu-1
 * Coller les valeurs trouvées dans le terminal de Calibrate Touchscreen commençant par Option dans la dernière section
 
 ## Retourner l'écran Ubuntu / écran de gauche
-Méthode manuelle à faire à chaque démarrage (TODO : à automatiser)
 Issu de http://ubuntuforums.org/showthread.php?t=1493407&p=9380642#post9380642 (essayer différentes combinaisons selon la rotation souhaitée)
 
 * Dans la console : `xinput list`
 * Noter l'id du TouchScreen
-* Dans la console : `xinput set-prop xx "Evdev Axis Inversion" 1, 0` avec xx l'id du TouchScreen
-* Dans la console : `xinput set-prop xx "Evdev Axes Swap" 1`
+
+Script lancé à chaque démarrage  
+`xinput set-prop xx "Evdev Axis Inversion" 1, 0` avec xx l'id du TouchScreen  
+`xinput set-prop xx "Evdev Axes Swap" 1`  
+`firefox yyyy.zz` avec yyyy.zz l'url du jeu
