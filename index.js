@@ -15,12 +15,10 @@ app.use( express.static( __dirname + '/public' ) );
 
 io.on( 'connection', function( socket ) {
   
-	var id = new Date().getTime()+'-'+(~~(Math.random()*100));
+	var id = socket.id;
 	
   console.log('> New player \b \t  \b \t ID : '+id);
   players.push({'id':id, 'readyToPlay':'false', 'score':0});
-  
-  socket.id = id;
   
   socket.emit('newPlayer', {id: socket.id});
   
@@ -98,12 +96,12 @@ io.on( 'connection', function( socket ) {
 });
 
 function console_showPlayersArray() {
-  console.log('+----------------------------------------------------------+');
+  console.log('+------------------------------------------------------------------+');
   
   for (var i = 0; i < players.length; i++) {
     console.log('+ '+players[i].id+' \b \t Ready to play: '+players[i].readyToPlay+'  \b \t Score : '+players[i].score+' +');
   }
   
-  console.log('+----------------------------------------------------------+');
+  console.log('+------------------------------------------------------------------+');
   console.log('');
 }

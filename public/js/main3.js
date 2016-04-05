@@ -71,14 +71,16 @@ function setStateTo(newState) {
       
     case STATE_WIN :
       $('#win').show();
+    // window.setTimeout( function(){ location.assign(location); }, 30000 );
       break;
       
     case STATE_LOST :
       $('#lost').show();
+    // window.setTimeout( function(){ location.assign(location); }, 30000 );
       break;
       
     default :
-      console.log('default');
+      $('#inactive').show();
       break;
   }
 }
@@ -142,14 +144,14 @@ $(document).ready(function() {
     }
   });
 
-	$('body').css("color", "rgb("+ color2 +")");
-	$('path').css("fill", "rgb("+ color2 +")");
-
-  setStateTo(STATE_INACTIVE);
+	$('body').css('color', 'rgb('+ color2 +')');
+	$('path').css('fill', 'rgb('+ color2 +')');
 
 	getBackgroundPic();
 
 	get9RandomPairs();
+
+  setStateTo(STATE_INACTIVE);
 
 	$('#inactive').on('click', function(){
 		setStateTo(STATE_RULES);
@@ -180,7 +182,9 @@ $(document).ready(function() {
 		  .attr('class','card')
 		  .attr('id','card0' + pairs[i])
 		  .attr('data-pair-id',pairs[i]);
+		  
 		$('#game').append(card0);
+		$('#card0' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
 
 		/*
      *  On insère chaque première image 
@@ -189,9 +193,10 @@ $(document).ready(function() {
      
 		var img0 = $('<img/>')
 		  .attr('id','img0' + pairs[i])
+		  .attr('class','card_child front')
 		  .attr({'src':'../data/cards/' + pairs[i] + '/0.jpg'});
 		  
-		$('#card0' + pairs[i]).append(img0);
+		$('#card0' + pairs[i]+' .card_wrap').append(img0);
 		  
 
 		/*
@@ -203,7 +208,9 @@ $(document).ready(function() {
 		  .attr('class','card')
 		  .attr('id','card1' + pairs[i])
 		  .attr('data-pair-id',pairs[i]);
+		  
 		$('#game').append(card1);
+		$('#card1' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
 
 		/*
      *  On insère chaque deuxième image 
@@ -212,9 +219,10 @@ $(document).ready(function() {
      
 		var img1 = $('<img/>')
 		  .attr('id','img1' + pairs[i])
+		  .attr('class','card_child front')
 		  .attr({'src':'../data/cards/' + pairs[i] + '/1.jpg'});
 		  
-		$('#card1' + pairs[i]).append(img1);
+		$('#card1' + pairs[i]+' .card_wrap').append(img1);
 	}
 
 	var cards = $('.card');
@@ -247,7 +255,7 @@ $(document).ready(function() {
   		 
 			$(this).toggleClass('visible');
 			
-			socket.emit('flippedCard', { id:$(this).attr('data-order') } );
+			socket.emit('flippedCard', { id: $(this).attr('data-order') });
 
       /*
        *  S'il y a 2 cartes retournées,
@@ -258,11 +266,6 @@ $(document).ready(function() {
 				window.setTimeout(function() {
   				console.log('Deux cartes retournées : on vérifie');
   				
-  				// TODO
-  				
-					$('.visible').css("outline", "0");
-					$('.visibleByOther').css("outline", "solid 10px white");
-					
           /*
            *  On compare l'identifiant de la paire [data-pair-id="X"]
            *  de toutes les .card.visible pour vérifier la paire ;
@@ -285,7 +288,7 @@ $(document).ready(function() {
 					if (isPair) {
 						console.log('Paire trouvée');
 						
-						$('.card.visible').addClass('found').append('<div class="foundReward"></div>');						
+						$('.card.visible').addClass('found').find('.card_wrap').append('<div class="foundReward card_child front"></div>');						
 						$('.foundReward').css("background", "url('../data/rewards/" + rewardPattern + ".png') no-repeat, rgba(255,255,255,.3)");
 						
 						socket.emit('foundPair', {pair: pairIdToFetch});			
@@ -308,25 +311,6 @@ $(document).ready(function() {
 				}, 800);
 			}
 		}
-		
-		/*
-
-		if ($('.found').length == 18) {
-			$("#win").css("visibility", "visible");
-			$("#win h2").append("<h3><strong>9 à " + $('.foundByOther').length / 2 + "</strong></h3>");
-      $('#game').hide();
-			window.setTimeout( function(){ location.assign(location); }, 30000 );
-		}
-
-		if( $(".foundByOther").length == 18 ){
-			$("#lose").css("visibility", "visible");
-			$("#lose h2").append("<h3><strong>9 à " + $('.found').length / 2 + "</strong></h3>");
-      $('#game').hide();
-			window.setTimeout( function(){ location.assign(location); }, 30000 );
-		}
-		
-		*/
-
 	});
 
 	$('.rejouer').on('click', function(){
