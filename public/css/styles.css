@@ -111,6 +111,8 @@ img {
 	perspective:600px;
 	-webkit-perspective:600px;
 	-webkit-transition:all 200ms ease;
+	-moz-perspective:600px;
+	-moz-transition:all 200ms ease;
 }
 
 .card_wrap {
@@ -127,6 +129,7 @@ img {
   left:0;
   width:240px;
   height:240px;
+  -moz-backface-visibility: hidden;
   backface-visibility: hidden;
   z-index:1;
   
