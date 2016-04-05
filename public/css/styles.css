@@ -131,12 +131,16 @@ img {
   z-index:1;
   
 	-webkit-transition:all 400ms ease-out;
+	-moz-transition:all 400ms ease-out;
   transform-style: preserve-3d;
+  -moz-transform-style: preserve-3d;
   transform-origin: center bottom;
+  -moz-transform-origin: center bottom;
 }
 
 .card .back {
 	-webkit-transform:rotateX(0deg) translateY(0px);
+	-moz-transform:rotateX(0deg) translateY(0px);
 	transform:rotateX(0deg) translateY(0px);
 	background: url('../data/dos.png');
   background-size: 240px 240px;
@@ -144,11 +148,13 @@ img {
 
 .card .front {
 	-webkit-transform:rotateX(-180deg) translateY(240px);
+	-moz-transform:rotateX(-180deg) translateY(240px);
 	transform:rotateX(-180deg) translateY(240px);
 }
 
 .card.visibleByOther {
   -webkit-transform:scale(.9);
+  -moz-transform:scale(.9);
   transform:scale(.9);
 }
 
@@ -159,30 +165,35 @@ img {
 
 .card.visible, .card.visible.visibleByOther {
   -webkit-transform:scale(1.23);
+  -moz-transform:scale(1.23);
   transform:scale(1.23);
 }
 
 .card.visible .front, 
 .card.found .front {
 	-webkit-transform:rotateX(0deg) translateY(0);
+	-moz-transform:rotateX(0deg) translateY(0);
 	transform:rotateX(0deg) translateY(0);
 }
 
 .card.visible .back, 
 .card.found .back {
 	-webkit-transform:rotateX(180deg) translateY(-240px);
+	-moz-transform:rotateX(180deg) translateY(-240px);
 	transform:rotateX(180deg) translateY(-240px);
 }
 
 
 .card.visibleByOther .front {
 	-webkit-transform:rotateX(-360deg) translateY(0px);
+	-moz-transform:rotateX(-360deg) translateY(0px);
 	transform:rotateX(-360deg) translateY(0px);
 }
   
   
 .card.visibleByOther .back {
   -webkit-transform:rotateX(-180deg) translateY(240px);
+  -moz-transform:rotateX(-180deg) translateY(240px);
 	transform:rotateX(-180deg) translateY(240px);
 }
 
