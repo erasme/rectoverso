@@ -1,6 +1,10 @@
 * {
-    margin: 0;
-    padding: 0;
+  margin: 0;
+  padding: 0;
+  -webkit-user-select: none;  /* Chrome all / Safari all */
+  -moz-user-select: none;     /* Firefox all */
+  -ms-user-select: none;      /* IE 10+ */
+  user-select: none;          /* Likely future */
 }
 
 body {
@@ -11,6 +15,14 @@ body {
 	overflow: hidden;
 }
 
+.imageBg {
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 1920px;
+	width: 1080px;
+}
+
 .colorBg {
 	position: absolute;
 	top: 0;
@@ -19,7 +31,7 @@ body {
 	width: 1080px;
 }
 
-#inactive, #rules, #waiting, #win, #lose {
+#inactive, #rules, #waiting, #win, #lost {
 	position: absolute;
 	height: 1920px;
 	width: 1080px;
@@ -27,7 +39,6 @@ body {
 	top: 0;
 	left: 0;
 
-	background: white;
 	text-align: center;
 	padding-top: 300px;
 }
@@ -46,8 +57,8 @@ body {
 	margin-top: 100px;
 }
 
-#rules, #waiting, #win, #lose {
-	visibility: hidden;
+.state {
+	display: none;
 }
 
 .colorBg h2 {
@@ -81,14 +92,21 @@ body {
 	left: 150px;
 }
 
-#container {
+#game {
 	margin: 50px 20px;
 	text-align: center;
+	perspective:600px;
+	-webkit-perspective:600px;
+	display:none;
+	height: 1870px;
 }
 
 .card {
 	/*position: absolute;*/
 	/*overflow: hidden;*/
+	-webkit-transform:rotateX(0);
+	transform:rotateX(0);
+	-webkit-transition:all 400ms ease-out;
 	display: inline-block;
 	background: url('../data/dos.png');
     background-size: 240px, 240px;
@@ -104,8 +122,15 @@ img {
 	max-width: 100%;*/
 }
 
-.card.hidden > img {
+.card > img {
 	opacity: 0;
+}
+
+.card.visible {
+  /*
+	-webkit-transform:rotateX(-180deg);
+	transform:rotateX(-180deg);
+	*/
 }
 
 .card.visible > img, .card.found > img, .card.visibleByOther > img{
