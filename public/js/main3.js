@@ -102,7 +102,7 @@ $(document).ready(function() {
 	
 	socket.on('flippedCard', function (data) {
 	  console.log('Receive flippedCard : ', data.id);
-    $('.card[data-order='+data.id+']').addClass('visibleByOther');
+    $('.card[data-order='+data.id+']').not('.card.found').addClass('visibleByOther');
 	});
 	
 	socket.on('resetedCard', function (data) {
