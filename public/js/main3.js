@@ -174,7 +174,7 @@ $(document).ready(function() {
    *  entre les états des écrans de jeu
    */
 
-  setStateTo(STATE_INACTIVE); // TODO
+  setStateTo(STATE_INACTIVE);
 
 	$('#inactive').on('click', function(){
 		setStateTo(STATE_RULES);
@@ -189,55 +189,57 @@ $(document).ready(function() {
 	});
 });
 
-function startTuto() {
-  console.log('startTuto');
-  
+function startTuto() {  
   animateTuto();
+}
+
+
+function stopTuto() {  
+  clearTimeout(tuto);
 }
 
 function animateTuto() {
   setTimeout(function(){
     $('#tuto .card').eq(0).addClass('visible');
-  },100);
+  },500);
   
   setTimeout(function(){
     $('#tuto .card').eq(3).addClass('visible');
-  },800);
+  },1200);
   
   setTimeout(function(){
     $('#tuto .card').eq(0).removeClass('visible').addClass('found');
     $('#tuto .card').eq(3).removeClass('visible').addClass('found');
-  },1500);
+  },2100);
   
   
   
   
   setTimeout(function(){
     $('#tuto .card').eq(2).addClass('visible');
-  },2500);
+  },2900);
   
   setTimeout(function(){
     $('#tuto .card').eq(1).addClass('visible');
-  },3200);
+  },3600);
   
   setTimeout(function(){
     $('#tuto .card').eq(2).removeClass('visible').addClass('found');
     $('#tuto .card').eq(1).removeClass('visible').addClass('found');
-  },3900);
+  },4500);
   
   
   
   
   setTimeout(function(){
-    $('#tuto .card').eq(0).removeClass('visible').removeClass('found');
-    $('#tuto .card').eq(1).removeClass('visible').removeClass('found');
-    $('#tuto .card').eq(2).removeClass('visible').removeClass('found');
-    $('#tuto .card').eq(3).removeClass('visible').removeClass('found');
-  },5000);
+    $('#tuto .card').eq(0).removeClass('found');
+    $('#tuto .card').eq(1).removeClass('found');
+    $('#tuto .card').eq(2).removeClass('found');
+    $('#tuto .card').eq(3).removeClass('found');
+  },6100);
   
   
-  
-  tuto = setTimeout(function(){ animateTuto(); },6200);
+  tuto = setTimeout(function(){ animateTuto(); },7000);
 }
 
 function setNewCardDeck() {
@@ -488,6 +490,7 @@ function setStateTo(newState) {
       
     case STATE_WAITING :
       $('#waiting').show();
+      stopTuto();
   		setNewCardDeck();
   		socket.emit('readyToPlay', true);
       break;
