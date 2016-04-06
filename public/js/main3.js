@@ -492,13 +492,13 @@ function setStateTo(newState) {
     case STATE_WAITING :
       $('#rules').show();
       $('#waiting').show();
-      stopTuto();
   		setNewCardDeck();
   		socket.emit('readyToPlay', true);
       break;
       
     case STATE_PLAYING :
       $('#game').show();
+      stopTuto();
       break;
       
     case STATE_WIN :
