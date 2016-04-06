@@ -234,7 +234,7 @@ $(document).ready(function() {
 		$('#game').append(cards[i]);
 	}
 
-	cards.on('click', function(){ 
+	cards.on('mousedown', function(){ 
   	
     /*
      *  S'il y a moins de 2 cartes au total retournées,
