@@ -18,6 +18,42 @@ img {
 	height: 100%;
 }
 
+#tuto {
+  width: 620px;
+  margin: 0 auto;
+  text-align: center;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  padding: 20px;
+  position: absolute;
+  top: 520px;
+  left: 0;
+  right: 0;
+}
+
+.tuto_bubble {
+  border: solid 0px rgba(255, 255, 255, 0.18);
+  color: #FFF;
+  padding: 0;
+  position: absolute;
+  border-radius: 10px;
+  margin: 0 !important;
+}
+
+#tuto_1 {
+  top: 100px;
+  left: 150px;
+  right: 150px;
+  width: auto;
+}
+
+#tuto_2 {
+  top: 1250px;
+  left: 60px;
+  right: 60px;
+  width: auto;
+}
+
 .imageBg {
 	position: absolute;
 	top: 0;
@@ -48,7 +84,7 @@ img {
 
 #inactive #logo {
 	height: 700px;
-	margin-top: 300px;
+	margin-top: 240px;
 }
 
 #hashtag {
@@ -65,8 +101,8 @@ img {
 }
 
 .colorBg h2 {
-	margin-top: 300px;
-	font-size: 54px;
+	margin-top: 150px;
+	font-size: 64px;
 	display: inline-block;
 	padding: 40px;
 	border: dotted 5px;
@@ -78,8 +114,8 @@ img {
 }
 
 .colorBg p {
-	font-size: 36px;
-	width: 700px;
+	font-size: 44px;
+	width: 900px;
 	margin: 0 auto;
 	margin-top: 150px;
 }
@@ -122,10 +158,28 @@ img {
 	position:relative;
 }
 
+.card_image {
+  width:240px;
+  height:240px;
+  position:relative;
+	background-size:240px 240px
+}
+
 .card.found {
   -webkit-transform: scale(1.2);
   -moz-transform: scale(1.2);
   transform: scale(1.2);
+}
+
+.card.found .card_image:after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 2;
 }
 
 .card .front,

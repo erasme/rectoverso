@@ -10,6 +10,9 @@
 	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
 	
 	<style type="text/css">
+  	.card.found .card_image:after {
+    	background:url("data/rewards/1.png") no-repeat rgba(255, 255, 255, 0.298039);
+    }
   </style>
 </head>
 <body>
@@ -50,11 +53,51 @@
   
   		<div class="state" id="rules">
   			<div class="colorBg">
-  				<h2>Règles</h2>
-  				<p>
-  					Le principe est simple !<br/>
-  					Retrouvez les paires de photos similaires publiées sur Instagram plus vite que votre adversaire, en retournant les cartes.<br />
-  					Votre adversaire dispose d’autres paires à assembler, et ses actions sont visibles sur votre écran. Cela peut ainsi vous aider comme vous contraindre.<br />
+  				<!--<h2>Règles</h2>-->
+  				<div id="tuto">
+  					<div class="card">
+    					<div class="card_wrap">
+      					<div class="back"></div>
+      					<div class="card_image card_child front" style="background-image:url(data/cards/14/1.jpg)"></div>
+      				</div>
+      		  </div>
+      		  
+  					<div class="card">
+    					<div class="card_wrap">
+      					<div class="back"></div>
+      					<div class="card_image card_child front" style="background-image:url(data/cards/16/1.jpg)"></div>
+      				</div>
+      		  </div>
+      		  
+  					<div class="card">
+    					<div class="card_wrap">
+      					<div class="back"></div>
+      					<div class="card_image card_child front" style="background-image:url(data/cards/16/0.jpg)"></div>
+      				</div>
+      		  </div>
+      		  
+  					<div class="card">
+    					<div class="card_wrap">
+      					<div class="back"></div>
+      					<div class="card_image card_child front" style="background-image:url(data/cards/14/0.jpg)"></div>
+      				</div>
+      		  </div>
+					</div>
+  				<p id="tuto_1" class="tuto_bubble">
+  					Le principe est simple !<br>
+  					<br>
+  					Retrouvez les paires<br>
+  					de photos similaires<br>
+  					publiées sur Instagram<br>
+  					plus vite que votre adversaire<br>
+  					en retournant les cartes.
+  				</p>
+  				<p id="tuto_2" class="tuto_bubble">
+  					Votre adversaire dispose d’autres paires<br>
+  					à assembler, et ses actions sont visibles<br>
+  					sur votre écran. Cela peut ainsi vous aider<br>
+  					comme vous contraindre.<br>
+  					<br>
   					Bonne chance !
   				</p>
   				<p class="tap">Tapez pour commencer</p>

@@ -5,9 +5,10 @@
  *  @value   false  N'affiche rien dans la console
  */
 
-var DEBUG = false;
+var DEBUG = true;
 
 /*  
+ *  NON UTILISÉ (pour le moment - next feature à venir)
  *  Comportement des modes de jeu :
  *
  *  @MODE1  Freeplay, chaque joueur doit trouver
@@ -52,6 +53,8 @@ var nbBg      = 41;   // Nombre de dossiers dans /data/bg/
 
 var totalPairs = [];
 
+var tuto = null;
+
 for (var i = 1; i <= nbPairs; i++) {
   totalPairs.push(i);
 }
@@ -89,8 +92,29 @@ var player = {};
 
 var nbPairsPerPlayer = 9;
 
+var socket = io();
+
 $(document).ready(function() {
-	var socket = io();
+  
+  /*
+   *  Attribution des couleurs 
+   *  et de l'image de fond
+   */
+   
+  /*
+    
+    TODO : Définir des paires de couleur, 
+           pour assurer les contrastes et la lisibilité
+    
+  	$('body').css('color', 'rgb('+ color2 +')');
+  	$('path').css('fill', 'rgb('+ color2 +')');
+  */
+
+	$('body').css('color', 'white');
+	$('path').css('fill', 'white');
+
+	getBackgroundPic();
+	
 
   /*
    *  Événements socket
@@ -100,6 +124,10 @@ $(document).ready(function() {
     player.id = data.id;
     debug('Player ID : '+player.id);
   });
+
+	socket.on('startGame', function() {
+		setStateTo(STATE_PLAYING);
+	});
 	
 	socket.on('flippedCard', function (data) {
 	  debug('Receive flippedCard : '+data.id);
@@ -117,12 +145,10 @@ $(document).ready(function() {
 	});
 
   socket.on('score', function (data) {
-    for (var i = 0; i < data.length; i++) {  
-      
-      /*
-       *  On s'intéresse au joueur courant
-       */   
+    for (var i = 0; i < data.length; i++) {
         
+      //  On s'intéresse au joueur courant  
+
       if (data[i].id == player.id) {
         $('#foundScore strong, .scores_found').text(data[i].score);
         
@@ -131,10 +157,8 @@ $(document).ready(function() {
         }
       } 
       
-      /*
-       *  On s'intéresse aux autres joueurs
-       */
-      
+      //  On s'intéresse aux autres joueurs
+    
       else {
         $('#foundByOtherScore strong, .scores_foundByOther').text(data[i].score);
         
@@ -144,15 +168,13 @@ $(document).ready(function() {
       }
     }
   });
+  
+  /*
+   *  Événements de transition 
+   *  entre les états des écrans de jeu
+   */
 
-	$('body').css('color', 'rgb('+ color2 +')');
-	$('path').css('fill', 'rgb('+ color2 +')');
-
-	getBackgroundPic();
-
-	get9RandomPairs();
-
-  setStateTo(STATE_INACTIVE);
+  setStateTo(STATE_INACTIVE); // TODO
 
 	$('#inactive').on('click', function(){
 		setStateTo(STATE_RULES);
@@ -160,13 +182,66 @@ $(document).ready(function() {
 
 	$('#rules').on('click', function(){		
 		setStateTo(STATE_WAITING);
-		
-		socket.emit('readyToPlay', true);
 	});
 
-	socket.on('startGame', function() {
-		setStateTo(STATE_PLAYING);
+	$('.rejouer').on('click', function(){
+		location.assign(location);
 	});
+});
+
+function startTuto() {
+  console.log('startTuto');
+  
+  animateTuto();
+}
+
+function animateTuto() {
+  setTimeout(function(){
+    $('#tuto .card').eq(0).addClass('visible');
+  },100);
+  
+  setTimeout(function(){
+    $('#tuto .card').eq(3).addClass('visible');
+  },800);
+  
+  setTimeout(function(){
+    $('#tuto .card').eq(0).removeClass('visible').addClass('found');
+    $('#tuto .card').eq(3).removeClass('visible').addClass('found');
+  },1500);
+  
+  
+  
+  
+  setTimeout(function(){
+    $('#tuto .card').eq(2).addClass('visible');
+  },2500);
+  
+  setTimeout(function(){
+    $('#tuto .card').eq(1).addClass('visible');
+  },3200);
+  
+  setTimeout(function(){
+    $('#tuto .card').eq(2).removeClass('visible').addClass('found');
+    $('#tuto .card').eq(1).removeClass('visible').addClass('found');
+  },3900);
+  
+  
+  
+  
+  setTimeout(function(){
+    $('#tuto .card').eq(0).removeClass('visible').removeClass('found');
+    $('#tuto .card').eq(1).removeClass('visible').removeClass('found');
+    $('#tuto .card').eq(2).removeClass('visible').removeClass('found');
+    $('#tuto .card').eq(3).removeClass('visible').removeClass('found');
+  },5000);
+  
+  
+  
+  tuto = setTimeout(function(){ animateTuto(); },6200);
+}
+
+function setNewCardDeck() {
+	get9RandomPairs();
 
 	/*
    *  Création des cartes
@@ -192,14 +267,13 @@ $(document).ready(function() {
      *  dans les cartes
      */
      
-		var img0 = $('<img/>')
+		var img0 = $('<div></div>')
 		  .attr('id','img0' + pairs[i])
-		  .attr('class','card_child front')
-		  .attr({'src':'../data/cards/' + pairs[i] + '/0.jpg'});
+		  .attr('class','card_image card_child front')
+		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/0.jpg)');
 		  
 		$('#card0' + pairs[i]+' .card_wrap').append(img0);
 		  
-
 		/*
      *  On crée les cartes qui vont accueillir 
      *  la deuxième image de chaque paire
@@ -218,24 +292,25 @@ $(document).ready(function() {
      *  dans les cartes
      */
      
-		var img1 = $('<img/>')
+		var img1 = $('<div></div>')
 		  .attr('id','img1' + pairs[i])
-		  .attr('class','card_child front')
-		  .attr({'src':'../data/cards/' + pairs[i] + '/1.jpg'});
+		  .attr('class','card_image card_child front')
+		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/1.jpg)');
 		  
 		$('#card1' + pairs[i]+' .card_wrap').append(img1);
 	}
 
-	var cards = $('.card');
+	var cards = $('#game .card');
 	shuffle(cards);
-	$('.card').remove();
+	$('#game .card').remove();
 
-	for( var i = 0, l = cards.length; i < l; i++){
+	for( var i = 0, l = cards.length; i < l; i++) {
 		$(cards[i]).attr('data-order', i);
 		$('#game').append(cards[i]);
 	}
+	
 
-	cards.on('mousedown', function(){ 
+	cards.on('mousedown', function() {
     /*
      *  S'il y a moins de 2 cartes au total retournées,
      *  si la carte touchée n'est pas déjà retournée,
@@ -243,11 +318,12 @@ $(document).ready(function() {
      *  si la carte touchée n'est pas bloquée par l'autre joueur
      */
 
-		if (($('.card.visible').length < 2) 
+		if (($('#game .card.visible').length < 2) 
 		 && (!$(this).hasClass('visible'))
 		 && (!$(this).hasClass('found'))
-		 && (!$(this).hasClass('visibleByOther'))
-		 && (!$(this).hasClass('foundByOther'))) {
+		 && (!$(this).hasClass('visibleByOther'))) {
+  		 
+  		 // TODO MODE2 : && (!$(this).hasClass('foundByOther'))
   		 
       /*
        *  On retourne la carte
@@ -263,7 +339,7 @@ $(document).ready(function() {
        *  on vérifie si c'est une paire ou non
        */
 
-			if ($('.card.visible').length == 2) {
+			if ($('#game .card.visible').length == 2) {
 				window.setTimeout(function() {
   				debug('Deux cartes retournées : on vérifie');
   				
@@ -273,11 +349,11 @@ $(document).ready(function() {
            *  l'identifiant de la première carte sert de comparatif
            */
 					
-					var pairIdToFetch = $('.card.visible').eq(0).data('pair-id');
+					var pairIdToFetch = $('#game .card.visible').eq(0).data('pair-id');
 					var isPair = true;
 										
-					for (var i = 1; i < $('.card.visible').length; i++) {
-  					if ($('.card.visible').eq(i).data('pair-id') != pairIdToFetch) {
+					for (var i = 1; i < $('#game .card.visible').length; i++) {
+  					if ($('#game .card.visible').eq(i).data('pair-id') != pairIdToFetch) {
     					isPair = false;
   					}
 					}
@@ -289,13 +365,12 @@ $(document).ready(function() {
 					if (isPair) {
 						debug('Paire trouvée');
 						
-						$('.card.visible').addClass('found').find('.card_wrap').append('<div class="foundReward card_child front"></div>');						
-						$('.foundReward').css("background", "url('../data/rewards/" + rewardPattern + ".png') no-repeat, rgba(255,255,255,.3)");
+						$('#game .card.visible').addClass('found');
 						
 						socket.emit('foundPair', {pair: pairIdToFetch});			
 									
-            for (var i = 0; i < $('.card.visible').length; i++) {
-						  socket.emit('foundCard', { id: $('.card.visible').eq(i).attr('data-order') });
+            for (var i = 0; i < $('#game .card.visible').length; i++) {
+						  socket.emit('foundCard', { id: $('#game .card.visible').eq(i).attr('data-order') });
 						}
 					}
 					
@@ -303,21 +378,17 @@ $(document).ready(function() {
   				 *  On libère les 2 cartes pour les autres joueurs
   				 */
 					
-          for (var i = 0; i < $('.card.visible').length; i++) {
-					  socket.emit('resetedCard', { id:$('.card.visible').eq(i).attr('data-order') });
+          for (var i = 0; i < $('#game .card.visible').length; i++) {
+					  socket.emit('resetedCard', { id:$('#game .card.visible').eq(i).attr('data-order') });
 					}
 						
-          $('.card.visible').removeClass('visible');
+          $('#game .card.visible').removeClass('visible');
 
 				}, 800);
 			}
 		}
 	});
-
-	$('.rejouer').on('click', function(){
-		location.assign(location);
-	});
-});
+}
 
 /*
  *  getRandomIndex()
@@ -412,10 +483,13 @@ function setStateTo(newState) {
       
     case STATE_RULES :
       $('#rules').show();
+      startTuto();
       break;
       
     case STATE_WAITING :
       $('#waiting').show();
+  		setNewCardDeck();
+  		socket.emit('readyToPlay', true);
       break;
       
     case STATE_PLAYING :
