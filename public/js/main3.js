@@ -182,6 +182,7 @@ $(document).ready(function() {
 
 	$('#rules').on('click', function(){		
 		setStateTo(STATE_WAITING);
+		
 	});
 
 	$('.rejouer').on('click', function(){
@@ -489,6 +490,7 @@ function setStateTo(newState) {
       break;
       
     case STATE_WAITING :
+      $('#rules').show();
       $('#waiting').show();
       stopTuto();
   		setNewCardDeck();

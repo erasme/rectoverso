@@ -346,3 +346,30 @@ img {
 .colorBg strong, #score strong {
 	font-size: 50px;
 }
+
+#waiting {
+  position: absolute;
+  right: 100px;
+  top: 1490px;
+  background: #FFF;
+  border-radius: 50px;
+  padding: 60px 40px;
+  text-align: center;
+  height: auto;
+  left: 100px;
+  width: auto;
+  color: #252525;
+  box-shadow: 0 40px 120px rgba(0, 0, 0, 0.26);
+}
+
+#waiting h2 {
+  margin: 10px 0 40px 0;
+  padding: 0;
+  border: none;
+}
+
+#waiting p {
+  margin: 0;
+  text-align: center;
+  width: auto;
+}
