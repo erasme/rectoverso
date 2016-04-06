@@ -1,5 +1,35 @@
-var nbPairs   = 27;   // Nombre de dossiers dans /data/pairs/
-var nbBg      = 41;   // Nombre de dossiers dans /data/bg/
+/*  
+ *  Mode debug
+ *
+ *  @value   true   Affiche des informations dans la console
+ *  @value   false  N'affiche rien dans la console
+ */
+
+var DEBUG = false;
+
+/*  
+ *  Comportement des modes de jeu :
+ *
+ *  @MODE1  Freeplay, chaque joueur doit trouver
+ *          toutes les paires en premier
+ *
+ *  @MODE2  Les paires trouvées par P1 
+ *          bloquent les positions des carts de P1
+ */
+
+var MODE1 = 1,
+    MODE2 = 2;
+
+/*  
+ *  États de jeu :
+ *
+ *  @STATE_INACTIVE   Écran de démarrage avec la présentation du jeu
+ *  @STATE_RULES      Règles du jeu
+ *  @STATE_WAITING    En attente du partenaire du jeu
+ *  @STATE_PLAYING    Écran de jeu
+ *  @STATE_WIN        Écran en cas de victoire
+ *  @STATE_LOST       Écran en cas de défaite
+ */
 
 var STATE_INACTIVE = 0,
     STATE_RULES = 1,
@@ -7,8 +37,18 @@ var STATE_INACTIVE = 0,
     STATE_PLAYING = 3,
     STATE_WIN = 4,
     STATE_LOST = 5;
+    
+/*  * * * * * * * * * * * *  *
+ *                           *
+ *   CONFIGURATION DU JEU    *
+ *                           *
+ *  * * * * * * * * * * * *  */
 
 var STATE = STATE_INACTIVE;
+var MODE = MODE1;
+
+var nbPairs   = 27;   // Nombre de dossiers dans /data/pairs/
+var nbBg      = 41;   // Nombre de dossiers dans /data/bg/
 
 var totalPairs = [];
 
@@ -49,45 +89,6 @@ var player = {};
 
 var nbPairsPerPlayer = 9;
 
-function setStateTo(newState) {
-  $('.state').hide();
-  
-  switch (newState) {
-    case STATE_INACTIVE :
-      $('#inactive').show();
-      break;
-      
-    case STATE_RULES :
-      $('#rules').show();
-      break;
-      
-    case STATE_WAITING :
-      $('#waiting').show();
-      break;
-      
-    case STATE_PLAYING :
-      $('#game').show();
-      break;
-      
-    case STATE_WIN :
-      $('#win').show();
-    // window.setTimeout( function(){ location.assign(location); }, 30000 );
-      break;
-      
-    case STATE_LOST :
-      $('#lost').show();
-    // window.setTimeout( function(){ location.assign(location); }, 30000 );
-      break;
-      
-    default :
-      $('#inactive').show();
-      break;
-  }
-}
-
-
-
-
 $(document).ready(function() {
 	var socket = io();
 
@@ -97,21 +98,21 @@ $(document).ready(function() {
    
   socket.on('newPlayer', function (data) {
     player.id = data.id;
-    console.log('Player ID : '+player.id);
+    debug('Player ID : '+player.id);
   });
 	
 	socket.on('flippedCard', function (data) {
-	  console.log('Receive flippedCard : ', data.id);
+	  debug('Receive flippedCard : '+data.id);
     $('.card[data-order='+data.id+']').not('.card.found').addClass('visibleByOther');
 	});
 	
 	socket.on('resetedCard', function (data) {
-	  console.log('Receive resetedCard : ', data.id);
+	  debug('Receive resetedCard : '+data.id);
     $('.card[data-order='+data.id+']').removeClass('visibleByOther');
 	});
 
 	socket.on('foundCard', function (data) {
-    console.log('Receive foundCard : ', data.id );
+    debug('Receive foundCard : '+data.id );
     $(".card[data-order="+data.id+"]").addClass('foundByOther');
 	});
 
@@ -235,7 +236,6 @@ $(document).ready(function() {
 	}
 
 	cards.on('mousedown', function(){ 
-  	
     /*
      *  S'il y a moins de 2 cartes au total retournées,
      *  si la carte touchée n'est pas déjà retournée,
@@ -265,7 +265,7 @@ $(document).ready(function() {
 
 			if ($('.card.visible').length == 2) {
 				window.setTimeout(function() {
-  				console.log('Deux cartes retournées : on vérifie');
+  				debug('Deux cartes retournées : on vérifie');
   				
           /*
            *  On compare l'identifiant de la paire [data-pair-id="X"]
@@ -287,7 +287,7 @@ $(document).ready(function() {
   				 */
 
 					if (isPair) {
-						console.log('Paire trouvée');
+						debug('Paire trouvée');
 						
 						$('.card.visible').addClass('found').find('.card_wrap').append('<div class="foundReward card_child front"></div>');						
 						$('.foundReward').css("background", "url('../data/rewards/" + rewardPattern + ".png') no-repeat, rgba(255,255,255,.3)");
@@ -317,8 +317,6 @@ $(document).ready(function() {
 	$('.rejouer').on('click', function(){
 		location.assign(location);
 	});
-
-
 });
 
 /*
@@ -389,4 +387,64 @@ function shuffle(a) {
     a[i - 1] = a[j];
     a[j] = x;
   }
+}
+
+
+/*
+ *  setStateTo(newState)
+ *
+ *  @param  newState (type: Int)
+ *    @value    STATE_INACTIVE    0
+ *    @value    STATE_RULES       1
+ *    @value    STATE_WAITING     2
+ *    @value    STATE_PLAYING     3
+ *    @value    STATE_WIN         4
+ *    @value    STATE_LOST        5
+ */
+
+function setStateTo(newState) {
+  $('.state').hide();
+  
+  switch (newState) {
+    case STATE_INACTIVE :
+      $('#inactive').show();
+      break;
+      
+    case STATE_RULES :
+      $('#rules').show();
+      break;
+      
+    case STATE_WAITING :
+      $('#waiting').show();
+      break;
+      
+    case STATE_PLAYING :
+      $('#game').show();
+      break;
+      
+    case STATE_WIN :
+      $('#win').show();
+    // window.setTimeout( function(){ location.assign(location); }, 30000 );
+      break;
+      
+    case STATE_LOST :
+      $('#lost').show();
+    // window.setTimeout( function(){ location.assign(location); }, 30000 );
+      break;
+      
+    default :
+      $('#inactive').show();
+      break;
+  }
+}
+
+/*
+ *  debug(content)
+ *
+ *  Permet d'afficher des informations dans la console
+ *  en mode debug (DEBUG = true)
+ */
+ 
+function debug(c) {
+  if (DEBUG) console.log(c);
 }
