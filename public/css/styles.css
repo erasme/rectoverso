@@ -331,7 +331,7 @@ img {
 
 #score {
 	position: absolute;
-	bottom: 50px;
+	bottom: 5px;
 	width: 100%;
 	text-align: center;
 }
@@ -340,11 +340,11 @@ img {
 	display: inline-block;
 	padding: 20px;
 	text-align: center;
-	font-size: 24px;
+	font-size: 44px;
 }
 
 .colorBg strong, #score strong {
-	font-size: 50px;
+	font-size: 45px;
 }
 
 #waiting {
