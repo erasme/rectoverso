@@ -178,8 +178,8 @@ img {
   position:absolute;
   right:10px;
   top:10px;
-  width:100px;
-  height:100px;
+  width:70px;
+  height:70px;
   border-radius:200px;
   background:url(../data/check.svg) no-repeat center center / 60% 60% white;
   z-index:10;
@@ -200,7 +200,7 @@ img {
   opacity:1;
 }
 
-.card.found .card_image:after {
+.card .card_image:after {
   content: "";
   display: block;
   position: absolute;
@@ -209,6 +209,15 @@ img {
   right: 0;
   bottom: 0;
   z-index: 2;
+  opacity:0;
+
+  -webkit-transition:all 300ms ease-out;
+     -moz-transition:all 300ms ease-out;
+          transition:all 300ms ease-out;
+}
+
+.card.found .card_image:after {
+  opacity:1
 }
 
 .card .front,
