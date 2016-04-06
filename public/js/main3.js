@@ -246,7 +246,8 @@ $(document).ready(function() {
 		if (($('.card.visible').length < 2) 
 		 && (!$(this).hasClass('visible'))
 		 && (!$(this).hasClass('found'))
-		 && (!$(this).hasClass('visibleByOther'))) {
+		 && (!$(this).hasClass('visibleByOther'))
+		 && (!$(this).hasClass('foundByOther'))) {
   		 
       /*
        *  On retourne la carte
