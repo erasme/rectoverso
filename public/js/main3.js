@@ -125,6 +125,10 @@ $(document).ready(function() {
     debug('Player ID : '+player.id);
   });
 
+	socket.on('readyToPlay', function() {
+		showBubbleOtherReady();
+	});
+
 	socket.on('startGame', function() {
 		setStateTo(STATE_PLAYING);
 	});
@@ -181,14 +185,25 @@ $(document).ready(function() {
 	});
 
 	$('#rules').on('click', function(){		
-		setStateTo(STATE_WAITING);
-		
+		setStateTo(STATE_WAITING);		
 	});
 
 	$('.rejouer').on('click', function(){
 		location.assign(location);
 	});
 });
+
+function showBubbleOtherReady() {
+  if (STATE != STATE_WAITING) {
+    $('#bubble_otherReady').show();
+  }
+}
+
+function hideBubbleOtherReady() {
+  $('#bubble_otherReady').hide();
+}
+
+
 
 function startTuto() {  
   animateTuto();
@@ -492,12 +507,14 @@ function setStateTo(newState) {
     case STATE_WAITING :
       $('#rules').show();
       $('#waiting').show();
+      hideBubbleOtherReady();
   		setNewCardDeck();
   		socket.emit('readyToPlay', true);
       break;
       
     case STATE_PLAYING :
       $('#game').show();
+      hideBubbleOtherReady();
       stopTuto();
       break;
       

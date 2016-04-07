@@ -31,6 +31,8 @@ io.on( 'connection', function( socket ) {
       }
     }
     
+    socket.broadcast.emit('readyToPlay',socket.id);
+    
     console_showPlayersArray();
     
     var nbPlayersReady = 0;
