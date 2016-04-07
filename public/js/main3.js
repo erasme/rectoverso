@@ -5,7 +5,7 @@
  *  @value   false  N'affiche rien dans la console
  */
 
-var DEBUG = true;
+var DEBUG = false;
 
 /*  
  *  NON UTILISÉ (pour le moment - next feature à venir)
@@ -48,7 +48,7 @@ var STATE_INACTIVE = 0,
 var STATE = STATE_INACTIVE;
 var MODE = MODE1;
 
-var nbPairs   = 27;   // Nombre de dossiers dans /data/pairs/
+var nbPairs   = 27;   // Nombre de dossiers dans /data/cards/
 var nbBg      = 41;   // Nombre de dossiers dans /data/bg/
 
 var totalPairs = [];
@@ -84,8 +84,8 @@ var color2 = colors2[Math.floor(Math.random() * colors2.length)];
 var rewardPatterns = ['0', '1', '2'];
 var rewardPattern = rewardPatterns[Math.floor(Math.random() * rewardPatterns.length)];
 
-var pairs = [];
 var visibleCards = 0;
+var pairs = [];
 var randoms = [];
 
 var player = {};
@@ -260,11 +260,14 @@ function animateTuto() {
 
 function setNewCardDeck() {
 	get9RandomPairs();
-
+}
+   
+	
+function setCards() {
 	/*
    *  Création des cartes
    */
-	
+   
 	for (var i = 0; i < pairs.length; i++){
 		
 		/*
@@ -272,50 +275,54 @@ function setNewCardDeck() {
      *  la première image de chaque paire
 		 */
 		 
-		var card0 = $('<div></div>')
-		  .attr('class','card')
-		  .attr('id','card0' + pairs[i])
-		  .attr('data-pair-id',pairs[i]);
-		  
-		$('#game').append(card0);
-		$('#card0' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
-
-		/*
-     *  On insère chaque première image 
-     *  dans les cartes
-     */
-     
-		var img0 = $('<div></div>')
-		  .attr('id','img0' + pairs[i])
-		  .attr('class','card_image card_child front')
-		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/0.jpg)');
-		  
-		$('#card0' + pairs[i]+' .card_wrap').append(img0);
-		  
-		/*
-     *  On crée les cartes qui vont accueillir 
-     *  la deuxième image de chaque paire
-     */
-		
-		var card1 = $('<div></div>')
-		  .attr('class','card')
-		  .attr('id','card1' + pairs[i])
-		  .attr('data-pair-id',pairs[i]);
-		  
-		$('#game').append(card1);
-		$('#card1' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
-
-		/*
-     *  On insère chaque deuxième image 
-     *  dans les cartes
-     */
-     
-		var img1 = $('<div></div>')
-		  .attr('id','img1' + pairs[i])
-		  .attr('class','card_image card_child front')
-		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/1.jpg)');
-		  
-		$('#card1' + pairs[i]+' .card_wrap').append(img1);
+		if (typeof(pairs[i]) !== 'undefined') {
+  		
+  		var card0 = $('<div></div>')
+  		  .attr('class','card')
+  		  .attr('id','card0' + pairs[i])
+  		  .attr('data-pair-id',pairs[i]);
+  		  
+  		$('#game').append(card0);
+  		$('#card0' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
+  
+  		/*
+       *  On insère chaque première image 
+       *  dans les cartes
+       */
+       
+  		var img0 = $('<div></div>')
+  		  .attr('id','img0' + pairs[i])
+  		  .attr('class','card_image card_child front')
+  		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/0.jpg)');
+  		  
+  		$('#card0' + pairs[i]+' .card_wrap').append(img0);
+  		  
+  		/*
+       *  On crée les cartes qui vont accueillir 
+       *  la deuxième image de chaque paire
+       */
+  		
+  		var card1 = $('<div></div>')
+  		  .attr('class','card')
+  		  .attr('id','card1' + pairs[i])
+  		  .attr('data-pair-id',pairs[i]);
+  		  
+  		$('#game').append(card1);
+  		$('#card1' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
+  
+  		/*
+       *  On insère chaque deuxième image 
+       *  dans les cartes
+       */
+       
+  		var img1 = $('<div></div>')
+  		  .attr('id','img1' + pairs[i])
+  		  .attr('class','card_image card_child front')
+  		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/1.jpg)');
+  		  
+  		$('#card1' + pairs[i]+' .card_wrap').append(img1);
+  		
+    }
 	}
 
 	var cards = $('#game .card');
@@ -433,6 +440,9 @@ function getRandomIndex() {
  */
 
 function get9RandomPairs(){
+  pairs = [];
+  randoms = [];
+
 	for (var i = 0; i < 9; i++) {
 		var random = getRandomIndex();
 		pairs.push(random);
@@ -440,7 +450,7 @@ function get9RandomPairs(){
 	
 	for (var i = 0; i < pairs.length; i++){
 		pairs[i] = totalPairs[pairs[i]];
-	}
+	}  
 }
 
 /*
@@ -515,6 +525,7 @@ function setStateTo(newState) {
     case STATE_PLAYING :
       $('#game').show();
       hideBubbleOtherReady();
+      setCards();
       stopTuto();
       break;
       
@@ -543,4 +554,25 @@ function setStateTo(newState) {
  
 function debug(c) {
   if (DEBUG) console.log(c);
+}
+
+
+function debug_newDesk() {
+  /*
+  var test = setInterval(function(){
+    console.log('--------------------');
+    console.log('NEW CALL -----------');
+    pairs = [];
+    randoms = [];
+    get9RandomPairs();
+    
+    for(var i = 0; i < pairs.length; i++) {
+      if (typeof(pairs[i]) === 'undefined') {
+        console.log('HERE\'s JOHNNY :');
+        console.log(pairs[i]);
+        clearInterval(test);
+      }
+    }
+  },1000);
+  */
 }
