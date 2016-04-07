@@ -149,7 +149,8 @@ $(document).ready(function() {
 	});
 
   socket.on('score', function (data) {
-    for (var i = 0; i < data.length; i++) {
+
+    for (var i in data) {
         
       //  On s'intéresse au joueur courant  
 
@@ -503,6 +504,8 @@ function shuffle(a) {
 
 function setStateTo(newState) {
   $('.state').hide();
+  
+  socket.emit('changedState', { state : newState });
   
   switch (newState) {
     case STATE_INACTIVE :
