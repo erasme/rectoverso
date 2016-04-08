@@ -104,6 +104,8 @@ io.on('connection', function( socket ) {
   socket.on('disconnect', function() {
     delete rooms[socket.room][socket.id];
     
+    socket.broadcast.to(socket.room).emit('resetGame', { id: socket.id }); 
+    
     checkRooms();
   });
 });

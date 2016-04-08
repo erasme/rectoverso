@@ -119,6 +119,10 @@ $(document).ready(function() {
   /*
    *  Événements socket
    */
+
+	socket.on('resetGame', function() {
+		location.assign(location);
+	});
    
   socket.on('newPlayer', function (data) {
     player.id = data.id;
@@ -535,12 +539,12 @@ function setStateTo(newState) {
         
       case STATE_WIN :
         $('#win').show();
-      // window.setTimeout( function(){ location.assign(location); }, 30000 );
+        window.setTimeout( function(){ location.assign(location); }, 10000 );
         break;
         
       case STATE_LOST :
         $('#lost').show();
-      // window.setTimeout( function(){ location.assign(location); }, 30000 );
+        window.setTimeout( function(){ location.assign(location); }, 10000 );
         break;
         
       default :
