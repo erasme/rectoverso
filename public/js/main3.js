@@ -45,7 +45,7 @@ var STATE_INACTIVE = 0,
  *                           *
  *  * * * * * * * * * * * *  */
 
-var STATE = STATE_INACTIVE;
+var STATE;
 var MODE = MODE1;
 
 var nbPairs   = 27;   // Nombre de dossiers dans /data/cards/
@@ -503,48 +503,52 @@ function shuffle(a) {
  */
 
 function setStateTo(newState) {
-  $('.state').hide();
-  
-  socket.emit('changedState', { state : newState });
-  
-  switch (newState) {
-    case STATE_INACTIVE :
-      $('#inactive').show();
-      break;
-      
-    case STATE_RULES :
-      $('#rules').show();
-      startTuto();
-      break;
-      
-    case STATE_WAITING :
-      $('#rules').show();
-      $('#waiting').show();
-      hideBubbleOtherReady();
-  		setNewCardDeck();
-  		socket.emit('readyToPlay', true);
-      break;
-      
-    case STATE_PLAYING :
-      $('#game').show();
-      hideBubbleOtherReady();
-      setCards();
-      stopTuto();
-      break;
-      
-    case STATE_WIN :
-      $('#win').show();
-    // window.setTimeout( function(){ location.assign(location); }, 30000 );
-      break;
-      
-    case STATE_LOST :
-      $('#lost').show();
-    // window.setTimeout( function(){ location.assign(location); }, 30000 );
-      break;
-      
-    default :
-      $('#inactive').show();
-      break;
+  if (STATE != newState) {
+    $('.state').hide();
+    
+    socket.emit('changedState', { state : newState });
+    
+    switch (newState) {
+      case STATE_INACTIVE :
+        $('#inactive').show();
+        break;
+        
+      case STATE_RULES :
+        $('#rules').show();
+        startTuto();
+        break;
+        
+      case STATE_WAITING :
+        $('#rules').show();
+        $('#waiting').show();
+        hideBubbleOtherReady();
+    		setNewCardDeck();
+    		socket.emit('readyToPlay', true);
+        break;
+        
+      case STATE_PLAYING :
+        $('#game').show();
+        hideBubbleOtherReady();
+        setCards();
+        stopTuto();
+        break;
+        
+      case STATE_WIN :
+        $('#win').show();
+      // window.setTimeout( function(){ location.assign(location); }, 30000 );
+        break;
+        
+      case STATE_LOST :
+        $('#lost').show();
+      // window.setTimeout( function(){ location.assign(location); }, 30000 );
+        break;
+        
+      default :
+        $('#inactive').show();
+        break;
+    }
+    
+    STATE = newState;
   }
 }
 

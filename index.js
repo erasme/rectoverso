@@ -5,7 +5,6 @@ var io = require( 'socket.io' )( server );
 var port = process.env.RECTO_VERSO_PORT || 5000;
 var url = require('url');
 
-var players = [];
 var nbPlayersNeededToStart = 2;
 
 var rooms = {};
@@ -51,7 +50,7 @@ io.on('connection', function( socket ) {
   
   socket.on('readyToPlay', function(data) {
     
-    socket.broadcast.to(socket.room).emit('readyToPlay',socket.id);  // TODO : to.room()
+    socket.broadcast.to(socket.room).emit('readyToPlay',socket.id); 
     
     var nbPlayersReady = 0;
     
@@ -65,7 +64,7 @@ io.on('connection', function( socket ) {
     
     if (nbPlayersReady == nbPlayersNeededToStart) {
       console.log('> Let\'s start the game!');
-      io.in(socket.room).emit('startGame',nbPlayersReady); // TODO : to.room()   
+      io.in(socket.room).emit('startGame',nbPlayersReady);   
     }
     
     console_showPlayersArray();
@@ -76,24 +75,24 @@ io.on('connection', function( socket ) {
     
     rooms[socket.room][socket.id].score++;
     
-    io.in(socket.room).emit('score', rooms[socket.room]); // TODO : to.room() 
+    io.in(socket.room).emit('score', rooms[socket.room]); 
     
     console_showPlayersArray();
   });
   
   socket.on('flippedCard', function (data) {
     console.log('> Card flipped \b \t \b \t ID : '+socket.id, data);
-    socket.broadcast.to(socket.room).emit('flippedCard', data); // TODO : to.room() 
+    socket.broadcast.to(socket.room).emit('flippedCard', data); 
   });
   
   socket.on('resetedCard', function (data) {
     console.log('> Card reseted \b \t \b \t ID : '+socket.id, data);
-    socket.broadcast.to(socket.room).emit('resetedCard', data); // TODO : to.room() 
+    socket.broadcast.to(socket.room).emit('resetedCard', data); 
   });
   
   socket.on('foundCard', function (data) {
     console.log('> Card found \b \t \b \t ID : '+socket.id, data);
-    socket.broadcast.to(socket.room).emit('foundCard', data); // TODO : to.room() 
+    socket.broadcast.to(socket.room).emit('foundCard', data); 
   });
   
   
