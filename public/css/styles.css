@@ -55,6 +55,30 @@ img {
   width: auto;
 }
 
+#cantaccess {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background:rgba(0,0,0,.6);
+  z-index: 1000000000;
+}
+
+#cantaccess svg {
+  width: 50%;
+  margin: 250px 0 0 271px;
+}
+
+#cantaccess h2 {
+  border:none;
+  text-align:center;
+  width:680px;
+  left:200px;
+  right:200px;
+  padding:150px 200px 0 200px
+}
+
 .imageBg {
 	position: absolute;
 	top: 0;
