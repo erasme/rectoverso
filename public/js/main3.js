@@ -37,7 +37,8 @@ var STATE_INACTIVE = 0,
     STATE_WAITING = 2,
     STATE_PLAYING = 3,
     STATE_WIN = 4,
-    STATE_LOST = 5;
+    STATE_LOST = 5,
+    STATE_CANTACCESS = 6;
     
 /*  * * * * * * * * * * * *  *
  *                           *
@@ -49,7 +50,7 @@ var STATE;
 var MODE = MODE1;
 
 var nbPairs   = 27;   // Nombre de dossiers dans /data/cards/
-var nbBg      = 41;   // Nombre de dossiers dans /data/bg/
+var nbBg      = 40;   // Nombre de dossiers dans /data/bg/
 
 var totalPairs = [];
 
@@ -122,6 +123,11 @@ $(document).ready(function() {
 
 	socket.on('resetGame', function() {
 		location.assign(location);
+	});
+
+	socket.on('roomFull', function(data) {
+		setStateTo(STATE_CANTACCESS);
+		$('#cantaccess_room').text(data.room);
 	});
    
   socket.on('newPlayer', function (data) {
@@ -466,7 +472,7 @@ function get9RandomPairs(){
  */
 
 function getBackgroundPic() {
-	var randomBg = Math.round(Math.random()*nbBg);
+	var randomBg = Math.round(Math.random()*nbBg)+1;
 	
 	$('.imageBg').css({
 		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center center / cover"
@@ -547,6 +553,11 @@ function setStateTo(newState) {
         window.setTimeout( function(){ location.assign(location); }, 10000 );
         break;
         
+      case STATE_CANTACCESS :
+        $('#cantaccess').show();
+        window.setTimeout( function(){ location.assign(location); }, 10000 );
+        break;
+        
       default :
         $('#inactive').show();
         break;
@@ -565,25 +576,4 @@ function setStateTo(newState) {
  
 function debug(c) {
   if (DEBUG) console.log(c);
-}
-
-
-function debug_newDesk() {
-  /*
-  var test = setInterval(function(){
-    console.log('--------------------');
-    console.log('NEW CALL -----------');
-    pairs = [];
-    randoms = [];
-    get9RandomPairs();
-    
-    for(var i = 0; i < pairs.length; i++) {
-      if (typeof(pairs[i]) === 'undefined') {
-        console.log('HERE\'s JOHNNY :');
-        console.log(pairs[i]);
-        clearInterval(test);
-      }
-    }
-  },1000);
-  */
 }

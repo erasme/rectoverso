@@ -6,6 +6,7 @@ var port = process.env.RECTO_VERSO_PORT || 5000;
 var url = require('url');
 
 var nbPlayersNeededToStart = 2;
+var nbPlayersMaxInRoom = 2;
 
 var rooms = {};
 
@@ -26,88 +27,100 @@ io.on('connection', function( socket ) {
 	var id = socket.id;
 	socket.room = room;
 	
-  var player = {
-    'id':id, 
-    'readyToPlay':'false', 
-    'score':0,
-    'state':0
+	var nbPlayersInRoom = 0;
+	
+  for (var i in rooms[socket.room]) {
+    nbPlayersInRoom++;
   }
   
-  if (!rooms[room]) {
-    rooms[room] = {};
+  if (nbPlayersInRoom >= nbPlayersMaxInRoom) {
+    socket.emit('roomFull',{room: socket.room});
   }
   
-  rooms[room][id] = player;
-  
-  checkRooms();
-  
-  console.log('> New player \b \t  \b \t ID : '+id+' \b \t Room : '+room);
-  
-  socket.join(socket.room);
-  socket.emit('newPlayer', {id: socket.id});
-  
-  console_showPlayersArray();
-  
-  socket.on('readyToPlay', function(data) {
-    
-    socket.broadcast.to(socket.room).emit('readyToPlay',socket.id); 
-    
-    var nbPlayersReady = 0;
-    
-    for (var i in rooms[socket.room]) {
-      if (rooms[socket.room][i].state == 2) {
-        nbPlayersReady++;
-      }
+  else {
+    var player = {
+      'id':id, 
+      'readyToPlay':'false', 
+      'score':0,
+      'state':0
     }
     
-    console.log('> '+nbPlayersReady+' player(s) ready to play in room '+socket.room+' !');
-    
-    if (nbPlayersReady == nbPlayersNeededToStart) {
-      console.log('> Let\'s start the game!');
-      io.in(socket.room).emit('startGame',nbPlayersReady);   
+    if (!rooms[room]) {
+      rooms[room] = {};
     }
     
-    console_showPlayersArray();
-  });
-  
-  socket.on('foundPair', function (data) {
-    console.log('> Found pair! \b \t \b \t ID : '+socket.id, data);
-    
-    rooms[socket.room][socket.id].score++;
-    
-    io.in(socket.room).emit('score', rooms[socket.room]); 
-    
-    console_showPlayersArray();
-  });
-  
-  socket.on('flippedCard', function (data) {
-    console.log('> Card flipped \b \t \b \t ID : '+socket.id, data);
-    socket.broadcast.to(socket.room).emit('flippedCard', data); 
-  });
-  
-  socket.on('resetedCard', function (data) {
-    console.log('> Card reseted \b \t \b \t ID : '+socket.id, data);
-    socket.broadcast.to(socket.room).emit('resetedCard', data); 
-  });
-  
-  socket.on('foundCard', function (data) {
-    console.log('> Card found \b \t \b \t ID : '+socket.id, data);
-    socket.broadcast.to(socket.room).emit('foundCard', data); 
-  });
-  
-  
-  
-  socket.on('changedState', function(data) {
-    rooms[socket.room][socket.id].state = data.state;
-  });
-  
-  socket.on('disconnect', function() {
-    delete rooms[socket.room][socket.id];
-    
-    socket.broadcast.to(socket.room).emit('resetGame', { id: socket.id }); 
+    rooms[room][id] = player;
     
     checkRooms();
-  });
+    
+    console.log('> New player \b \t  \b \t ID : '+id+' \b \t Room : '+room);
+    
+    socket.join(socket.room); // TODO : no more than 2 players
+    socket.emit('newPlayer', {id: socket.id});
+    
+    console_showPlayersArray();
+    
+    socket.on('readyToPlay', function(data) {
+      
+      socket.broadcast.to(socket.room).emit('readyToPlay',socket.id); 
+      
+      var nbPlayersReady = 0;
+      
+      for (var i in rooms[socket.room]) {
+        if (rooms[socket.room][i].state == 2) {
+          nbPlayersReady++;
+        }
+      }
+      
+      console.log('> '+nbPlayersReady+' player(s) ready to play in room '+socket.room+' !');
+      
+      if (nbPlayersReady == nbPlayersNeededToStart) {
+        console.log('> Let\'s start the game!');
+        io.in(socket.room).emit('startGame',nbPlayersReady);   
+      }
+      
+      console_showPlayersArray();
+    });
+    
+    socket.on('foundPair', function (data) {
+      console.log('> Found pair! \b \t \b \t ID : '+socket.id, data);
+      
+      rooms[socket.room][socket.id].score++;
+      
+      io.in(socket.room).emit('score', rooms[socket.room]); 
+      
+      console_showPlayersArray();
+    });
+    
+    socket.on('flippedCard', function (data) {
+      console.log('> Card flipped \b \t \b \t ID : '+socket.id, data);
+      socket.broadcast.to(socket.room).emit('flippedCard', data); 
+    });
+    
+    socket.on('resetedCard', function (data) {
+      console.log('> Card reseted \b \t \b \t ID : '+socket.id, data);
+      socket.broadcast.to(socket.room).emit('resetedCard', data); 
+    });
+    
+    socket.on('foundCard', function (data) {
+      console.log('> Card found \b \t \b \t ID : '+socket.id, data);
+      socket.broadcast.to(socket.room).emit('foundCard', data); 
+    });
+    
+    
+    
+    socket.on('changedState', function(data) {
+      rooms[socket.room][socket.id].state = data.state;
+    });
+    
+    socket.on('disconnect', function() {
+      delete rooms[socket.room][socket.id];
+      
+      socket.broadcast.to(socket.room).emit('resetGame', { id: socket.id }); 
+      
+      checkRooms();
+    });
+  }
 });
 
 
