@@ -117,6 +117,12 @@ io.on('connection', function( socket ) {
     socket.on('disconnect', function() {
       delete rooms[socket.room][socket.id];
       
+      console.log(socket.id+' has disconnected. Check rooms:');
+      
+      checkRooms();
+      
+      console.log('resetGame event sended. Check rooms:');
+      
       io.in(socket.room).emit('resetGame', { id: socket.id }); 
       
       checkRooms();
