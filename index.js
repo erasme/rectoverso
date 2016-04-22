@@ -111,6 +111,7 @@ io.on('connection', function( socket ) {
     
     socket.on('changedState', function(data) {
       rooms[socket.room][socket.id].state = data.state;
+      console_showPlayersArray();
     });
     
     socket.on('disconnect', function() {
