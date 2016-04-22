@@ -27,6 +27,8 @@ io.on('connection', function( socket ) {
 	var id = socket.id;
 	socket.room = room;
 	
+  checkRooms();
+	
 	var nbPlayersInRoom = 0;
 	
   for (var i in rooms[socket.room]) {
@@ -55,7 +57,7 @@ io.on('connection', function( socket ) {
     
     console.log('> New player \b \t  \b \t ID : '+id+' \b \t Room : '+room);
     
-    socket.join(socket.room); // TODO : no more than 2 players
+    socket.join(socket.room);
     socket.emit('newPlayer', {id: socket.id});
     
     console_showPlayersArray();
