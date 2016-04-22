@@ -550,7 +550,7 @@ function setStateTo(newState) {
         
       case STATE_LOST :
         $('#lost').show();
-        window.setTimeout( function(){ location.assign(location); }, 10000 );
+      //  window.setTimeout( function(){ location.assign(location); }, 10000 );
         break;
         
       case STATE_CANTACCESS :
