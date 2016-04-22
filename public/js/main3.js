@@ -91,7 +91,7 @@ var randoms = [];
 
 var player = {};
 
-var nbPairsPerPlayer = 9;
+var nbPairsPerPlayer = 2; // TODO : Set to 9 in prod (master) mode
 
 var socket = io();
 
@@ -550,7 +550,7 @@ function setStateTo(newState) {
         
       case STATE_LOST :
         $('#lost').show();
-        window.setTimeout( function(){ location.assign(location); }, 10000 );
+      //  window.setTimeout( function(){ location.assign(location); }, 10000 );
         break;
         
       case STATE_CANTACCESS :

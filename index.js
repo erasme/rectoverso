@@ -27,6 +27,8 @@ io.on('connection', function( socket ) {
 	var id = socket.id;
 	socket.room = room;
 	
+  checkRooms();
+	
 	var nbPlayersInRoom = 0;
 	
   for (var i in rooms[socket.room]) {
@@ -55,7 +57,7 @@ io.on('connection', function( socket ) {
     
     console.log('> New player \b \t  \b \t ID : '+id+' \b \t Room : '+room);
     
-    socket.join(socket.room); // TODO : no more than 2 players
+    socket.join(socket.room);
     socket.emit('newPlayer', {id: socket.id});
     
     console_showPlayersArray();
@@ -111,12 +113,19 @@ io.on('connection', function( socket ) {
     
     socket.on('changedState', function(data) {
       rooms[socket.room][socket.id].state = data.state;
+      console_showPlayersArray();
     });
     
     socket.on('disconnect', function() {
       delete rooms[socket.room][socket.id];
       
-      socket.broadcast.to(socket.room).emit('resetGame', { id: socket.id }); 
+      console.log(socket.id+' has disconnected. Check rooms:');
+      
+      checkRooms();
+      
+      console.log('resetGame event sended. Check rooms:');
+      
+      io.in(socket.room).emit('resetGame', { id: socket.id }); 
       
       checkRooms();
     });
