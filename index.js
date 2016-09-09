@@ -1,3 +1,5 @@
+var CONFIG              = require('./config.js');
+
 var express = require( 'express' );
 var app = express( );
 var server = require( 'http' ).createServer( app );
@@ -58,7 +60,10 @@ io.on('connection', function( socket ) {
     console.log('> New player \b \t  \b \t ID : '+id+' \b \t Room : '+room);
     
     socket.join(socket.room);
-    socket.emit('newPlayer', {id: socket.id});
+    socket.emit('newPlayer', {
+      id: socket.id,
+      cardsFolders: CONFIG.folders
+    });
     
     console_showPlayersArray();
     

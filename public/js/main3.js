@@ -49,7 +49,26 @@ var STATE_INACTIVE = 0,
 var STATE;
 var MODE = MODE1;
 
+var cardsFolders = [];
+
+var cardsFolder = 'cards';
 var nbPairs   = 27;   // Nombre de dossiers dans /data/cards/
+
+    cardsFolder = 'cards_nids';
+    nbPairs = 9;
+
+    cardsFolder = 'cards_couleurs';
+    nbPairs = 9;
+
+    cardsFolder = 'cards_closeup';
+    nbPairs = 9;
+
+
+function setCardsFolder(folder, pairs) {
+  cardsFolder = folder;
+  nbPairs = pairs;
+}
+
 var nbBg      = 40;   // Nombre de dossiers dans /data/bg/
 
 var totalPairs = [];
@@ -133,6 +152,17 @@ $(document).ready(function() {
   socket.on('newPlayer', function (data) {
     player.id = data.id;
     debug('Player ID : '+player.id);
+    cardsFolders = data.cardsFolders;
+    console.log(cardsFolders);
+    
+    for (var index in cardsFolders) {
+      $('.choix_folders').append('<p class="tap" data-folder="'+cardsFolders[index].folder_name+'" data-pairs="'+cardsFolders[index].nb_pairs+'">'+cardsFolders[index].name+'</p>');
+    }
+
+  	$('#inactive p.tap').on('click', function(){
+    	setCardsFolder($(this).data('folder'), $(this).data('pairs'));
+  		setStateTo(STATE_RULES);
+  	});
   });
 
 	socket.on('readyToPlay', function() {
@@ -159,6 +189,8 @@ $(document).ready(function() {
 	});
 
   socket.on('score', function (data) {
+    var playerScore;
+    var otherScore;
 
     for (var i in data) {
         
@@ -166,6 +198,8 @@ $(document).ready(function() {
 
       if (data[i].id == player.id) {
         $('#foundScore strong, .scores_found').text(data[i].score);
+        
+        playerScore = data[i].score;
         
         if (data[i].score == nbPairsPerPlayer) {
           setStateTo(STATE_WIN);
@@ -177,11 +211,21 @@ $(document).ready(function() {
       else {
         $('#foundByOtherScore strong, .scores_foundByOther').text(data[i].score);
         
+        otherScore = data[i].score;
+        
         if (data[i].score == nbPairsPerPlayer) {
           setStateTo(STATE_LOST);
         }
       }
     }
+    
+    var scoreToColor = Math.round(Math.abs(playerScore-otherScore)/nbPairsPerPlayer*100);
+    
+    console.log('scoreToColor : '+scoreToColor);
+    
+    $('.colorBg').css({
+      'background-color':'hsl('+scoreToColor+',50%,60%)'
+    });
   });
   
   /*
@@ -191,10 +235,13 @@ $(document).ready(function() {
 
   setStateTo(STATE_INACTIVE);
 
+  /*
 	$('#inactive').on('click', function(){
+  //	setCardsFolder('');
 		setStateTo(STATE_RULES);
 	});
-
+	*/
+	
 	$('#rules').on('click', function(){		
 		setStateTo(STATE_WAITING);		
 	});
@@ -304,7 +351,7 @@ function setCards() {
   		var img0 = $('<div></div>')
   		  .attr('id','img0' + pairs[i])
   		  .attr('class','card_image card_child front')
-  		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/0.jpg)');
+  		  .attr('style','background-image:url(../data/'+cardsFolder+'/' + pairs[i] + '/0.jpg)');
   		  
   		$('#card0' + pairs[i]+' .card_wrap').append(img0);
   		  
@@ -329,7 +376,7 @@ function setCards() {
   		var img1 = $('<div></div>')
   		  .attr('id','img1' + pairs[i])
   		  .attr('class','card_image card_child front')
-  		  .attr('style','background-image:url(../data/cards/' + pairs[i] + '/1.jpg)');
+  		  .attr('style','background-image:url(../data/'+cardsFolder+'/' + pairs[i] + '/1.jpg)');
   		  
   		$('#card1' + pairs[i]+' .card_wrap').append(img1);
   		
@@ -474,9 +521,11 @@ function get9RandomPairs(){
 function getBackgroundPic() {
 	var randomBg = Math.round(Math.random()*nbBg)+1;
 	
+	/*
 	$('.imageBg').css({
 		"background" : "url('../data/bg/" + randomBg + ".jpg') no-repeat center center / cover"
 	});
+	*/
 	
 	$('.colorBg').css({
   	"background" : "rgba(" + color1 + ",0.4)"
@@ -555,7 +604,7 @@ function setStateTo(newState) {
         
       case STATE_CANTACCESS :
         $('#cantaccess').show();
-        window.setTimeout( function(){ location.assign(location); }, 10000 );
+        window.setTimeout( function(){ location.assign(location); }, 3000 );
         break;
         
       default :
