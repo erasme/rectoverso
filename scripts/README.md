@@ -7,3 +7,7 @@
 `sudo mkdir /var/log/rectoverso`
 `sudo chown erasme:erasme /var/run/rectoverso`
 `sudo chown erasme:erasme /var/log/rectoverso`
+
+#### Prise en compte du script par système.
+`sudo update-rc.d rectoverso defaults`
+`sudo update-rc.d rectoverso enable`
