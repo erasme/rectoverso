@@ -1,9 +1,0 @@
-module.exports = {
-  instagram : {
-    access_token: 'YOUR_ACCESS_TOKEN'
-  },
-  location : {
-    lat : 48.4335645654,
-    lng : 2.345645645
-  }
-};
