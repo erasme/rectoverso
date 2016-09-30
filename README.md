@@ -53,16 +53,4 @@ Issu de http://ubuntuforums.org/showthread.php?t=1493407&p=9380642#post9380642 (
 Script lancé à chaque démarrage  
 `xinput set-prop xx "Evdev Axis Inversion" 1, 0` avec xx l'id du TouchScreen  
 `xinput set-prop xx "Evdev Axes Swap" 1`  
-`chromium-browser yyyy.zz` avec yyyy.zz l'url du jeu
-
-## Setup Chromium
-
-**▶ Nav privée par défaut pour empêcher les notifications de restauration de session :**
-
-- ``sudo nano /etc/chromium-browser/default``
-- Mettre ``CHROMIUM_FLAGS ="--incognito"``
-
-**▶ Empêcher clique long/droit**
-
-Télécharger module : https://chrome.google.com/webstore/detail/context-menu-blocker/gomhdignfhgeamkdgnhaimjigoppgihh    
-(Ou consigne ici : http://stackoverflow.com/questions/28222548/how-to-disable-context-menu-on-right-click-long-touch-in-a-kiosk-mode-of-chrome)
+`firefox yyyy.zz` avec yyyy.zz l'url du jeu

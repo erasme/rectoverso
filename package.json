@@ -4,8 +4,12 @@
   "description": "",
   "main": "index.js",
   "dependencies": {
+    "ejs": "^2.5.2",
     "express": "^4.13.4",
+    "fs": "0.0.2",
     "instagram-node": "^0.5.8",
+    "js-yaml": "^3.6.1",
+    "path": "^0.12.7",
     "socket.io": "^1.4.5"
   },
   "devDependencies": {},
