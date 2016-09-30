@@ -8,7 +8,7 @@ var port = process.env.RECTO_VERSO_PORT || 5000;
 var url = require('url');
 
 var nbPlayersNeededToStart = 2;
-var nbPlayersMaxInRoom = 2;
+var nbPlayersMaxInRoom = 4;
 
 var rooms = {};
 
