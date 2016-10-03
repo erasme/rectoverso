@@ -189,9 +189,9 @@ app.get( '/assets/:room/*' , function(req, res){
   
   fs.access(CONFIG.settings.path+'/public/'+room+'/'+path, fs.F_OK, function(err) {
     if (!err) {
-      res.sendFile(path, {root: './public/'+room});
+      res.sendFile(path, {root: CONFIG.settings.path+'/public/'+room});
     } else {
-      res.sendFile(path, {root: './public/'+defaultRoomFolder});
+      res.sendFile(path, {root: CONFIG.settings.path+'/public/'+defaultRoomFolder});
     }
   });
 });
