@@ -84,11 +84,11 @@ for (var i = 1; i <= nbPairs; i++) {
 }
 
 var colors1 = [
-  "0, 0, 54", 
+  "0, 0, 54"/*, 
   "0, 0, 122", 
   "113, 10, 169", 
   "0, 132, 108", 
-  "255, 16, 52"
+  "255, 16, 52"*/
 ];
 
 var color1 = colors1[Math.floor(Math.random() * colors1.length)];

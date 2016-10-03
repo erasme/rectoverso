@@ -1,6 +1,7 @@
 module.exports = {
   settings : {
-    port : 5000 // Default is 5000  
+    port : 5000, // Default is 5000
+    path : '/Users/vk/Documents/Projets/Erasme/WorkshopUrbanLab/Projets/rectoverso'
   },
   
   game : {

@@ -16,14 +16,14 @@ var rooms               = {};
 var rectoverso = null;
 
 try {
-  var doc = yaml.safeLoad(fs.readFileSync(__dirname+'/public/'+defaultRoomFolder+'/cards/default/settings.txt', 'utf8'));
+  var doc = yaml.safeLoad(fs.readFileSync(CONFIG.settings.path+'/public/'+defaultRoomFolder+'/cards/default/settings.txt', 'utf8'));
   console.log(doc);
 } catch (e) {
   console.log(e);
 }
 
 function scanApp() {
-  directoryTreeToObj(__dirname+'/public/', function(err, res){
+  directoryTreeToObj(CONFIG.settings.path+'/public/', function(err, res){
     if(err)
         console.error(err);
 
@@ -51,14 +51,14 @@ console.log(getFallbackUrl({ room : 'abcdef', cards: 'oui' }));
 //
 //  Checking default folder
 
-fs.access( __dirname+'/public/'+defaultRoomFolder, fs.F_OK, function(err) {
+fs.access( CONFIG.settings.path+'/public/'+defaultRoomFolder, fs.F_OK, function(err) {
   if (!err) {
     
     ////////////////////////////
     //
     //  Folder exists
     
-    fs.access(__dirname+'/public/'+defaultRoomFolder+'/cards', fs.F_OK, function(err) {
+    fs.access(CONFIG.settings.path+'/public/'+defaultRoomFolder+'/cards', fs.F_OK, function(err) {
       if (!err) {
     
         ////////////////////////////
@@ -80,7 +80,7 @@ server.listen( port, function( ) {
 });
 
 app.set( 'view engine', 'ejs' );
-app.use( express.static( __dirname + '/public' ) );
+app.use( express.static( CONFIG.settings.path + '/public' ) );
 
 app.get( '/api/getDirectories/:room/:folder' , function(req, res){
   var room = req.params.room || defaultRoomFolder;
@@ -89,19 +89,19 @@ app.get( '/api/getDirectories/:room/:folder' , function(req, res){
   
   // Does the room folder exists?
   
-  fs.access(__dirname+'/public/'+room+'/', fs.F_OK, function(err) {
+  fs.access(CONFIG.settings.path+'/public/'+room+'/', fs.F_OK, function(err) {
     if (!err) {
       
       // The room folder exists
       // Does the cards folder exists in this room?
       
-      fs.access(__dirname+'/public/'+room+'/cards/'+cardsFolder, fs.F_OK, function(err) {
+      fs.access(CONFIG.settings.path+'/public/'+room+'/cards/'+cardsFolder, fs.F_OK, function(err) {
         if (!err) {
           
           // The room folder exists
           // The cards folder exists in this room
           
-          r = JSON.stringify(getTreeInCardsFolder( __dirname + '/public/'+room+'/cards/'+cardsFolder, room, cardsFolder));
+          r = JSON.stringify(getTreeInCardsFolder( CONFIG.settings.path + '/public/'+room+'/cards/'+cardsFolder, room, cardsFolder));
   
           console.log(r);
           
@@ -114,14 +114,14 @@ app.get( '/api/getDirectories/:room/:folder' , function(req, res){
           // The cards folder does not exist in this room
           // Does the cards folder exists in default folder?
           
-          fs.access(__dirname+'/public/'+defaultRoomFolder+'/cards/'+cardsFolder, fs.F_OK, function(err) {
+          fs.access(CONFIG.settings.path+'/public/'+defaultRoomFolder+'/cards/'+cardsFolder, fs.F_OK, function(err) {
             if (!err) {
           
             // The room folder exists
             // The cards folder does not exist in this room
             // The cards folder exists in default folder
             
-              r = JSON.stringify(getTreeInCardsFolder( __dirname + '/public/'+defaultRoomFolder+'/cards/'+cardsFolder, defaultRoomFolder, cardsFolder));
+              r = JSON.stringify(getTreeInCardsFolder( CONFIG.settings.path + '/public/'+defaultRoomFolder+'/cards/'+cardsFolder, defaultRoomFolder, cardsFolder));
   
               console.log(r);
               
@@ -134,7 +134,7 @@ app.get( '/api/getDirectories/:room/:folder' , function(req, res){
               // The cards folder does not exist in this room
               // The cards folder does not exist in default folder
               
-              r = JSON.stringify(getTreeInCardsFolder( __dirname + '/public/'+defaultRoomFolder+'/cards/'+defaultCardsFolder, defaultRoomFolder, defaultCardsFolder));
+              r = JSON.stringify(getTreeInCardsFolder( CONFIG.settings.path + '/public/'+defaultRoomFolder+'/cards/'+defaultCardsFolder, defaultRoomFolder, defaultCardsFolder));
   
               console.log(r);
               
@@ -152,13 +152,13 @@ app.get( '/api/getDirectories/:room/:folder' , function(req, res){
       // The room folder does not exist
       // Does the cards folder exists anyway in default folder?
       
-      fs.access(__dirname+'/public/'+defaultRoomFolder+'/cards/'+cardsFolder, fs.F_OK, function(err) {
+      fs.access(CONFIG.settings.path+'/public/'+defaultRoomFolder+'/cards/'+cardsFolder, fs.F_OK, function(err) {
         if (!err) {
       
         // The room folder does not exist
         // The cards folder exists in default folder
         
-          r = JSON.stringify(getTreeInCardsFolder( __dirname + '/public/'+defaultRoomFolder+'/cards/'+cardsFolder, defaultRoomFolder, cardsFolder));
+          r = JSON.stringify(getTreeInCardsFolder( CONFIG.settings.path + '/public/'+defaultRoomFolder+'/cards/'+cardsFolder, defaultRoomFolder, cardsFolder));
 
           console.log(r);
           
@@ -170,7 +170,7 @@ app.get( '/api/getDirectories/:room/:folder' , function(req, res){
           // The room folder does not exist
           // The cards folder does not exist in default folder
           
-          r = JSON.stringify(getTreeInCardsFolder( __dirname + '/public/'+defaultRoomFolder+'/cards/'+defaultCardsFolder, defaultRoomFolder, defaultCardsFolder));
+          r = JSON.stringify(getTreeInCardsFolder( CONFIG.settings.path + '/public/'+defaultRoomFolder+'/cards/'+defaultCardsFolder, defaultRoomFolder, defaultCardsFolder));
 
           console.log(r);
           
@@ -187,7 +187,7 @@ app.get( '/assets/:room/*' , function(req, res){
   var room = req.params.room,
       path = req.params[0]; 
   
-  fs.access(__dirname+'/public/'+room+'/'+path, fs.F_OK, function(err) {
+  fs.access(CONFIG.settings.path+'/public/'+room+'/'+path, fs.F_OK, function(err) {
     if (!err) {
       res.sendFile(path, {root: './public/'+room});
     } else {
@@ -200,17 +200,17 @@ app.get( '/:room' , function(req, res) {
   console.log('===================');
   console.log(JSON.stringify(rectoverso[req.params.room]));
   if (req.params.room != 'favicon.ico') {
-    fs.access(__dirname+'/public/'+req.params.room+'/index.ejs', fs.F_OK, function(err) {
+    fs.access(CONFIG.settings.path+'/public/'+req.params.room+'/index.ejs', fs.F_OK, function(err) {
       
       if (!err) {
-        res.render( __dirname + '/public/'+req.params.room+'/index', {
+        res.render( CONFIG.settings.path + '/public/'+req.params.room+'/index', {
           CONFIG: CONFIG,
           room: req.params.room,
           dir: JSON.stringify(rectoverso[req.params.room])
         });
         
       } else {
-        res.render( __dirname + '/public/'+defaultRoomFolder+'/index', {
+        res.render( CONFIG.settings.path + '/public/'+defaultRoomFolder+'/index', {
           CONFIG: CONFIG,
           room: req.params.room,
           dir: JSON.stringify(rectoverso[defaultRoomFolder])
