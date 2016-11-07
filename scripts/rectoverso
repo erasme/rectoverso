@@ -8,12 +8,19 @@
 # Description:      Start & stop rectoverso node server
 ### END INIT INFO
 
+APP=rectoverso
 SCRIPT="/usr/bin/node"
 ARGS="/home/erasme/projets/rectoverso/index.js"
 RUNAS="erasme"
 
-PIDFILE=/var/run/rectoverso/rectoverso.pid
-LOGFILE=/var/log/rectoverso/rectoverso.log
+PIDFILE=/var/run/${APP}/rectoverso.pid
+LOGFILE=/var/log/${APP}/rectoverso.log
+
+# Creates PID dir (this dir is in tmps, so it needs to be created at every boot)
+if [ ! -e /var/run//${APP} ]; then
+  mkdir -p /var/run//${APP}
+  chown erasme /var/run//${APP}
+fi
 
 start() {
   if [ -f /var/run/$PIDNAME ] && kill -0 $(cat /var/run/$PIDNAME); then

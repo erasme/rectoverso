@@ -217,6 +217,7 @@ $(document).ready(function() {
 
 	$('.ButtonButtonRejouer').on('click', function(){
 		location.assign(location);
+		//location.reload();
 	});
 });
 
