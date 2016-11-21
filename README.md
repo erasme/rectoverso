@@ -2,6 +2,21 @@
 
 Simple server using Nodejs & socket.io
 
+## Setup room
+
+### Create new room
+
+1. Create a new folder inside `public` folder: your folder's name will be the alias to your room.
+2. Create a new `cards` folder inside yours`
+3. Create a new `default` folder inside your `cards` folder
+4. Put your pairs of images inside `0`, `1`, `2`, `3`… folders and name your images `0.jpg` and `1.jpg` inside each folder
+
+### Create sub-rooms for any room
+
+1. Create a new folder inside your `public/yourproject/cards/` next to `public/yourproject/cards/default/`: your folder's name will be the alias to your sub-room
+2. Duplicate the file `public/default/index.ejs` to `public/yourproject/index.ejs`
+3. Modify this `index.ejs` so you can make buttons that use sub-rooms cards
+
 ## Setup Instagram
 
 ### Create Instagram token
