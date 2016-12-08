@@ -105,7 +105,7 @@ var player = {};
 
 var nbPairsPerPlayer = 8; // TODO : Set to 9 in prod (master) mode
 
-var socket = io();
+var socket = io(host);
 
 $(document).ready(function() {
 
