@@ -1,7 +1,7 @@
 @font-face {
   font-family:"Varela Round";
-  src:url('VarelaRound-Regular.ttf'); 
-}  
+  src:url('VarelaRound-Regular.ttf');
+}
 
 * {
   margin: 0;
@@ -117,7 +117,7 @@ body {
 	display: block;
 	padding: 9% 5% 10% 5%;
 	background: rgb(255, 255, 255);
-	font-size: 40px;
+	font-size: 70px;
 	font-weight:bold;
 	text-align: center;
 	margin: 0;
@@ -397,7 +397,7 @@ br {
   opacity: 1;
 }
 
-.card.visible, 
+.card.visible,
 .card.visible.visibleByOther {
   -webkit-transform: scale(1);
   -moz-transform: scale(1);
@@ -405,14 +405,14 @@ br {
   z-index:10;
 }
 
-.card.visible .front, 
+.card.visible .front,
 .card.found .front {
 	-webkit-transform:rotateX(0deg) translateY(0);
 	-moz-transform:rotateX(0deg) translateY(0);
 	transform:rotateX(0deg) translateY(0);
 }
 
-.card.visible .back, 
+.card.visible .back,
 .card.found .back {
 	-webkit-transform:rotateX(180deg) translateY(-240px);
 	-moz-transform:rotateX(180deg) translateY(-240px);
@@ -425,8 +425,8 @@ br {
 	-moz-transform:rotateX(-360deg) translateY(0px);
 	transform:rotateX(-360deg) translateY(0px);
 }
-  
-  
+
+
 .card.visibleByOther .back {
   -webkit-transform:rotateX(-180deg) translateY(240px);
   -moz-transform:rotateX(-180deg) translateY(240px);

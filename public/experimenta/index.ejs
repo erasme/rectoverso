@@ -3,25 +3,25 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	
+
 	<title>Recto Verso</title>
-	
+
 	<link rel="stylesheet" type="text/css" href="/assets/<%= room %>/css/styles.css">
 	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
-	
+
 	<meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="mobile-web-app-capable" content="yes">
 </head>
 <body>
-  
-  
+
+
   <div class="Screen">
     <a href="#" onclick="location.reload();" style="position:absolute;top:0;right:0;width:50px;height:50px;z-index:100000000000000000000"></a>
-  
+
 		<div class="State" data-background-color-score data-background-color id="game">
-  		<div id="score"> 
+  		<div id="score">
   			<p>
-    			<span id="foundScore">Vous <strong>0</strong></span> - 
+    			<span id="foundScore">Vous <strong>0</strong></span> -
     			<span id="foundByOtherScore"><strong>0</strong> Adversaire</span>
     		</p>
   		</div>
@@ -30,9 +30,9 @@
 		<div class="State" data-background-color id="inactive">
 			<img class="Logo" src="/assets/<%= room %>/img/Logo.svg">
 			<img class="LogoText" src="/assets/<%= room %>/img/LogoText.svg">
-			
+
 			<div class="InactiveText">Un dispositif pour jouer la ville</div>
-			
+
       <div class="NavButtons">
         <div class="Tap" data-folder="" data-pairs="">Démarrer</div>
       </div>
@@ -46,21 +46,21 @@
   					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/1.jpg)"></div>
   				</div>
   		  </div>
-  		  
+
 				<div class="card">
 					<div class="card_wrap">
   					<div class="back"></div>
   					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/1.jpg)"></div>
   				</div>
   		  </div>
-  		  
+
 				<div class="card">
 					<div class="card_wrap">
   					<div class="back"></div>
   					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/0.jpg)"></div>
   				</div>
   		  </div>
-  		  
+
 				<div class="card">
 					<div class="card_wrap">
   					<div class="back"></div>
@@ -81,14 +81,14 @@
 			</p>
 			<div class="NavButtons">
 			  <div class="Tap">Tapez pour commencer</div>
-      </div>  
-      
+      </div>
+
   		<div class="State" id="waiting">
 				<h2>Vous êtes prêt ?</h2>
 				<p>En attente de votre adversaire<br>sur l'autre quai...</p>
   		</div>
 		</div>
-		
+
 		<div class="Bubble__OtherReady">Votre partenaire est prêt !</div>
 
 		<div class="State" data-background-color id="win">
@@ -117,7 +117,7 @@
 			  <div class="Tap ButtonRejouer">Rejouer</div>
 			</div>
 		</div>
-		
+
 		<div class="State" id="cantaccess">
 			<div class="colorBg">
   			<img id="logo" src="/assets/<%= room %>/img/Logo.svg">
@@ -126,9 +126,9 @@
 				</h2>
 			</div>
 		</div>
-		
+
   </div>
-  <audio src="/assets/<%= room %>/sounds/ambiance.mp3" loop autoplay id="SonAmbiance"">
+<!--  <audio src="/assets/<%= room %>/sounds/ambiance.mp3" loop autoplay id="SonAmbiance"">-->
 
   <script type="text/javascript">
     var room = '<%= room %>';
