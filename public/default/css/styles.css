@@ -245,6 +245,9 @@ br {
 	-webkit-transition:all 200ms ease;
 	-moz-transition:all 200ms ease;
 	transition:all 200ms ease;
+}
+
+.enable-3D-cards .card {
 	-webkit-perspective:600px;
 	-moz-perspective:600px;
 	perspective:600px;
@@ -253,7 +256,11 @@ br {
 	-o-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
-.card:after {/* content:""; *//* padding-top: 100%; *//* display: block; */position: relative;}
+
+.card:after {
+  /* content:""; *//* padding-top: 100%; *//* display: block; */
+  position: relative;
+}
 
 .card_wrap {
   width: 100%;
@@ -330,22 +337,23 @@ br {
   left: 5%;
   width: 90%;
   height: 90%;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
   z-index:1;
   -webkit-transition:all 400ms ease-out;
   -moz-transition:all 400ms ease-out;
+}
+
+.enable-3D-cards .card .front,
+.enable-3D-cards .card .back {
   transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-origin: center bottom;
   -moz-transform-origin: center bottom;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .card .back {
-	-webkit-transform:rotateX(0deg) translateY(0px);
-	-moz-transform:rotateX(0deg) translateY(0px);
-	transform:rotateX(0deg) translateY(0px);
 	background: url('../img/CardBack.svg');
 	background-size: 60% auto;
 	background-color: white;
@@ -353,7 +361,23 @@ br {
 	background-repeat: no-repeat;
 }
 
+.enable-3D-cards .card .back {
+	-webkit-transform:rotateX(0deg) translateY(0px);
+	-moz-transform:rotateX(0deg) translateY(0px);
+	transform:rotateX(0deg) translateY(0px);
+}
+
+.enable-fade-cards .card .back {
+  z-index:10;
+}
+
 .card .front {
+	/*-webkit-transform:rotateX(-180deg) translateY(240px);
+	-moz-transform:rotateX(-180deg) translateY(240px);
+	transform:rotateX(-180deg) translateY(240px);*/
+}
+
+.enable-3D-cards .card .front {
 	-webkit-transform:rotateX(-180deg) translateY(240px);
 	-moz-transform:rotateX(-180deg) translateY(240px);
 	transform:rotateX(-180deg) translateY(240px);
@@ -374,6 +398,10 @@ br {
   outline: solid 12px #FFF;
   outline-offset: -12px;
   */
+}
+
+.enable-fade-cards .card.visible .front {
+  z-index:20;
 }
 
 .card.visibleByOther .card_image:after {
@@ -412,6 +440,15 @@ br {
 
 .card.visible .back,
 .card.found .back {
+
+}
+
+.enable-fade-cards .card.visible .back,
+.enable-fade-cards .card.found .back {
+  opacity:0;
+}
+
+.enable-3D-cards .card.visible .back {
 	-webkit-transform:rotateX(180deg) translateY(-240px);
 	-moz-transform:rotateX(180deg) translateY(-240px);
 	transform:rotateX(180deg) translateY(-240px);
@@ -419,6 +456,10 @@ br {
 
 
 .card.visibleByOther .front {
+
+}
+
+.enable-3D-cards .card.visibleByOther .front {
 	-webkit-transform:rotateX(-360deg) translateY(0px);
 	-moz-transform:rotateX(-360deg) translateY(0px);
 	transform:rotateX(-360deg) translateY(0px);
@@ -426,6 +467,10 @@ br {
 
 
 .card.visibleByOther .back {
+
+}
+
+.enable-3D-cards .card.visibleByOther .back {
   -webkit-transform:rotateX(-180deg) translateY(240px);
   -moz-transform:rotateX(-180deg) translateY(240px);
 	transform:rotateX(-180deg) translateY(240px);
@@ -528,6 +573,7 @@ br {
   margin: 10px 0 20px 0;
   padding: 0;
   border: none;
+  font-size:58px;
 }
 
 #waiting br {
@@ -538,6 +584,7 @@ br {
   margin: 0;
   text-align: center;
   width: auto;
+  font-size:34px;
 }
 
 @-webkit-keyframes pulsate {
@@ -558,7 +605,7 @@ br {
   display:none;
   position: absolute;
   padding: 0;
-  font-size: 17px;
+  font-size: 35px;
   bottom: 3%;
   left: 5%;
   right: 5%;
