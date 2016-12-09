@@ -90,7 +90,7 @@ body {
 #win p, #lost p {
 	color:white;
 }
-/*
+
 .Tap:before {
 	content:"";
 	position: absolute;
@@ -98,7 +98,7 @@ body {
 	left: 0;
 	width: 0;
 	border: solid 3vw rgba(0, 0, 0, 0);
-	border-left: solid 50vw rgba(255, 255, 255,.8);
+	border-left: solid 50vw rgb(255, 255, 255);
 	z-index: -1;
 }
 .Tap:after {
@@ -108,17 +108,18 @@ body {
 	right: 0;
 	width: 0;
 	border: solid 3vw rgba(0, 0, 0, 0);
-	border-right: solid 50vw rgba(255, 255, 255,.8);
+	border-right: solid 50vw rgb(255, 255, 255);
 	z-index: -1;
 }
-*/
+
 .Tap {
 	display: block;
 	padding: 9% 5% 10% 5%;
-	background:  rgba(255, 255, 255,.8);
+	background: rgb(255, 255, 255);
 	font-size: 70px;
 	font-weight:bold;
 	text-align: center;
+	margin: 0;
 }
 
 
@@ -129,7 +130,6 @@ body {
   margin: 0 auto;
   text-align: center;
   background: rgba(35, 38, 67, 0.75);
-  background:rgba(255,255,255,.2);
   border-radius: 10px;
   padding: 20px;
   position: absolute;
@@ -185,10 +185,9 @@ body {
 #cantaccess h2 {
   border:none;
   text-align:center;
-  width:680px;
-  left:200px;
-  right:200px;
-  padding: 10px 200px 0 200px;
+  width:100%;
+  padding: 10px 50px 0 50px;
+  color:white;
 }
 
 #inactive .Logo {
@@ -246,6 +245,9 @@ br {
 	-webkit-transition:all 200ms ease;
 	-moz-transition:all 200ms ease;
 	transition:all 200ms ease;
+}
+
+.enable-3D-cards .card {
 	-webkit-perspective:600px;
 	-moz-perspective:600px;
 	perspective:600px;
@@ -254,7 +256,11 @@ br {
 	-o-transform-style: preserve-3d;
 	transform-style: preserve-3d;
 }
-.card:after {/* content:""; *//* padding-top: 100%; *//* display: block; */position: relative;}
+
+.card:after {
+  /* content:""; *//* padding-top: 100%; *//* display: block; */
+  position: relative;
+}
 
 .card_wrap {
   width: 100%;
@@ -331,22 +337,23 @@ br {
   left: 5%;
   width: 90%;
   height: 90%;
-  -webkit-backface-visibility: hidden;
-  -moz-backface-visibility: hidden;
-  backface-visibility: hidden;
   z-index:1;
   -webkit-transition:all 400ms ease-out;
   -moz-transition:all 400ms ease-out;
+}
+
+.enable-3D-cards .card .front,
+.enable-3D-cards .card .back {
   transform-style: preserve-3d;
   -moz-transform-style: preserve-3d;
   transform-origin: center bottom;
   -moz-transform-origin: center bottom;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 .card .back {
-	-webkit-transform:rotateX(0deg) translateY(0px);
-	-moz-transform:rotateX(0deg) translateY(0px);
-	transform:rotateX(0deg) translateY(0px);
 	background: url('../img/CardBack.svg');
 	background-size: 60% auto;
 	background-color: white;
@@ -354,7 +361,23 @@ br {
 	background-repeat: no-repeat;
 }
 
+.enable-3D-cards .card .back {
+	-webkit-transform:rotateX(0deg) translateY(0px);
+	-moz-transform:rotateX(0deg) translateY(0px);
+	transform:rotateX(0deg) translateY(0px);
+}
+
+.enable-fade-cards .card .back {
+  z-index:10;
+}
+
 .card .front {
+	/*-webkit-transform:rotateX(-180deg) translateY(240px);
+	-moz-transform:rotateX(-180deg) translateY(240px);
+	transform:rotateX(-180deg) translateY(240px);*/
+}
+
+.enable-3D-cards .card .front {
 	-webkit-transform:rotateX(-180deg) translateY(240px);
 	-moz-transform:rotateX(-180deg) translateY(240px);
 	transform:rotateX(-180deg) translateY(240px);
@@ -375,6 +398,10 @@ br {
   outline: solid 12px #FFF;
   outline-offset: -12px;
   */
+}
+
+.enable-fade-cards .card.visible .front {
+  z-index:20;
 }
 
 .card.visibleByOther .card_image:after {
@@ -413,6 +440,15 @@ br {
 
 .card.visible .back,
 .card.found .back {
+
+}
+
+.enable-fade-cards .card.visible .back,
+.enable-fade-cards .card.found .back {
+  opacity:0;
+}
+
+.enable-3D-cards .card.visible .back {
 	-webkit-transform:rotateX(180deg) translateY(-240px);
 	-moz-transform:rotateX(180deg) translateY(-240px);
 	transform:rotateX(180deg) translateY(-240px);
@@ -420,6 +456,10 @@ br {
 
 
 .card.visibleByOther .front {
+
+}
+
+.enable-3D-cards .card.visibleByOther .front {
 	-webkit-transform:rotateX(-360deg) translateY(0px);
 	-moz-transform:rotateX(-360deg) translateY(0px);
 	transform:rotateX(-360deg) translateY(0px);
@@ -427,6 +467,10 @@ br {
 
 
 .card.visibleByOther .back {
+
+}
+
+.enable-3D-cards .card.visibleByOther .back {
   -webkit-transform:rotateX(-180deg) translateY(240px);
   -moz-transform:rotateX(-180deg) translateY(240px);
 	transform:rotateX(-180deg) translateY(240px);
