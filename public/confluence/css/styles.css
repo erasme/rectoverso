@@ -470,6 +470,10 @@ br {
 
 }
 
+.enable-fade-cards .card.visibleByOther .back {
+  opacity: 0;
+}
+
 .enable-3D-cards .card.visibleByOther .back {
   -webkit-transform:rotateX(-180deg) translateY(240px);
   -moz-transform:rotateX(-180deg) translateY(240px);
