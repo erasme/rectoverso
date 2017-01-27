@@ -103,7 +103,7 @@ var pairs = [];
 var randoms = [];
 var player = {};
 
-var nbPairsPerPlayer = 8; // TODO : Set to 9 in prod (master) mode
+var nbPairsPerPlayer = 9; // TODO : Set to 9 in prod (master) mode
 
 var socket = io(host);
 

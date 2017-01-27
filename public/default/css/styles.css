@@ -240,7 +240,7 @@ br {
 .card {
 	display: inline-block;
 	margin: 0;
-	width: 33.3%;
+	width: 28.3%;
 	position:relative;
 	-webkit-transition:all 200ms ease;
 	-moz-transition:all 200ms ease;
@@ -446,7 +446,11 @@ br {
 
 .enable-fade-cards .card.visible .back,
 .enable-fade-cards .card.found .back {
-  opacity:0;
+  opacity:0.6;
+}
+
+.enable-3D-cards .card.found .card_image:after {
+  background: url('../img/CardBack.svg') no-repeat rgba(0,0,0,0.3);
 }
 
 .enable-3D-cards .card.visible .back {
@@ -520,32 +524,32 @@ br {
 	font-size: 40px;
 	padding: 5%;
 	background: white;
-	height: 220px;
-	line-height:120px;
+	height: 100px;
+	line-height: 10px;
 	color: rgb(81, 81, 81);
 }
 
 #score #foundScore {
 	text-align:left;
-	padding-left: 240px;
+	padding-left: 140px;
 }
 #score #foundByOtherScore {
 	text-align:right;
-	padding-right: 240px;
+	padding-right: 150px;
 }
 
 .colorBg strong, #score strong {
-	font-size: 80px;
+	font-size: 50px;
 	position: absolute;
 	left: 0;
 	top: 0;
 	bottom: 0;
 	padding: 0;
-	width: 220px;
+	width: 110px;
 	background: rgba(0, 0, 0, 0.68);
 	color: white;
 	text-align: center;
-	line-height: 220px;
+	line-height: 118px;
 }
 
 #score #foundByOtherScore strong {
