@@ -450,7 +450,7 @@ br {
 }
 
 .enable-3D-cards .card.found .card_image:after {
-  background: url('../img/CardBack.svg') no-repeat rgba(0,0,0,0.3);
+  background: url('../img/CardBack.svg') no-repeat center center / 60% auto rgba(0,0,0,0.5);
 }
 
 .enable-3D-cards .card.visible .back {
