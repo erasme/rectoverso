@@ -22,6 +22,7 @@ img {
 html, body {
 	width:100%;
 	height:100%;
+  touch-action: manipulation;
 }
 
 body {
@@ -409,9 +410,10 @@ br {
 .card.visibleByOther .card_image:after {
   content: "Adversaire";
   position: absolute;
-  top: 207px;
-  right: 20px;
-  left: auto;
+  top: 90%;
+  right: 0;
+  left: 50%;
+  margin-left: -100px;
   display: block;
   width: 200px;
   box-sizing: border-box;
