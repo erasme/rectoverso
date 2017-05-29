@@ -41,6 +41,18 @@ body {
 
 .State {
 	display: none;
+	position: absolute;
+	height: 100%;
+	width: 100%;
+	z-index: 2000;
+	top: 0;
+	left: 0;
+	text-align: center;
+}
+
+.StateTransition {
+	transition: all 350ms ease-in-out;
+	transform: translate3d(0,0,0);
 }
 
 #inactive, #rules, #win, #lost {
@@ -94,22 +106,23 @@ body {
 
 .Tap {
 	display: block;
-	padding: 7% 5% 7% 5%;
+	/* padding: 7% 5% 7% 5%; */
 	background: rgb(255, 255, 255);
-	font-size: 70px;
+	font-size: 50px;
 	font-weight:bold;
 	text-align: center;
-	margin: 0 50px 50px 50px;
 	border-radius:1000px;
+	line-height: 340px;
 	z-index: 2;
 	position: relative;
-	box-shadow: 0 70px 30px rgba(0, 0, 0, 0.08);
 	transition: all 150ms ease-out;
+	animation: pulsate 1.5s ease infinite;
+	width: 340px;
+	height: 340px;
 }
 
 .Tap:active {
-	transform:scale(.95);
-	box-shadow: 0 10px 10px rgba(0, 0, 0, 0.3);
+  background:rgba(255,255,255,.9);
 }
 
 
@@ -117,6 +130,7 @@ body {
 
 
 .TutoDemo {
+  /* display:none; */
   /* width: 620px; */
   margin: 0 auto;
   text-align: center;
@@ -124,13 +138,13 @@ body {
   border-radius: 10px;
   padding: 20px;
   position: absolute;
-  top: 25%;
-  margin-top: -10%;
+  top: 22.5%;
+  margin-top: 3%;
   width: 70%;
   left: 5%;
   right: 5%;
   font-size:0;
-  /* transform: scale(0.8); */
+  transform: scale(0.85);
 }
 
 .TutoText {
@@ -138,7 +152,8 @@ body {
   padding: 0;
   position: absolute;
   margin: 0;
-  font-size: 30px;
+  font-size: 37px;
+  line-height:1.5;
   /* font-size: 260%; */
 }
 
@@ -147,10 +162,11 @@ body {
   left: 10%;
   right: 10%;
   width: auto;
+  margin-top: 200px;
 }
 
 .TutoTextBottom {
-  bottom: 26vw;
+  bottom: 33vw;
   margin-bottom: 10%;
   left: 10%;
   right: 10%;
@@ -182,14 +198,89 @@ body {
   padding: 10px 200px 0 200px;
 }
 
-#inactive .Logo {
-	height: 20%;
-	margin-top: 10%;
+.Bloc {
+	transition: all 350ms ease-in-out;
+	transform: translate3d(0,0,0);
+  z-index:30
 }
 
-#inactive .LogoText {
-	height: 10%;
-	margin-top: 0px;
+.Bloc.inactive {
+  position:absolute;
+  top: 20%;
+  left:0;
+  right:0;
+  height: 30%;
+}
+
+.State.rules .Bloc.inactive {
+	top: 50px;
+}
+
+.State.game .Bloc.inactive {
+	pointer-events:none;
+}
+
+.State.game .Bloc.rules {
+	pointer-events:none;
+}
+
+.State.inactive .Logo {
+	width: 500px;
+	height: 500px;
+	position:absolute;
+	top: 0;
+	left: 50%;
+	margin-left: -250px;
+}
+
+.State.inactive .LogoText {
+	width: 800px;
+	height: 190px;
+	position:absolute;
+	top: 500px;
+	left: 50%;
+	margin-left: -400px;
+}
+
+.State.rules .Logo {
+	height: 200px;
+	position:absolute;
+	/* left: 50px; */
+	width: 200px;
+	margin-left: -100px;
+}
+
+.State.rules .LogoText {
+	/* height: 10%; */
+	position:absolute;
+	/* left: 260px; */
+	/* margin-left: 0; */
+	/* height: 200px; */
+	/* width: 660px; */
+	top: 200px;
+	/* opacity: 0; */
+	height: 0;
+}
+
+
+
+.Bloc.rules {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 100%;
+}
+
+.State.inactive .Bloc.rules {
+  top:100%;
+}
+
+.State.rules .Bloc.rules {
+  top: 0;
+}
+
+.State.game .Bloc.rules {
+  top: -100%;
 }
 
 #hashtag {
@@ -220,13 +311,25 @@ br {
 	display:none;
 }
 
-#game {
+.Bloc.game {
 	margin: 0;
 	text-align: center;
-	display:none;
 	height: 100%;
 	font-size:0;
-	padding: 1%;
+	padding: 0 0 0 0;
+	position: absolute;
+	top: 0;
+	left:0;
+	right:0;
+	z-index:10;
+	opacity:0;
+	pointer-events: none;
+}
+
+.State.game .Bloc.game {
+  top: 0;
+  opacity:1;
+  pointer-events: all;
 }
 
 .card {
@@ -237,6 +340,11 @@ br {
 	-webkit-transition:all 200ms ease;
 	-moz-transition:all 200ms ease;
 	transition:all 200ms ease;
+}
+
+.card.hideBeforeAppearance {
+  opacity:0;
+  transform:scale(.8);
 }
 
 .enable-3D-cards .card {
@@ -317,6 +425,7 @@ br {
   -webkit-transition:all 300ms ease-out;
      -moz-transition:all 300ms ease-out;
           transition:all 300ms ease-out;
+  background: url(../img/CardBack.svg) no-repeat center center / 60% auto rgba(0,0,0,0.5);
 }
 
 .card.found .card_image:after {
@@ -504,6 +613,8 @@ br {
 	left: 0;
 	right: 0;
 	padding: 0;
+	font-size: 0;
+	height: 140px;
 }
 
 #score p {
@@ -523,12 +634,85 @@ br {
 }
 
 #score #foundScore {
-	text-align:left;
-	padding-left: 140px;
+	position:absolute;
+	width: 50%;
+	left:0;
+	top:0;
+	bottom:0;
 }
 #score #foundByOtherScore {
+	position:absolute;
+	width: 50%;
+	right:0;
+	top:0;
+	bottom:0;
+}
+.scoreCards {
+	width:100%;
+	height: 100px;
+	top: 52px;
+	position:absolute;
+}
+#foundScore .scoreCards {
 	text-align:right;
-	padding-right: 150px;
+	right: 115px;
+}
+#foundByOtherScore .scoreCards {
+	text-align:left;
+	left: 115px;
+}
+.scoreCard {
+	display:inline-block;
+	width: 35px;
+	height: 35px;
+	background: black;
+	opacity: 0.1;
+	margin: 0 4px;
+	border-radius: 35px;
+  transition:all 200ms ease;
+}
+.scoreCard.ok {
+  opacity:1;
+  background:white;
+}
+.scoreNumber {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    background: white;
+    border-radius: 10px;
+    top: 0;
+    font-size: 60px;
+    font-weight: bold;
+    line-height: 100px;
+}
+#foundScore .scoreNumber {
+	right:0;
+	border-radius: 10px 0 0 10px;
+}
+#foundByOtherScore .scoreNumber {
+	left:0;
+	border-radius: 0 10px 10px 0;
+	background: rgba(0,0,0,0.3);
+	color: white;
+}
+.scoreLabel {
+    position: absolute;
+    top: 3px;
+    color: white;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 32px;
+    font-weight: bold;
+    width: 100%;
+}
+#foundScore .scoreLabel {
+    text-align: right;
+    padding-right: 115px;
+}
+#foundByOtherScore .scoreLabel {
+	text-align: left;
+	padding-left: 118px;
 }
 
 .colorBg strong, #score strong {
@@ -554,28 +738,36 @@ br {
   position: absolute;
   z-index: 2000;
   left: 0;
-  bottom: 0;
+  bottom: -300px;
   right: 0;
   background: #FFF;
   border-radius: 0;
   padding: 5%;
   text-align: center;
   color: #252525;
-  /* box-shadow: 0 40px 120px rgba(0, 0, 0, 0.26); */
-  -webkit-animation: pulsate 1.5s ease;
-  -webkit-animation-iteration-count: infinite;
-  -moz-animation: pulsate 1.5s ease;
-  -moz-animation-iteration-count: infinite;
-  animation: pulsate 1.5s ease;
-  animation-iteration-count: infinite;
   transform-origin: center bottom;
+  position: absolute;
+  height: 300px;
+  opacity:0;
+  ponter-events:none;
+}
+
+.State.waiting #waiting {
+	bottom:0;
+  opacity:1;
+  ponter-events:all;
+}
+
+.State.game #waiting {
+  opacity:0;
+  ponter-events:none;
 }
 
 #waiting h2 {
   margin: 10px 0 20px 0;
   padding: 0;
   border: none;
-  font-size:58px;
+  font-size: 52px;
 }
 
 #waiting br {
@@ -590,9 +782,8 @@ br {
 }
 
 @-webkit-keyframes pulsate {
-  0% { -webkit-transform: scale(1); -moz-transform: scale(1); transform: scale(1); }
-  50% { -webkit-transform: scale(1.05); -moz-transform: scale(1.05); transform: scale(1.05); }
-  100% { -webkit-transform: scale(1); -moz-transform: scale(1); transform: scale(1); }
+  0%, 100% { transform: translate3d(0,0,0) scale(1); box-shadow: 0 30px 30px rgba(0, 0, 0, 0.2);}
+  50% { transform: translate3d(0,0,0) scale(1.05); box-shadow: 0 70px 30px rgba(0, 0, 0, 0.08);}
 }
 
 .NavButtons {
@@ -601,10 +792,26 @@ br {
   left: 0;
   right: 0;
   padding: 0;
+  width: 340px;
+  left: 50%;
+  margin-left: -170px;
+  bottom: 60px;
+  transform-origin: center center;
+  z-index:30;
+}
+
+.State.rules .NavButtons.inactive {
+	transform: translate3d(0,0,0) scale(0.3);
+	opacity: 0;
+}
+
+.State.waiting .NavButtons.rules {
+	transform: translate3d(0,0,0) scale(0.3);
+	opacity: 0;
 }
 
 .Bubble__OtherReady {
-  display:none;
+  display:none !important;
   position: absolute;
   padding: 0;
   font-size: 35px;
@@ -639,7 +846,8 @@ br {
 }
 
 .TutoDemo .card {
-  width:50%
+  width:50%;
+  opacity:1;
 }
 
 .InactiveText {

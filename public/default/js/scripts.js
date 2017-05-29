@@ -134,7 +134,7 @@ $(document).ready(function() {
     player.id = data.id;
     debug('Player ID : '+player.id);
 
-  	$('.Tap').on('click', function(){
+  	$('.NavButtons.inactive .Tap').on('click', function(){
     //	setCardsFolder($(this).data('folder'), $(this).data('pairs'));
   		setStateTo(STATE_RULES);
   	});
@@ -172,7 +172,9 @@ $(document).ready(function() {
       //  On s'intéresse au joueur courant
 
       if (data[i].id == player.id) {
-        $('#foundScore strong, .Scores_found').text(data[i].score);
+        $('#foundScore .scoreNumber, .Scores_found').text(data[i].score);
+
+        $('#foundScore .scoreCards .scoreCard').eq(data[i].score-1).addClass('ok');
 
         playerScore = data[i].score;
 
@@ -184,8 +186,11 @@ $(document).ready(function() {
       //  On s'intéresse aux autres joueurs
 
       else {
-        $('#foundByOtherScore strong, .Scores_foundByOther').text(data[i].score);
+        $('#foundByOtherScore .scoreNumber, .Scores_foundByOther').text(data[i].score);
 
+        if (data[i].score > 0) {
+          $('#foundByOtherScore .scoreCards .scoreCard').eq(9-data[i].score).addClass('ok');
+        }
         otherScore = data[i].score;
 
         if (data[i].score == nbPairsPerPlayer) {
@@ -217,7 +222,7 @@ $(document).ready(function() {
 	});
 	*/
 
-	$('#rules').on('click', function(){
+	$('.NavButtons.rules .Tap').on('click', function(){
 		setStateTo(STATE_WAITING);
 	});
 
@@ -301,6 +306,8 @@ function setCards() {
 
 	for (var i = 0; i < pairs.length; i++){
 
+    $('.scoreCards').append('<div class="scoreCard"></div>');
+
 		/*
      *  On crée les cartes qui vont accueillir
      *  la première image de chaque paire
@@ -309,11 +316,11 @@ function setCards() {
 		if (typeof(pairs[i]) !== 'undefined') {
 
   		var card0 = $('<div></div>')
-  		  .attr('class','card')
+  		  .attr('class','card hideBeforeAppearance')
   		  .attr('id','card0' + pairs[i])
   		  .attr('data-pair-id',pairs[i]);
 
-  		$('#game').append(card0);
+  		$('.Bloc.game').append(card0);
   		$('#card0' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
 
   		/*
@@ -334,11 +341,11 @@ function setCards() {
        */
 
   		var card1 = $('<div></div>')
-  		  .attr('class','card')
+  		  .attr('class','card hideBeforeAppearance')
   		  .attr('id','card1' + pairs[i])
   		  .attr('data-pair-id',pairs[i]);
 
-  		$('#game').append(card1);
+  		$('.Bloc.game').append(card1);
   		$('#card1' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
 
   		/*
@@ -356,15 +363,18 @@ function setCards() {
     }
 	}
 
-	var cards = $('#game .card');
+	var cards = $('.Bloc.game .card');
 	shuffle(cards);
-	$('#game .card').remove();
+	$('.Bloc.game .card').remove();
 
 	for( var i = 0, l = cards.length; i < l; i++) {
 		$(cards[i]).attr('data-order', i);
-		$('#game').append(cards[i]);
+		$('.Bloc.game').append(cards[i]);
 	}
 
+  setTimeout(function(){
+    playCardsAppearance(0);
+  },2000);
 
 	cards.on('mousedown', function() {
     /*
@@ -374,7 +384,7 @@ function setCards() {
      *  si la carte touchée n'est pas bloquée par l'autre joueur
      */
 
-		if (($('#game .card.visible').length < 2)
+		if (($('.Bloc.game .card.visible').length < 2)
 		 && (!$(this).hasClass('visible'))
 		 && (!$(this).hasClass('found'))
 		 && (!$(this).hasClass('visibleByOther'))) {
@@ -395,7 +405,7 @@ function setCards() {
        *  on vérifie si c'est une paire ou non
        */
 
-			if ($('#game .card.visible').length == 2) {
+			if ($('.Bloc.game .card.visible').length == 2) {
 				window.setTimeout(function() {
   				debug('Deux cartes retournées : on vérifie');
 
@@ -405,11 +415,11 @@ function setCards() {
            *  l'identifiant de la première carte sert de comparatif
            */
 
-					var pairIdToFetch = $('#game .card.visible').eq(0).data('pair-id');
+					var pairIdToFetch = $('.Bloc.game .card.visible').eq(0).data('pair-id');
 					var isPair = true;
 
-					for (var i = 1; i < $('#game .card.visible').length; i++) {
-  					if ($('#game .card.visible').eq(i).data('pair-id') != pairIdToFetch) {
+					for (var i = 1; i < $('.Bloc.game .card.visible').length; i++) {
+  					if ($('.Bloc.game .card.visible').eq(i).data('pair-id') != pairIdToFetch) {
     					isPair = false;
   					}
 					}
@@ -421,12 +431,12 @@ function setCards() {
 					if (isPair) {
 						debug('Paire trouvée');
 
-						$('#game .card.visible').addClass('found');
+						$('.Bloc.game .card.visible').addClass('found');
 
 						socket.emit('foundPair', {pair: pairIdToFetch});
 
-            for (var i = 0; i < $('#game .card.visible').length; i++) {
-						  socket.emit('foundCard', { id: $('#game .card.visible').eq(i).attr('data-order') });
+            for (var i = 0; i < $('.Bloc.game .card.visible').length; i++) {
+						  socket.emit('foundCard', { id: $('.Bloc.game .card.visible').eq(i).attr('data-order') });
 						}
 					}
 
@@ -434,16 +444,26 @@ function setCards() {
   				 *  On libère les 2 cartes pour les autres joueurs
   				 */
 
-          for (var i = 0; i < $('#game .card.visible').length; i++) {
-					  socket.emit('resetedCard', { id:$('#game .card.visible').eq(i).attr('data-order') });
+          for (var i = 0; i < $('.Bloc.game .card.visible').length; i++) {
+					  socket.emit('resetedCard', { id:$('.Bloc.game .card.visible').eq(i).attr('data-order') });
 					}
 
-          $('#game .card.visible').removeClass('visible');
+          $('.Bloc.game .card.visible').removeClass('visible');
 
 				}, 800);
 			}
 		}
 	});
+}
+
+
+function playCardsAppearance(index) {
+  if (index < pairs.length*2) {
+    $('.Bloc.game .card').eq(index).removeClass('hideBeforeAppearance');
+    setTimeout(function(){
+      playCardsAppearance(index+1);
+    },50);
+  }
 }
 
 /*
@@ -517,31 +537,30 @@ function shuffle(a) {
 
 function setStateTo(newState) {
   if (STATE != newState) {
-    $('.State').hide();
+  //  $('.State').hide();
 
     socket.emit('changedState', { state : newState });
 
     switch (newState) {
       case STATE_INACTIVE :
-        $('#inactive').show();
+        $('.State.inactive').show();
         break;
 
       case STATE_RULES :
-        $('#rules').show();
+        $('.State.inactive').addClass('rules');
         setSoundVolume($('#SonAmbiance'), .5);
         startTuto();
         break;
 
       case STATE_WAITING :
-        $('#rules').show();
-        $('#waiting').show();
+        $('.State.rules').addClass('waiting');
         hideBubbleOtherReady();
     		setNewCardDeck();
     		socket.emit('readyToPlay', true);
         break;
 
       case STATE_PLAYING :
-        $('#game').show();
+        $('.State.rules, .State.waiting').addClass('game');
         hideBubbleOtherReady();
         setSoundVolume($('#SonAmbiance'), .7);
         setCards();

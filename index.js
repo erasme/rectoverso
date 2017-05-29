@@ -319,6 +319,7 @@ io.on('connection', function( socket ) {
 
 
     socket.on('changedState', function(data) {
+      console.log('State of '+socket.id+' has changed to '+data.state);
       rooms[socket.room][socket.id].state = data.state;
       console_showPlayersArray();
     });

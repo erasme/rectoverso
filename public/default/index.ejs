@@ -16,79 +16,109 @@
   <div class="Screen">
     <a href="#" onclick="location.reload();" style="position:absolute;top:0;right:0;width:50px;height:50px;z-index:100000000000000000000"></a>
 
-		<div class="State" data-background-color-score data-background-color  id="game">
-  		<div id="score">
-  			<p>
-    			<span id="foundScore">Vous <strong>0</strong></span> -
-    			<span id="foundByOtherScore"><strong>0</strong> Adversaire</span>
-    		</p>
-  		</div>
-		</div>
 
-		<div class="State" data-background-color id="inactive">
-			<img class="Logo" src="/assets/<%= room %>/img/Logo.svg">
-			<img class="LogoText" src="/assets/<%= room %>/img/LogoText.svg">
-      <div class="NavButtons">
-        <div class="Tap" data-folder="" data-pairs="">Démarrer</div>
-      </div>
-		</div>
+		<div class="State inactive" data-background-color>
 
-		<div class="State" data-background-color id="rules">
-			<div class="TutoDemo">
-				<div class="card">
-					<div class="card_wrap">
-  					<div class="back"></div>
-  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/1.jpg)"></div>
-  				</div>
-  		  </div>
+			<section class="Bloc inactive">
+				<img class="Logo StateTransition" src="/assets/<%= room %>/img/Logo.svg">
+				<img class="LogoText StateTransition" src="/assets/<%= room %>/img/LogoText.svg">
+			</section>
 
-				<div class="card">
-					<div class="card_wrap">
-  					<div class="back"></div>
-  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/1.jpg)"></div>
-  				</div>
-  		  </div>
-
-				<div class="card">
-					<div class="card_wrap">
-  					<div class="back"></div>
-  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/0.jpg)"></div>
-  				</div>
-  		  </div>
-
-				<div class="card">
-					<div class="card_wrap">
-  					<div class="back"></div>
-  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/0.jpg)"></div>
-  				</div>
-  		  </div>
+			<div class="NavButtons inactive StateTransition">
+				<div class="Tap" data-folder="" data-pairs="">Démarrer</div>
 			</div>
-			<p class="TutoText TutoTextTop">
-				Le principe est simple !<br>
-				<br>
-				Retrouvez les paires<br>
-				de photos similaires<br>
-				publiées sur Instagram<br>
-				plus vite que votre adversaire<br>
-				en retournant les cartes.
-			</p>
-			<p class="TutoText TutoTextBottom">
-				Votre adversaire dispose d’autres paires<br>
-				à assembler, et ses actions sont visibles<br>
-				sur votre écran. Cela peut ainsi vous aider<br>
-				comme vous contraindre.<br>
-				<br>
-				Bonne chance !
-			</p>
-			<div class="NavButtons">
-			  <div class="Tap">Tapez pour commencer</div>
-      </div>
 
-  		<div class="State" id="waiting">
-				<h2>Vous êtes prêt ?</h2>
-				<p>En attente de votre adversaire<br>sur l'autre quai...</p>
-  		</div>
+
+
+
+
+			<section class="Bloc rules">
+				<div class="TutoDemo">
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/1.jpg)"></div>
+	  				</div>
+	  		  </div>
+
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/1.jpg)"></div>
+	  				</div>
+	  		  </div>
+
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/0.jpg)"></div>
+	  				</div>
+	  		  </div>
+
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/0.jpg)"></div>
+	  				</div>
+	  		  </div>
+				</div>
+				<p class="TutoText TutoTextTop">
+					Le principe est simple !<br>
+					<br>
+					Retrouvez les paires<br>
+					de photos similaires<br>
+					publiées sur Instagram<br>
+					plus vite que votre adversaire<br>
+					en retournant les cartes.
+				</p>
+				<p class="TutoText TutoTextBottom">
+					Votre adversaire dispose d’autres paires<br>
+					à assembler, et ses actions sont visibles<br>
+					sur votre écran. Cela peut ainsi vous aider<br>
+					comme vous contraindre.<br>
+					<br>
+					Bonne chance !
+				</p>
+				<div class="NavButtons rules StateTransition">
+				  <div class="Tap">C'est parti !</div>
+	      </div>
+
+	  		<div class="StateTransition" id="waiting">
+					<h2>Vous êtes prêt•e ?</h2>
+					<p>En attente de votre adversaire<br>sur l'autre quai...</p>
+	  		</div>
+			</section>
+
+
+
+
+			<section class="Bloc game" data-background-color-score data-background-color>
+	  		<div id="score">
+					<div id="foundScore">
+						<div class="scoreCards"></div>
+						<div class="scoreNumber">0</div>
+						<div class="scoreLabel">Vous</div>
+					</div>
+					
+					<div id="foundByOtherScore">
+						<div class="scoreCards"></div>
+						<div class="scoreNumber">0</div>
+						<div class="scoreLabel">Votre adversaire</div>
+					</div>
+	  		</div>
+			</section>
+
+
 		</div>
+
+
+
+
+
+
+
+
+
 
 		<div class="Bubble__OtherReady">Votre partenaire est prêt !</div>
 
