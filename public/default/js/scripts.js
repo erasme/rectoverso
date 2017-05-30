@@ -171,7 +171,10 @@ $(document).ready(function() {
 
       //  On s'intéresse au joueur courant
 
+      console.log('=======\r\nmoi id: '+player.id+' | id: '+data[i].id+' | score: '+data[i].score);
+
       if (data[i].id == player.id) {
+        console.log('moi : '+data[i].score);
         $('#foundScore .scoreNumber, .Scores_found').text(data[i].score);
 
         if (data[i].score > 0) {
@@ -188,6 +191,7 @@ $(document).ready(function() {
       //  On s'intéresse aux autres joueurs
 
       else {
+        console.log('other : '+data[i].score);
         $('#foundByOtherScore .scoreNumber, .Scores_foundByOther').text(data[i].score);
 
         if (data[i].score > 0) {
