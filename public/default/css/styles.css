@@ -26,7 +26,7 @@ html, body {
 }
 
 body {
-	cursor: url("../img/cursor.png"), pointer;
+	/*cursor: url("../img/cursor.png"), pointer;*/
 	font-family: 'Varela Round', sans-serif;
 	overflow: hidden;
 }
@@ -55,6 +55,19 @@ body {
 	transform: translate3d(0,0,0);
 }
 
+#gameCards {
+	position:absolute;
+	top:0;
+	left:0;
+	right:0;
+	bottom: 160px;
+}
+
+.State.gameEnded #gameCards {
+	pointer-events: none;
+}
+
+/*
 #inactive, #rules, #win, #lost {
 	position: absolute;
 	height: 100%;
@@ -65,22 +78,39 @@ body {
 	text-align: center;
 	background: rgba(0, 0, 0, 0.65);
 }
+*/
+
+.Bloc.win {
+	top:100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+	height: 100%;
+}
+.State.win .Bloc.win {
+	top:0;
+}
 
 #win, #lost {
-	padding:5%;
+	display:none;
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	padding: 5%;
+}
+
+.State.win #win {
+  display:block;
+}
+
+.State.lost #lost {
+  display:block;
 }
 
 #win h2, #lost h2 {
 	color:white;
-	margin-top:150px
-}
-
-#win h3, #lost h3 {
-	margin-top:5%;
-	color:black;
-	background:white;
-	margin-bottom:5%;
-	font-size:0;
+	font-size: 58px;
 }
 
 .Scores_found {
@@ -331,6 +361,22 @@ br {
   top: 0;
   opacity:1;
   pointer-events: all;
+}
+
+.State.gameEnded .Bloc.game {
+	top: -100%;
+}
+
+.State.gameEnded .Bloc.game #score{
+	margin-bottom:-300px;
+}
+
+.State.gameEnded .Bloc.game .scoreCards{
+	opacity:0;
+}
+
+.State.gameEnded .Bloc.game .scoreLabel{
+	top:33px;
 }
 
 .card {
@@ -852,6 +898,11 @@ br {
   display:block;
 }
 
+.State.playing .Bubble__OtherReady,
+.State.gameEnded .Bubble__OtherReady {
+  transform:scale(0);
+}
+
 .TutoDemo .card {
   width:50%;
   opacity:1;
@@ -862,3 +913,97 @@ br {
   font-size:38px;
 
 }
+
+.Bloc.gameEnded {
+	position:absolute;
+	top:100%;
+	left:0;
+	right:0;
+  height:100%;
+}
+
+#gameEndedCards {
+  margin-top:300px;
+}
+
+.State.gameEnded .Bloc.gameEnded{
+	top:0;
+}
+
+.Bloc.gameEnded .cardsPair {
+  display:inline-block;
+  width: 41%;
+  margin: 5px 10px;
+  font-size: 0;
+  position:relative;
+  transition: all 250ms ease-in-out;
+}
+
+.Bloc.gameEnded .cardsPair:after {
+	content:"";
+	display:block;
+	position:absolute;
+	width:80px;
+	height:80px;
+	z-index:10000;
+	left:50%;
+	top:50%;
+	margin:-40px;
+	border-radius:100px;
+	background: url(../img/check.svg) no-repeat center center / 45% auto rgb(255, 255, 255);
+  transform:scale(0);
+  transition:all 250ms ease-in-out;
+}
+
+.Bloc.gameEnded .cardsPair.found:after {
+  transform:scale(1);
+}
+
+.Bloc.gameEnded .card {
+  width: 50%;
+  margin: 0 -8px;
+}
+
+.Bloc.gameEnded .cardsPair .card:first-child {
+	/* margin-left: -23px; */
+}
+
+.Bloc.gameEnded .cardsPair .card:last-child {
+	/* margin-right: -29px; */
+}
+
+.Bloc.gameEnded .cardsPair.found {
+	/* border:solid 5px white; */
+	padding:0;
+	background: white;
+}
+
+/*
+.State.gameEnded .Bloc.gameEnded .card {
+  position:absolute;
+}
+
+.State.gameEnded .Bloc.gameEnded .card[data-pair-index="1"] {
+  margin:0 0 0 220px;
+}
+
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="0"] { top:0; left:0; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="1"] { top:0; left:50%; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="2"] { top:250px; left:0; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="3"] { top:250px; left:50%; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="4"] { top:500px; left:0; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="5"] { top:500px; left:50%; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="6"] { top:750px; left:0; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="7"] { top:750px; left:50%; }
+.State.gameEnded .Bloc.gameEnded .card[data-pair-relative-id="8"] { top:1000px; left:0; }
+*/
+
+/*
+.State.gameEnded .card.col0.row0 { top:0; left:0; }
+.State.gameEnded .card.col0.row1{ top:0; left:250px; }
+.State.gameEnded .card.col0.row2{ top:0; left:500px; }
+
+.State.gameEnded .card.col1.row0 { top:500px; left:0; }
+.State.gameEnded .card.col1.row1 { top:500px; left:250px; }
+.State.gameEnded .card.col1.row2 { top:500px; left:500px; }
+*/

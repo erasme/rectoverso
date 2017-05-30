@@ -84,7 +84,7 @@
 	      </div>
 
 	  		<div class="StateTransition" id="waiting">
-					<h2>Vous êtes prêt•e ?</h2>
+					<h2>Vous êtes prêt(e) ?</h2>
 					<p>En attente de votre adversaire<br>sur l'autre quai...</p>
 	  		</div>
 			</section>
@@ -93,61 +93,45 @@
 
 
 			<section class="Bloc game" data-background-color-score data-background-color>
-	  		<div id="score">
+				<div id="gameCards" class="StateTransition"></div>
+	  		<div id="score" class="StateTransition">
 					<div id="foundScore">
-						<div class="scoreCards"></div>
+						<div class="scoreCards StateTransition"></div>
 						<div class="scoreNumber">0</div>
-						<div class="scoreLabel">Vous</div>
+						<div class="scoreLabel StateTransition">Vous</div>
 					</div>
-					
+
 					<div id="foundByOtherScore">
-						<div class="scoreCards"></div>
+						<div class="scoreCards StateTransition"></div>
 						<div class="scoreNumber">0</div>
-						<div class="scoreLabel">Votre adversaire</div>
+						<div class="scoreLabel StateTransition">Adversaire</div>
 					</div>
 	  		</div>
 			</section>
 
 
+
+
+			<section class="Bloc gameEnded">
+				<div id="win">
+					<h2>Bravo, vous avez gagné !</h2>
+				</div>
+
+				<div id="lost">
+					<h2>Zut, raté pour cette fois…</h2>
+				</div>
+
+				<div id="gameEndedCards"></div>
+
+				<div class="NavButtons rejouer">
+					<div class="Tap ButtonRejouer">Rejouer</div>
+				</div>
+			</section>
+
+
 		</div>
 
-
-
-
-
-
-
-
-
-
-		<div class="Bubble__OtherReady">Votre partenaire est prêt !</div>
-
-		<div class="State" data-background-color id="win">
-			<h2>
-				Rapide !<br />
-				Vous avez gagné !
-				<h3 class="Scores"><span class="Scores_found"></span>
-  				<span class="Scores_foundByOther"></span></h3>
-			</h2>
-
-			<p>Ajoutez vos propres images Instagram avec le hashtag <strong>#Experimenta</strong></p>
-			<div class="NavButtons">
-			  <div class="Tap ButtonRejouer">Rejouer</div>
-			</div>
-		</div>
-
-		<div class="State" data-background-color id="lost">
-			<h2>
-				Zut !<br />
-				Vous avez perdu !
-				<h3 class="Scores"><span class="Scores_found"></span>
-  				<span class="Scores_foundByOther"></span></h3>
-			</h2>
-
-			<div class="NavButtons">
-			  <div class="Tap ButtonRejouer">Rejouer</div>
-			</div>
-		</div>
+		<div class="Bubble__OtherReady">Votre adversaire est prêt !</div>
 
 		<div class="State" id="cantaccess">
 			<div class="colorBg">

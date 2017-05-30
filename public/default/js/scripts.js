@@ -226,7 +226,7 @@ $(document).ready(function() {
 		setStateTo(STATE_WAITING);
 	});
 
-	$('.ButtonButtonRejouer').on('click', function(){
+	$('.ButtonRejouer').on('click', function(){
 		//location.assign(location);
 		location.reload();
 	});
@@ -318,10 +318,9 @@ function setCards() {
   		var card0 = $('<div></div>')
   		  .attr('class','card hideBeforeAppearance')
   		  .attr('id','card0' + pairs[i])
-  		  .attr('data-pair-id',pairs[i]);
-
-  		$('.Bloc.game').append(card0);
-  		$('#card0' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
+  		  .attr('data-pair-relative-id',i)
+  		  .attr('data-pair-id',pairs[i])
+  		  .attr('data-pair-index',0);
 
   		/*
        *  On insère chaque première image
@@ -333,7 +332,17 @@ function setCards() {
   		  .attr('class','card_image card_child front')
   		  .attr('style','background-image:url(/assets/'+room+'/cards/'+cardsFolder+'/' + pairs[i] + '/0.jpg)');
 
-  		$('#card0' + pairs[i]+' .card_wrap').append(img0);
+      var cardWrap0 = $('<div class="card_wrap"></div>')
+        .append($('<div class="back"></div>'))
+        .append(img0);
+
+      card0.append(cardWrap0);
+
+      $('.Bloc.game #gameCards').append(card0);
+
+
+  //		$('#card0' + pairs[i]+' .card_wrap').append(img0);
+
 
   		/*
        *  On crée les cartes qui vont accueillir
@@ -343,23 +352,35 @@ function setCards() {
   		var card1 = $('<div></div>')
   		  .attr('class','card hideBeforeAppearance')
   		  .attr('id','card1' + pairs[i])
-  		  .attr('data-pair-id',pairs[i]);
+  		  .attr('data-pair-relative-id',i)
+  		  .attr('data-pair-id',pairs[i])
+  		  .attr('data-pair-index',1);
 
-  		$('.Bloc.game').append(card1);
-  		$('#card1' + pairs[i]).append('<div class="card_wrap"><div class="back"></div></div>');
-
-  		/*
-       *  On insère chaque deuxième image
-       *  dans les cartes
-       */
-
-  		var img1 = $('<div></div>')
+      var img1 = $('<div></div>')
   		  .attr('id','img1' + pairs[i])
   		  .attr('class','card_image card_child front')
   		  .attr('style','background-image:url(/assets/'+room+'/cards/'+cardsFolder+'/' + pairs[i] + '/1.jpg)');
 
-  		$('#card1' + pairs[i]+' .card_wrap').append(img1);
+      var cardWrap1 = $('<div class="card_wrap"></div>')
+        .append($('<div class="back"></div>'))
+        .append(img1);
 
+      card1.append(cardWrap1);
+
+  		$('.Bloc.game #gameCards').append(card1);
+
+      cardEnd0 = card0.clone();
+      cardEnd1 = card1.clone();
+
+      cardEnd0.removeClass('hideBeforeAppearance').addClass('visible');
+      cardEnd1.removeClass('hideBeforeAppearance').addClass('visible');
+
+      var cardsPair = $('<div></div>')
+        .attr('class','cardsPair')
+        .append(cardEnd0)
+        .append(cardEnd1);
+
+      $('#gameEndedCards').append(cardsPair);
     }
 	}
 
@@ -369,7 +390,7 @@ function setCards() {
 
 	for( var i = 0, l = cards.length; i < l; i++) {
 		$(cards[i]).attr('data-order', i);
-		$('.Bloc.game').append(cards[i]);
+		$('.Bloc.game #gameCards').append(cards[i]);
 	}
 
   setTimeout(function(){
@@ -544,6 +565,20 @@ function setStateTo(newState) {
     switch (newState) {
       case STATE_INACTIVE :
         $('.State.inactive').show();
+
+
+        // setStateTo(STATE_RULES);
+        // setTimeout(function(){
+        //   setStateTo(STATE_WAITING);
+        //   setTimeout(function(){
+        //     setStateTo(STATE_PLAYING);
+        //     setTimeout(function(){
+        //       setStateTo(STATE_WIN);
+        //       console.log('win');
+        //     },1000);
+        //   },500);
+        // }, 500);
+
         break;
 
       case STATE_RULES :
@@ -568,13 +603,15 @@ function setStateTo(newState) {
         break;
 
       case STATE_WIN :
-        $('#win').show();
-        window.setTimeout( function(){ location.assign(location); }, 10000 );
+        endGame();
+        $('.State.game').addClass('gameEnded win');
+      //  window.setTimeout( function(){ location.assign(location); }, 10000 ); //TODO : enable
         setSoundVolume($('#SonAmbiance'), .4);
         break;
 
       case STATE_LOST :
-        $('#lost').show();
+        endGame();
+        $('.State.game').addClass('gameEnded lost');
         setSoundVolume($('#SonAmbiance'), .4);
       //  window.setTimeout( function(){ location.assign(location); }, 10000 );
         break;
@@ -592,6 +629,20 @@ function setStateTo(newState) {
 
     STATE = newState;
   }
+}
+
+
+function endGame() {
+  setTimeout(function(){
+    for (var i = 0; i < pairs.length; i++){
+      var card0 = $('.State.game .card[data-pair-relative-id="'+i+'"][data-pair-index="0"]');
+      var card1 = $('.State.game .card[data-pair-relative-id="'+i+'"][data-pair-index="1"]');
+
+      if (card0.hasClass('found') || card1.hasClass('found')) {
+        $('#gameEndedCards .cardsPair').eq(i).addClass('found');
+      }
+    }
+  }, 1000);
 }
 
 /*
