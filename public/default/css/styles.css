@@ -218,6 +218,7 @@ body {
 
 .State.game .Bloc.inactive {
 	pointer-events:none;
+  top: -200px;
 }
 
 .State.game .Bloc.rules {

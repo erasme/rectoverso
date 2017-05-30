@@ -374,7 +374,7 @@ function setCards() {
 
   setTimeout(function(){
     playCardsAppearance(0);
-  },2000);
+  },1000);
 
 	cards.on('mousedown', function() {
     /*
