@@ -174,7 +174,9 @@ $(document).ready(function() {
       if (data[i].id == player.id) {
         $('#foundScore .scoreNumber, .Scores_found').text(data[i].score);
 
-        $('#foundScore .scoreCards .scoreCard').eq(data[i].score-1).addClass('ok');
+        if (data[i].score > 0) {
+          $('#foundByOtherScore .scoreCards .scoreCard').eq(9-data[i].score).addClass('ok');
+        }
 
         playerScore = data[i].score;
 
@@ -395,7 +397,7 @@ function setCards() {
 
   setTimeout(function(){
     playCardsAppearance(0);
-  },1000);
+  },500);
 
 	cards.on('mousedown', function() {
     /*
@@ -605,7 +607,7 @@ function setStateTo(newState) {
       case STATE_WIN :
         endGame();
         $('.State.game').addClass('gameEnded win');
-      //  window.setTimeout( function(){ location.assign(location); }, 10000 ); //TODO : enable
+        window.setTimeout( function(){ location.assign(location); }, 20000 );
         setSoundVolume($('#SonAmbiance'), .4);
         break;
 
@@ -613,13 +615,13 @@ function setStateTo(newState) {
         endGame();
         $('.State.game').addClass('gameEnded lost');
         setSoundVolume($('#SonAmbiance'), .4);
-      //  window.setTimeout( function(){ location.assign(location); }, 10000 );
+        window.setTimeout( function(){ location.assign(location); }, 20000 );
         break;
 
       case STATE_CANTACCESS :
         $('#cantaccess').show();
         setSoundVolume($('#SonAmbiance'), .1);
-        window.setTimeout( function(){ location.assign(location); }, 3000 );
+        window.setTimeout( function(){ location.assign(location); }, 10000 );
         break;
 
       default :
