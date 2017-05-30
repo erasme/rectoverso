@@ -811,6 +811,7 @@ br {
 }
 
 .Bubble__OtherReady {
+  display:none;
   position: absolute;
   padding: 46px 20px;
   font-size: 25px;
