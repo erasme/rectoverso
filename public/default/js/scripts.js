@@ -175,7 +175,7 @@ $(document).ready(function() {
         $('#foundScore .scoreNumber, .Scores_found').text(data[i].score);
 
         if (data[i].score > 0) {
-          $('#foundByOtherScore .scoreCards .scoreCard').eq(9-data[i].score).addClass('ok');
+          $('#foundScore .scoreCards .scoreCard').eq(data[i].score-1).addClass('ok');
         }
 
         playerScore = data[i].score;
