@@ -14,5 +14,6 @@ sudo apt install git
 # sudo update-rc.d rectoverso defaults
 # sudo update-rc.d rectoverso enable
 # cp rectoverso/scripts/go_rectoverso.sh Bureau/
+# sudo chmod +x Bureau/go_rectoverso.sh
 
 
