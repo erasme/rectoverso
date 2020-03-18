@@ -51,7 +51,7 @@ Simple server using Nodejs & socket.io
 https://api.instagram.com/v1/locations/LOCATION_ID/media/recent?access_token=YOUR_TOKEN
 
 
-## Integrate Instagram to the server
+### Integrate Instagram to the server
 
 https://www.npmjs.com/package/instagram-node
 
@@ -78,7 +78,7 @@ Script lancé à chaque démarrage
 `xinput set-prop xx "Evdev Axes Swap" 1`  
 `firefox yyyy.zz` avec yyyy.zz l'url du jeu
 
-RectoVerso aujourd'hui
+## RectoVerso aujourd'hui
 -----------
 - RectoVerso fonctionne actuellement sur les deux bornes RV
 - Le jeu est à jour sur le GitHub
@@ -92,7 +92,60 @@ RectoVerso aujourd'hui
 - Les deux bornes ne se lancent pas toutes seules au boot, il faut ouvrir un Terminal et taper `/home/erasme/Bureau/rectoverso_2_demarrage.sh`
 *=> UPGRADE : lancer le script `/home/erasme/Bureau/rectoverso_2_demarrage.sh` au boot du Linux*
 
+### Pour lancer le serveur socket sur `lab.erasme.lan`
+1. Se connecter en SSH sur erasme@lab.erasme.lan (user: erasme | pass: t…) PS : le projet se trouve `var/www/rectoverso/rectoverso`
 
+2. Entrer ``service rectoverso start``
+
+3. Chaque écran doit afficher la page ``rectoverso.erasme.org/laroom`` ou ``lab.erasme.lan:5000`` sous Chromium
+
+### Mettre en place RV sur les bornes
+
+2.a. Une fois connecté au réseau filaire, aller dans Modifier la connexion puis dans l'onglet IPv4 modifier l'adressage Automatique en Partager avec d'autres ordinateurs
+
+2.b. Constater que l'icône de connexion en haut à droite de Ubuntu est devenue deux flèches haut/bas. Si ce n'est pas le cas, redémarrer l'ordi puis se reconnecter au réseau filaire Ethernet
+
+3. Cliquer sur l'icône de connexion (deux flèches haut/bas) puis sur Informations de connexion
+
+4. Lancer le serveur Rectoverso via `node index.js` à la racine du dossier du projet (normalement : `/home/erasme/projets/rectoverso`)
+
+5. Lancer le script d'exécution `lancer-rectoverso.sh` en double-cliquant ou clic droit > ouvrir avec > lancer le logiciel
+
+### Mettre à jour Rectoverso sur la borne serveur
+
+1. Identifier l'ordinateur serveur
+
+2. Aller dans l'icône de connexion en haut à droite et décocher `Activer le Wifi` puis se connecter au filaire : si ça fonctionne, tant mieux ; sinon, redémarrer l'ordinateur et constater que le Wifi fonctionne
+
+3. Ouvrir le Terminal et aller dans le dossier racine du projet (normalement `/var/www/projets/rectoverso`)
+
+4. Respirer un grand coup et taper `git pull` puis Entrée
+
+5. Une fois que la mise à jour est faite, relancer le dispositif
+
+### Pour que rectoverso se lance au démarrage
+
+Déposer sur le bureau de la machne le script rectoverso_2_demarrage.sh (situé dans "rectoverso/scripts")
+
+Ouvrir le terminal
+
+`chmod +x lab_monitoring`
+
+`chmod +x lab_monitoring/utils`
+
+`chmod +x lab_monitoring/utils/forDevices`
+
+`chmod +x lab_monitoring/utils/forDevices/handleRotatedScreen.sh`
+
+`chmod +x /home/erasme/Bureau/rectoverso_2_demarrage.sh`
+
+Dans le mode de recherche ubuntu taper "application" et ouvrir "Applications au démarrage"
+
+Dans la pop-up qui s'ouvre, cliquer sur "Ajouter"
+
+Remplir les champs Nom:"au choix", Commande:"`/home/erasme/Bureau/rectoverso_2_demarrage.sh` Commenatire:"au choix"
+
+Si besoin, supprimer la clé de trousseau en tapant "trousseau" dans le mode de recherche, ouvrir "Mots de passe et clés", clic droit sur l'onglet "connexion" à gauche, "modifier le mot de passe". Là entrer le mot de passe actuel et laisser un mot de passe vide pour le nouveau mot de passe.
 
 ## Maintenance
 
