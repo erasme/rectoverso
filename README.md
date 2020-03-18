@@ -1,5 +1,13 @@
 # Recto-Verso
 
+## Description 
+Description du projet
+
+En utilisant les photos d'Instagram publiées avec le mot-clé #JeanMacé, Recto Verso confronte les différentes perceptions de ce quartier lyonnais. Les joueurs découvrent donc des points de vue variés, de ce lieu de vie qu'ils partagent avec d'autres habitants, ou des gens de passage. 
+
+- [Flickr : photos d'Erasme avec #rectoverso](https://www.flickr.com/search/?safe_search=1&tags=rectoverso&user_id=23883279%40N05&view_all=1)
+
+
 Simple server using Nodejs & socket.io
 
 ## Setup room
@@ -69,3 +77,30 @@ Script lancé à chaque démarrage
 `xinput set-prop xx "Evdev Axis Inversion" 1, 0` avec xx l'id du TouchScreen  
 `xinput set-prop xx "Evdev Axes Swap" 1`  
 `firefox yyyy.zz` avec yyyy.zz l'url du jeu
+
+RectoVerso aujourd'hui
+-----------
+- RectoVerso fonctionne actuellement sur les deux bornes RV
+- Le jeu est à jour sur le GitHub
+- Le jeu est adapté à une résolution de 1920x1080 uniquement : tout affichage en dessous de ces dimensions/ratio sera sans doute déceptif. 
+*=> UPGRADE : version responsive du jeu*
+- Le serveur du jeu tourne sur un des deux Zotac (urbanlab17-zmi.local)
+- Le dispositif complet n'a pas besoin d'une connexion à Internet
+- Les deux bornes doivent être connectées sur le même réseau local (en filaire par un switch ou en wi-fi à un point d'accès) (pas besoin d'Internet sur le réseau) pour communiquer entre elles 
+*=> UPGRADE : connexion Ad Hoc*
+- Au besoin, les deux bornes peuvent être connectées via Internet : dans ce cas, il faut mettre en place un serveur en ligne 
+- Les deux bornes ne se lancent pas toutes seules au boot, il faut ouvrir un Terminal et taper `/home/erasme/Bureau/rectoverso_2_demarrage.sh`
+*=> UPGRADE : lancer le script `/home/erasme/Bureau/rectoverso_2_demarrage.sh` au boot du Linux*
+
+
+
+## Maintenance
+
+Nav privée par défaut pour empêcher les notifications de restauration de session :**
+
+- ``sudo nano /etc/chromium-browser/default``
+- Changer ``CHROMIUM_FLAGS ="--incognito"``
+
+Empêcher clique long/droit
+Télécharger module : https://chrome.google.com/webstore/detail/context-menu-blocker/gomhdignfhgeamkdgnhaimjigoppgihh
+(Ou consigne ici : http://stackoverflow.com/questions/28222548/how-to-disable-context-menu-on-right-click-long-touch-in-a-kiosk-mode-of-chrome)
