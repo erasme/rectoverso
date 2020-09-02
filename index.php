@@ -28,3 +28,25 @@ error_reporting(E_ALL);
  * NOTE : quand une machine-joueuse désire jouer, elle fait un appel Ajax toutes les secondes et c'est lors de la
  * réponse à ces requêtes qu'on peut leur faire passer des messages comme les images ou les notification de victoire.
  */
+
+
+
+if (
+    (isset($_GET['message']) && !empty($_GET['message']))
+ && (isset($_GET['playerId']) && !empty($_GET['playerId']))
+){
+    switch (strval($_GET['message'])){
+        /*
+         * In this case, i have to see if i already have received a demand from the other player.
+         */
+        case 'i_want_to_start_a_game':
+            echo 'yo';
+            break;
+        default:
+            echo 'an unknown message has been sent to me.';
+            break;
+    }
+}
+else{
+    echo 'Error : your request must contain at least an identifier and a message.' . 'titi' . $_GET['playerId'] . 'toto';
+}

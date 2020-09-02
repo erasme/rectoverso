@@ -29,7 +29,15 @@
   au joueur et on arrête de requêter.
 -->
 
-<body class="enable-3D-cards">
+<body>
+
+    <div id="block_containing_all_cards">
+
+    </div>
+
+    <div id="block_containing_modal_box_for_messages">
+        <button id="message_to_user" onclick="askForGame();">Commencer !</button>
+    </div>
 
 
 
