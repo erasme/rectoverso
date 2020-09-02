@@ -36,6 +36,6 @@ images sur la machine-serveur dans le dossier `images/`. Puis modifiez le fichie
 situé à la racine.
 ```json
 {
-  "image_directory": "images_rectoverso" // <-Mettez ici le nom du dossier contenant vos nouvelles images. 
+  "image_directory": "images_rectoverso" 
 }
 ```
