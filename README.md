@@ -26,4 +26,16 @@ machine-joueuse qu'elle a perdu
 Les machines joueuses ont strictement le même comportement. Elles doivent :
 - requêter en Ajax la machine-serveur si elles veulent jouer
 - dire en Ajax à la machine-serveur si elles ont gagné
- 
+
+## Cas d'utilisation
+
+### Modifier le jeu de données
+
+Vous pouvez avoir plusieurs jeux de données d'images. Pour en changer, placez un dossier contenant ces
+images sur la machine-serveur dans le dossier `images/`. Puis modifiez le fichier _configuration.json_
+situé à la racine.
+```json
+{
+  "image_directory": "images_rectoverso" // <-Mettez ici le nom du dossier contenant vos nouvelles images. 
+}
+```
