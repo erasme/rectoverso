@@ -2,9 +2,9 @@
  * When we ask for a game, we need first to have a unique identifier.
  */
 function askForGame(){
-    //console.log('my id is : ' + createIdentifier() + ' toto');
-
-    ajaxRequest('i_want_to_start_a_game', createIdentifier());
+    const my_current_id = createIdentifier();
+    console.log('my id is : ' + my_current_id);
+    ajaxRequest('i_want_to_start_a_game', my_current_id);
 }
 
 

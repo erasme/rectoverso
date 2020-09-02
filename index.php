@@ -36,11 +36,8 @@ if (
  && (isset($_GET['playerId']) && !empty($_GET['playerId']))
 ){
     switch (strval($_GET['message'])){
-        /*
-         * In this case, i have to see if i already have received a demand from the other player.
-         */
         case 'i_want_to_start_a_game':
-            echo 'yo';
+            echo canIStart($_GET['playerId']);
             break;
         default:
             echo 'an unknown message has been sent to me.';
@@ -49,4 +46,72 @@ if (
 }
 else{
     echo 'Error : your request must contain at least an identifier and a message.' . 'titi' . $_GET['playerId'] . 'toto';
+}
+
+/**
+ * Can we give to the asking player the signal to start playing ?
+ * @param string $playerId The id of the demanding player.
+ * @return string WAIT|START
+ */
+function canIStart($playerId=''){
+    $playerId = htmlentities($playerId, ENT_QUOTES);
+    /*
+     * In this case, wa have to see if i already have received a demand from the other player.
+     * We read the player_queue.txt.
+     * - if it is empty, we add the current id inside and we respond WAIT.
+     * - if it is not empty but contains the same id , we respond WAIT.
+     * - if it is not empty and contains not the same id, we add the id and we respond START.
+     * - if it is not empty and contains two ids including the current one, we empty the file AND we respond START .
+     */
+    try {
+        $playersFileContent = file_get_contents('player_queue.txt');
+        $idsInFile = explode("\n", $playersFileContent);
+        var_dump($idsInFile);
+        if (sizeof($idsInFile) == 1){ // Empty file OR one line filled.
+            // Is the file empty ?
+            if ($playersFileContent==''){
+                file_put_contents('player_queue.txt', $playerId);
+                return 'WAIT 1';
+            } elseif ($playersFileContent == $playerId){ // Our current id is already inside and alone.
+                return 'WAIT 2';
+            }
+            else{ // our current id is not inside and another one is already in.
+                file_put_contents("\n" . 'player_queue.txt', $playerId, FILE_APPEND); // TODO BUGGUÉ
+                return 'START 1';
+            }
+        } elseif (sizeof($idsInFile) == 2){ // Two lines filled.
+
+        } else{
+            return 'ERROR 0'; // Error : two much data in the file.
+        }
+    } catch (Exception $e){
+        echo $e;
+        return 'ERROR';
+    }
+
+    /*
+     *
+  } elseif (!empty($playersFileContent)){
+            // The file is not empty but is there really two ids ?
+            // We must split the string using \n and check if the current id is inside.
+            $idsInFile = explode("\n", $playersFileContent);
+            if (sizeof($idsInFile) == 1){
+                if(in_array($playerId, $idsInFile )){
+
+                }
+            }
+            file_put_contents('player_queue.txt', '');
+            return 'START 2';
+            file_put_contents('player_queue.txt', htmlentities($playerId, ENT_QUOTES), FILE_APPEND);
+            return 'START 1';
+
+
+        } else if( !empty($playersFileContent)){
+
+            else{
+                return 'ERROR';
+            }
+        }
+
+     */
 }
