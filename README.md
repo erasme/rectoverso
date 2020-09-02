@@ -27,6 +27,16 @@ Les machines joueuses ont strictement le même comportement. Elles doivent :
 - requêter en Ajax la machine-serveur si elles veulent jouer
 - dire en Ajax à la machine-serveur si elles ont gagné
 
+## Installation
+
+### SUr la machine-serveur
+
+todo
+
+### Sur les machines-joueuses
+
+todo
+
 ## Cas d'utilisation
 
 ### Modifier le jeu de données
@@ -39,3 +49,9 @@ situé à la racine.
   "image_directory": "images_rectoverso" 
 }
 ```
+
+### Informations sur les jeux de données
+
+- todo : formats acceptés
+- todo : organisation  de l'arborescence du dossier
+- todo : quantité de paires acceptées
