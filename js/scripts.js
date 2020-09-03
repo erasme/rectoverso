@@ -26,6 +26,8 @@ function startGame(){
     - if we finish the game or we receive the signal the other player finished, we stop the game and replace the
     modalbox with new text
      */
+    modal = document.getElementById("block_containing_modal_box_for_messages");
+    modal.remove(".active")
 }
 
 

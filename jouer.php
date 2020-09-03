@@ -30,150 +30,161 @@
 -->
 
 <body>
-
-    <div id="block_containing_all_cards">
-
-    </div>
-
-    <div id="block_containing_modal_box_for_messages">
-        <button id="message_to_user" onclick="createIdentifier();askForGame();">Commencer !</button>
-    </div>
-
-
-
-<!--
-<div class="Screen">
-    <a href="#" onclick="location.reload();" style="position:absolute;top:0;right:0;width:50px;height:50px;z-index:100000000000000000000"></a>
-
-
-    <div class="State inactive" data-background-color>
-
-        <section class="Bloc inactive">
-            <img class="Logo StateTransition" src="/assets/<%= room %>/img/Logo.svg">
-            <img class="LogoText StateTransition" src="/assets/<%= room %>/img/LogoText.svg">
-        </section>
-
-        <div class="NavButtons inactive StateTransition">
-            <div class="Tap" data-folder="" data-pairs="">Démarrer</div>
+    <div id="block_containing_modal_box_for_messages" class="modal active">
+        <div class="logo">
+            <img src="medias/Logo.svg">
+            <img src="medias/LogoText.svg">
         </div>
-
-
-
-
-
-        <section class="Bloc rules">
-            <div class="TutoDemo">
-                <div class="card">
-                    <div class="card_wrap">
-                        <div class="back"></div>
-                        <div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/1.jpg)"></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card_wrap">
-                        <div class="back"></div>
-                        <div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/1.jpg)"></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card_wrap">
-                        <div class="back"></div>
-                        <div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/0.jpg)"></div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card_wrap">
-                        <div class="back"></div>
-                        <div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/0.jpg)"></div>
-                    </div>
-                </div>
-            </div>
-            <p class="TutoText TutoTextTop">
-                Le principe est simple !<br>
-                <br>
-                Retrouvez les paires<br>
-                de photos similaires<br>
-                publiées sur Instagram<br>
-                plus vite que votre adversaire<br>
-                en retournant les cartes.
-            </p>
-            <p class="TutoText TutoTextBottom">
-                Votre adversaire dispose d’autres paires<br>
-                à assembler, et ses actions sont visibles<br>
-                sur votre écran. Cela peut ainsi vous aider<br>
-                comme vous contraindre.<br>
-                <br>
-                Bonne chance !
-            </p>
-            <div class="NavButtons rules StateTransition">
-                <div class="Tap">C'est parti !</div>
-            </div>
-
-            <div class="StateTransition" id="waiting">
-                <h2>Vous êtes prêt(e) ?</h2>
-                <p>En attente de votre adversaire<br>sur l'autre quai...</p>
-            </div>
-        </section>
-
-
-
-
-        <section class="Bloc game" data-background-color-score data-background-color>
-            <div id="gameCards" class="StateTransition"></div>
-            <div id="score" class="StateTransition">
-                <div id="foundScore">
-                    <div class="scoreCards StateTransition"></div>
-                    <div class="scoreNumber">0</div>
-                    <div class="scoreLabel StateTransition">Vous</div>
-                </div>
-
-                <div id="foundByOtherScore">
-                    <div class="scoreCards StateTransition"></div>
-                    <div class="scoreNumber">0</div>
-                    <div class="scoreLabel StateTransition">Adversaire</div>
-                </div>
-            </div>
-        </section>
-
-
-
-
-
-        <section class="Bloc gameEnded">
-            <div id="win">
-                <h2>Bravo, vous avez gagné !</h2>
-            </div>
-
-            <div id="lost">
-                <h2>Zut, raté pour cette fois…</h2>
-            </div>
-
-            <div id="gameEndedCards"></div>
-
-            <div class="NavButtons rejouer">
-                <div class="Tap ButtonRejouer">Rejouer</div>
-            </div>
-        </section>
-
-
+        <p class="status">En attente / gagné / perdu</p>
+        <button id="message_to_user" class="start" onclick="createIdentifier();askForGame();">Commencer !</button>
     </div>
-
-    <div class="Bubble__OtherReady">Votre adversaire est prêt !</div>
-
-    <div class="State" id="cantaccess">
-        <div class="colorBg">
-            <img id="logo" src="/assets/<%= room %>/img/Logo.svg">
-            <h2>
-                Zut, il y a déjà <br>deux joueurs<br> sur la room <span class="CantAccessRoom"></span> :)
-            </h2>
+    <div id="block_containing_all_cards" class="container">
+        <div id="card_01" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_02" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_03" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_04" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_05" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_06" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_07" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_08" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_09" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_10" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_11" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_12" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_13" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_14" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_15" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_16" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_17" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
+        </div>
+        <div id="card_" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                </div>
+            </div>
         </div>
     </div>
 
-</div>
--->
 <script type="text/javascript" src="js/scripts.js"></script>
 </body>
 <script>
