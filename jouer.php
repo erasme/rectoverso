@@ -39,75 +39,83 @@
         <button id="message_to_user" class="start" onclick="createIdentifier();askForGame();">Commencer !</button>
     </div>
     <div id="block_containing_all_cards" class="container">
-        <div id="card_01" class="flip-card">
+        <div id="card_0" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_02" class="flip-card">
+        <div id="card_1" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_03" class="flip-card">
+        <div id="card_2" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_04" class="flip-card">
+        <div id="card_3" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_05" class="flip-card">
+        <div id="card_4" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_06" class="flip-card">
+        <div id="card_5" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_07" class="flip-card">
+        <div id="card_6" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_08" class="flip-card">
+        <div id="card_7" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
-        <div id="card_09" class="flip-card">
+        <div id="card_8" class="flip-card">
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
+                </div>
+            </div>
+        </div>
+        <div id="card_9" class="flip-card">
+            <div class="flip-card-inner">
+                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
+                </div>
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -115,7 +123,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -123,7 +131,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -131,7 +139,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -139,7 +147,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -147,7 +155,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -155,7 +163,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -163,7 +171,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
@@ -171,15 +179,7 @@
             <div class="flip-card-inner">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
-                </div>
-            </div>
-        </div>
-        <div id="card_" class="flip-card">
-            <div class="flip-card-inner">
-                <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
-                </div>
-                <div class="flip-card-back" style="background-image: url('medias/VERSO.png')">
+                <div class="flip-card-back"  >
                 </div>
             </div>
         </div>
