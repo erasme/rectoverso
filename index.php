@@ -126,7 +126,10 @@ function selectCards(){
                 file_exists(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/1.jpg')
             ){
                 // A pair has been found in this folder.
-                $pairsOfCards .= '"' . $pairNumber . '":[ "' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/0.jpg", "' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/1.jpg" ],';
+                $pairsOfCards .= '"' . $pairNumber . '":[ "' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/0.jpg", "' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/1.jpg" ]';
+                if($pairNumber<8){
+                    $pairsOfCards .= ',';
+                }
                 $pairNumber++;
             }
         }
