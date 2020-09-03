@@ -61,32 +61,37 @@ function canIStart($playerId=''){
      * - if it is empty, we add the current id inside and we respond WAIT.
      * - if it is not empty but contains the same id , we respond WAIT.
      * - if it is not empty and contains not the same id, we add the id and we respond START.
-     * - if it is not empty and contains two ids including the current one, we empty the file AND we respond START .
+     * - if it is not empty and contains two ids including the current one AND we respond START .
      */
     try {
         $playersFileContent = file_get_contents('player_queue.txt');
         $idsInFile = explode("\n", $playersFileContent);
-        var_dump($idsInFile);
+        //var_dump($idsInFile);
         if (sizeof($idsInFile) == 1){ // Empty file OR one line filled.
             // Is the file empty ?
             if ($playersFileContent==''){
                 file_put_contents('player_queue.txt', $playerId);
-                return 'WAIT 1';
+                return 'WAIT';
             } elseif ($playersFileContent == $playerId){ // Our current id is already inside and alone.
-                return 'WAIT 2';
+                return 'WAIT';
             }
             else{ // our current id is not inside and another one is already in.
-                file_put_contents("\n" . 'player_queue.txt', $playerId, FILE_APPEND); // TODO BUGGUÉ
-                return 'START 1';
+                file_put_contents('player_queue.txt', "\n" . $playerId, FILE_APPEND);
+                return 'START';
             }
         } elseif (sizeof($idsInFile) == 2){ // Two lines filled.
+            if(in_array($playerId, $idsInFile)){ // Two lines in the file and the current id is in.
+                return 'START';
+            } else{
+                return 'ERROR 1'; // two lines but we are not in !
+            }
 
         } else{
             return 'ERROR 0'; // Error : two much data in the file.
         }
     } catch (Exception $e){
         echo $e;
-        return 'ERROR';
+        return 'ERROR'; // error reaching the file
     }
 
     /*

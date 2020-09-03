@@ -55,3 +55,8 @@ situé à la racine.
 - todo : formats acceptés
 - todo : organisation  de l'arborescence du dossier
 - todo : quantité de paires acceptées
+
+## Installation
+
+git pull
+chmod 777 sur player_queue.txt

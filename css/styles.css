@@ -65,7 +65,7 @@ html, body {
 }
 
 body {
-	cursor: url("../img/cursor.png"), pointer;
+	/*cursor: url("../img/cursor.png"), pointer;*/
 	font-family: 'Varela Round', sans-serif;
 	overflow: hidden;
 }

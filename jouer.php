@@ -36,7 +36,7 @@
     </div>
 
     <div id="block_containing_modal_box_for_messages">
-        <button id="message_to_user" onclick="askForGame();">Commencer !</button>
+        <button id="message_to_user" onclick="createIdentifier();askForGame();">Commencer !</button>
     </div>
 
 

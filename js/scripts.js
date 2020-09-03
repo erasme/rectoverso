@@ -1,37 +1,50 @@
+let player_id;
+const delay = ms => new Promise(res => setTimeout(res, ms));
+
 /**
  * When we ask for a game, we need first to have a unique identifier.
  */
-function askForGame(){
-    const my_current_id = createIdentifier();
-    console.log('my id is : ' + my_current_id);
-    ajaxRequest('i_want_to_start_a_game', my_current_id);
+function askForGame(state='WAIT'){
+    if(state === 'WAIT'){
+        console.log('Waiting for other player.');
+        setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
+    } else if (state === 'START'){
+        console.log('Other player is ready. Let\'s start the game.');
+        launchGame();
+    }
+}
+
+
+function launchGame(){
+    alert('yo dawg');
 }
 
 
 /**
  * Create a random string. Is size is given in argument.
  * @param identifier_length THe length of the random string we want.
- * @return {string} The random string created.
  */
 function createIdentifier(identifier_length=10){
+    player_id = 'riQ00YIert'; // todo deploiment : supprimer cette ligne
+    return; // todo deploiment : supprimer cette ligne
     let authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    let result = '';
     for ( let i = 0; i < identifier_length; i++ ) {
-        result += authorized_characters.charAt(Math.floor(Math.random() * authorized_characters.length));
+        player_id += authorized_characters.charAt(Math.floor(Math.random() * authorized_characters.length));
     }
-    return result;
 }
 
 
 /**
  * This is our Ajax controller. It takes care of all messages sent to the server and send back responses.
  */
-function ajaxRequest(request='', player_id='') {
+function ajaxRequest(callback_function='', request='', player_id='') {
+    console.log('id reçu : ' + player_id);
     let url;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            console.log(this.responseText);
+            console.log('le serveur me réponde que ' + this.responseText);
+            callback_function(this.responseText);
         }
     };
     switch (request){
