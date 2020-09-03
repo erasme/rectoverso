@@ -9,15 +9,16 @@ function askForGame(state='WAIT'){
         console.log('Waiting for other player.');
         // todo change the text of the modalbox to 'Waiting the other player.'
         setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
-    } else if (state === 'START'){
+    } else {
+        console.log(state);
         console.log('Other player is ready. Let\'s start the game.');
         // todo : get the images from the server
-        startGame();
+        startGame(state);
     }
 }
 
 
-function startGame(){
+function startGame(state){
     /*
     Steps to follow :
     - hide the modalbox.
@@ -28,6 +29,11 @@ function startGame(){
      */
     modal = document.getElementById("block_containing_modal_box_for_messages");
     modal.remove(".active")
+    //alert('yo dawg');
+    for (folder in state) {
+        //console.log(folder)
+    };
+    
 }
 
 
@@ -48,7 +54,7 @@ function createIdentifier(identifier_length=10){
 /**
  * This is our Ajax controller. It takes care of all messages sent to the server and send back responses.
  */
-function ajaxRequest(callback_function='', request='', player_id='') {
+function ajaxRequest(callback_function, request='', player_id='') {
     console.log('id reçu : ' + player_id);
     let url;
     var xhttp = new XMLHttpRequest();
