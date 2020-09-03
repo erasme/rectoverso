@@ -49,7 +49,7 @@ else{
 /**
  * Can we give to the asking player the signal to start playing ?
  * @param string $playerId The id of the demanding player.
- * @return string WAIT|START
+ * @return string WAIT|ERROR|json_pairs
  */
 function canIStart($playerId=''){
     $playerId = htmlentities($playerId, ENT_QUOTES);
@@ -77,11 +77,11 @@ function canIStart($playerId=''){
                 file_put_contents('player_queue.txt', "\n" . $playerId, FILE_APPEND);
                 // So it is a brand new game. Let's pck here the cards to play with.
                 selectCards();
-                return 'START';
+                return json_encode(selectCards());
             }
         } elseif (sizeof($idsInFile) == 2){ // Two lines filled.
             if(in_array($playerId, $idsInFile)){ // Two lines in the file and the current id is in.
-                return 'START';
+                return json_encode(selectCards());
             } else{
                 return 'ERROR 1'; // two lines but we are not in !
             }
@@ -97,6 +97,7 @@ function canIStart($playerId=''){
 
 
 /**
+ * Take 9 pairs from the folder chosen in the configuration file.
  * @return array
  */
 function selectCards(){
@@ -130,7 +131,8 @@ function selectCards(){
             }
         }
     }
-    return $pairsOfCards;
+    // todo make it chose randomly the 9 pairs among those available.
+    return array_slice($pairsOfCards, 0, 9); // todo check if it is at least 9 long !
 }
 
 /**

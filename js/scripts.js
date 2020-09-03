@@ -9,7 +9,8 @@ function askForGame(state='WAIT'){
         console.log('Waiting for other player.');
         // todo change the text of the modalbox to 'Waiting the other player.'
         setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
-    } else if (state === 'START'){
+    } else {
+        console.log(state);
         console.log('Other player is ready. Let\'s start the game.');
         // todo : get the images from the server
         startGame();
@@ -26,6 +27,7 @@ function startGame(){
     - if we finish the game or we receive the signal the other player finished, we stop the game and replace the
     modalbox with new text
      */
+    alert('yo dawg');
 }
 
 
@@ -46,7 +48,7 @@ function createIdentifier(identifier_length=10){
 /**
  * This is our Ajax controller. It takes care of all messages sent to the server and send back responses.
  */
-function ajaxRequest(callback_function='', request='', player_id='') {
+function ajaxRequest(callback_function, request='', player_id='') {
     console.log('id reçu : ' + player_id);
     let url;
     var xhttp = new XMLHttpRequest();

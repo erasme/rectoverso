@@ -4,6 +4,11 @@ Only tested on linux Ubuntu (shall work on other linux though).
 
 todo save the old node.js application version in a different branch.
 
+## TODO
+
+Les paires choisies dans la version ajax ne sont pas aléatoires (urgence oblige).
+
+
 ## But de l'application
 
 Recto-Verso a pour but de connecter deux bornes entre elles pour permettre à deux joueurs de jouer
