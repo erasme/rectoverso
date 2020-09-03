@@ -27,11 +27,12 @@ function startGame(state){
     - if we finish the game or we receive the signal the other player finished, we stop the game and replace the
     modalbox with new text
      */
+    state = '{"0":[ "images_sets/images_rectoverso/1/0.jpg", "images_sets/images_rectoverso/1/1.jpg" ],"1":[ "images_sets/images_rectoverso/10/0.jpg", "images_sets/images_rectoverso/10/1.jpg" ],"2":[ "images_sets/images_rectoverso/2/0.jpg", "images_sets/images_rectoverso/2/1.jpg" ],"3":[ "images_sets/images_rectoverso/3/0.jpg", "images_sets/images_rectoverso/3/1.jpg" ],"4":[ "images_sets/images_rectoverso/4/0.jpg", "images_sets/images_rectoverso/4/1.jpg" ],"5":[ "images_sets/images_rectoverso/5/0.jpg", "images_sets/images_rectoverso/5/1.jpg" ],"6":[ "images_sets/images_rectoverso/6/0.jpg", "images_sets/images_rectoverso/6/1.jpg" ],"7":[ "images_sets/images_rectoverso/7/0.jpg", "images_sets/images_rectoverso/7/1.jpg" ],"8":[ "images_sets/images_rectoverso/8/0.jpg", "images_sets/images_rectoverso/8/1.jpg" ]}'
     modal = document.getElementById("block_containing_modal_box_for_messages");
     modal.remove(".active")
-    //alert('yo dawg');
-    for (folder in state) {
-        //console.log(folder)
+    images = JSON.parse(state);
+    for (imagePair in images) {
+        console.log(JSON.parse(imagePair))
     };
     
 }
