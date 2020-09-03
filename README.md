@@ -1,5 +1,9 @@
 # Recto-Verso
 
+Only tested on linux Ubuntu (shall work on other linux though).
+
+todo save the old node.js application version in a different branch.
+
 ## But de l'application
 
 Recto-Verso a pour but de connecter deux bornes entre elles pour permettre à deux joueurs de jouer
@@ -38,6 +42,10 @@ todo
 todo
 
 ## Cas d'utilisation
+
+### Modify datasets general folder
+
+todo : explain configuration file
 
 ### Modifier le jeu de données
 

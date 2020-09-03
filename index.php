@@ -29,8 +29,6 @@ error_reporting(E_ALL);
  * réponse à ces requêtes qu'on peut leur faire passer des messages comme les images ou les notification de victoire.
  */
 
-var_dump( loadConfiguration());
-
 if (
     (isset($_GET['message']) && !empty($_GET['message']))
  && (isset($_GET['playerId']) && !empty($_GET['playerId']))
@@ -92,7 +90,7 @@ function canIStart($playerId=''){
             return 'ERROR 0'; // Error : two much data in the file.
         }
     } catch (Exception $e){
-        echo $e;
+        //echo $e;
         return 'ERROR'; // error reaching the file
     }
 }
@@ -109,14 +107,30 @@ function selectCards(){
      * - pick randomly 9 pairs.
      * - return that pairs in a json string
      */
-
-    // Check the folder's chosen set of images.
-    $imageFolder = loadConfiguration()['image_directory'];
-
-    // Check all sub-folders.
     $pairsOfCards = [];
 
+    // Check the folder's chosen set of images.
+    $datasetFolder = loadConfiguration()['dataset_directory'];
+    $datasetChosen = loadConfiguration()['chosen_dataset_sub-folder'];
 
+    // Check all sub-folders.
+    $chosenFolderContent = scandir(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen);
+    foreach ($chosenFolderContent as $subFolder) {
+        if( $subFolder!='.' && $subFolder != '..' && is_dir(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder)){
+            // For each sub-folder, we have to check now if they contain two images
+            //var_dump(scandir(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder));
+            if(file_exists(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/0.jpg') &&
+                file_exists(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/1.jpg')
+            ){
+                // A pair has been found in this folder.
+                $pairsOfCards[] = [
+                    __DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder,
+                    __DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder
+                ];
+            }
+        }
+    }
+    return $pairsOfCards;
 }
 
 /**
