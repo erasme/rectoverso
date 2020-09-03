@@ -7,16 +7,25 @@ const delay = ms => new Promise(res => setTimeout(res, ms));
 function askForGame(state='WAIT'){
     if(state === 'WAIT'){
         console.log('Waiting for other player.');
+        // todo change the text of the modalbox to 'Waiting the other player.'
         setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
     } else if (state === 'START'){
         console.log('Other player is ready. Let\'s start the game.');
-        launchGame();
+        // todo : get the images from the server
+        startGame();
     }
 }
 
 
-function launchGame(){
-    alert('yo dawg');
+function startGame(){
+    /*
+    Steps to follow :
+    - hide the modalbox.
+    - set a recurrent ajax task each second asking if the game is finished (i.e. if the other player has already finished).
+    - place the cards and create the game.
+    - if we finish the game or we receive the signal the other player finished, we stop the game and replace the
+    modalbox with new text
+     */
 }
 
 
@@ -25,8 +34,8 @@ function launchGame(){
  * @param identifier_length THe length of the random string we want.
  */
 function createIdentifier(identifier_length=10){
-    player_id = 'riQ00YIert'; // todo deploiment : supprimer cette ligne
-    return; // todo deploiment : supprimer cette ligne
+    player_id = 'riQ00YI2zd'; // todo deploiement : supprimer cette ligne
+    return; // todo deploiement : supprimer cette ligne
     let authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for ( let i = 0; i < identifier_length; i++ ) {
         player_id += authorized_characters.charAt(Math.floor(Math.random() * authorized_characters.length));
@@ -43,7 +52,6 @@ function ajaxRequest(callback_function='', request='', player_id='') {
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
-            console.log('le serveur me réponde que ' + this.responseText);
             callback_function(this.responseText);
         }
     };

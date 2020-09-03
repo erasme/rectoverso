@@ -29,7 +29,7 @@ error_reporting(E_ALL);
  * réponse à ces requêtes qu'on peut leur faire passer des messages comme les images ou les notification de victoire.
  */
 
-
+var_dump( loadConfiguration());
 
 if (
     (isset($_GET['message']) && !empty($_GET['message']))
@@ -45,7 +45,7 @@ if (
     }
 }
 else{
-    echo 'Error : your request must contain at least an identifier and a message.' . 'titi' . $_GET['playerId'] . 'toto';
+    echo 'Error : your request must contain at least an identifier and a message.';
 }
 
 /**
@@ -77,6 +77,8 @@ function canIStart($playerId=''){
             }
             else{ // our current id is not inside and another one is already in.
                 file_put_contents('player_queue.txt', "\n" . $playerId, FILE_APPEND);
+                // So it is a brand new game. Let's pck here the cards to play with.
+                selectCards();
                 return 'START';
             }
         } elseif (sizeof($idsInFile) == 2){ // Two lines filled.
@@ -93,30 +95,34 @@ function canIStart($playerId=''){
         echo $e;
         return 'ERROR'; // error reaching the file
     }
+}
 
+
+/**
+ * @return array
+ */
+function selectCards(){
     /*
-     *
-  } elseif (!empty($playersFileContent)){
-            // The file is not empty but is there really two ids ?
-            // We must split the string using \n and check if the current id is inside.
-            $idsInFile = explode("\n", $playersFileContent);
-            if (sizeof($idsInFile) == 1){
-                if(in_array($playerId, $idsInFile )){
-
-                }
-            }
-            file_put_contents('player_queue.txt', '');
-            return 'START 2';
-            file_put_contents('player_queue.txt', htmlentities($playerId, ENT_QUOTES), FILE_APPEND);
-            return 'START 1';
-
-
-        } else if( !empty($playersFileContent)){
-
-            else{
-                return 'ERROR';
-            }
-        }
-
+     * To select cards properly, we have to :
+     * - read in the configuration.json which set of cards we have to use.
+     * - check the available pairs of cards
+     * - pick randomly 9 pairs.
+     * - return that pairs in a json string
      */
+
+    // Check the folder's chosen set of images.
+    $imageFolder = loadConfiguration()['image_directory'];
+
+    // Check all sub-folders.
+    $pairsOfCards = [];
+
+
+}
+
+/**
+ * Just load the configuration.json file and make it an associative array. Then returns that array.
+ * @return array
+ */
+function loadConfiguration(){
+    return json_decode(file_get_contents('configuration.json'), true);
 }
