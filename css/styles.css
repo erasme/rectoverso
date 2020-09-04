@@ -62,7 +62,7 @@ body {
   }
 }
 
-.modal.active {
+.active {
   display: block;
 }
 
@@ -98,6 +98,10 @@ body {
   transform: rotateY(180deg);
 }
 .flip-card:hover .flip-card-inner {
+  /* transform: rotateY(180deg);*/
+}
+
+.flipped-card{
   transform: rotateY(180deg);
 }
 

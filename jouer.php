@@ -30,6 +30,13 @@
 -->
 
 <body>
+    <script>
+        let player_id;
+        const delay = ms => new Promise(res => setTimeout(res, ms));
+        let serverUrl = 'localhost';
+        let cardPairs='';
+        let lastPlayedCard = '';
+    </script>
     <div id="block_containing_modal_box_for_messages" class="modal active">
         <div class="logo">
             <img src="medias/Logo.svg">
@@ -40,7 +47,7 @@
     </div>
     <div id="block_containing_all_cards" class="container">
         <div id="card_0" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -48,7 +55,7 @@
             </div>
         </div>
         <div id="card_1" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -56,7 +63,7 @@
             </div>
         </div>
         <div id="card_2" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -64,7 +71,7 @@
             </div>
         </div>
         <div id="card_3" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -72,7 +79,7 @@
             </div>
         </div>
         <div id="card_4" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -80,7 +87,7 @@
             </div>
         </div>
         <div id="card_5" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -88,7 +95,7 @@
             </div>
         </div>
         <div id="card_6" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -96,7 +103,7 @@
             </div>
         </div>
         <div id="card_7" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -104,7 +111,7 @@
             </div>
         </div>
         <div id="card_8" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -112,7 +119,7 @@
             </div>
         </div>
         <div id="card_9" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -120,7 +127,7 @@
             </div>
         </div>
         <div id="card_10" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -128,7 +135,7 @@
             </div>
         </div>
         <div id="card_11" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -136,7 +143,7 @@
             </div>
         </div>
         <div id="card_12" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -144,7 +151,7 @@
             </div>
         </div>
         <div id="card_13" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -152,7 +159,7 @@
             </div>
         </div>
         <div id="card_14" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -160,7 +167,7 @@
             </div>
         </div>
         <div id="card_15" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -168,7 +175,7 @@
             </div>
         </div>
         <div id="card_16" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -176,7 +183,7 @@
             </div>
         </div>
         <div id="card_17" class="flip-card">
-            <div class="flip-card-inner">
+            <div class="flip-card-inner" onclick="selectCard(this);">
                 <div class="flip-card-front" style="background-image: url('medias/CardFront.svg')">
                 </div>
                 <div class="flip-card-back"  >
@@ -187,7 +194,4 @@
 
 <script type="text/javascript" src="js/scripts.js"></script>
 </body>
-<script>
-
-</script>
 </html>

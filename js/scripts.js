@@ -1,23 +1,26 @@
-let player_id;
-const delay = ms => new Promise(res => setTimeout(res, ms));
-let serverUrl = localhost
+
+
 /**
  * When we ask for a game, we need first to have a unique identifier.
  */
 function askForGame(state='WAIT'){
+    // state is either 'WAIT' or a json string containing the pairs of cards.
     if(state === 'WAIT'){
         console.log('Waiting for other player.');
         // todo change the text of the modalbox to 'Waiting the other player.'
         setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
     } else {
-        console.log(state);
+        cardPairs=JSON.parse(state);
         console.log('Other player is ready. Let\'s start the game.');
-        // todo : get the images from the server
-        startGame(state);
+        console.log(cardPairs);
+        startGame(cardPairs);
     }
 }
 
-
+/**
+ * Everythng is ready, we can now let the leyer use the app.
+ * @param state
+ */
 function startGame(state){
     /*
     Steps to follow :
@@ -27,24 +30,83 @@ function startGame(state){
     - if we finish the game or we receive the signal the other player finished, we stop the game and replace the
     modalbox with new text
      */
-    modal = document.getElementById("block_containing_modal_box_for_messages");
 
-    i = 0
-    
-    modal.remove(".active")
-    images = JSON.parse(state);
-    for (imagePair in images) {
-        //console.log(images[imagePair])
-        images[imagePair].forEach(image => {
-            //console.log(image)
-            //Append serverUrl
-            document.getElementById("card_"+ i).getElementsByClassName("flip-card-back")[0].setAttribute("style", "background-image: url('"+image+"');"); 
-            console.log("card_"+ i +"----"+ "url('"+image+"');")
-            i++
+    // First, hide the modalbox.
+    const modal = document.getElementById('block_containing_modal_box_for_messages');
+    modal.style.display='none';
 
-        });
-    };
-    
+    // Then, place pictures in the grid.
+    shuffleAndPlacePictures(state);
+
+    // Now prepare the ajax recurrent transaction.
+    // todo
+}
+
+/**
+ * Shuffles the cards in a single array. Then places it in the page.
+ * @param picturesPairs The pairs of cards we must place in the grid.
+ */
+function shuffleAndPlacePictures(picturesPairs=''){
+    // First, place all cards in a one dimension array.
+    let crushedArray = Array();
+    for (const imagePair in picturesPairs) {
+        crushedArray.push(picturesPairs[imagePair][0]);
+        crushedArray.push(picturesPairs[imagePair][1]);
+    }
+    // Now, let's shuffle this array.
+    for(let i = crushedArray.length-1; i > 0; i--){
+        const j = Math.floor(Math.random() * i)
+        const temp = crushedArray[i]
+        crushedArray[i] = crushedArray[j]
+        crushedArray[j] = temp
+    }
+
+    // And place the pictures inside the cards.
+    let i = 0
+    for (const image in crushedArray) {
+        document.getElementById("card_"+ i).getElementsByClassName("flip-card-back")[0].setAttribute("style", "background-image: url('"+crushedArray[image]+"');");
+        i+=1;
+    }
+}
+
+/**
+ * Called when a card has been selected. It decides what happens next.
+ * @param domObject The selected card.
+ */
+function selectCard(domObject){
+    /*
+    Multiple cases :
+    - Already revealed -> Nothing to do. Ignore completely.
+    - Not revealed and first in a row of revealed cards -> Reveal it and memorize it somewhere.
+    - Not revealed and second in a row of revealed cards -> Reveal it and check if it is in the same pair as the first.
+                                                                                    - if yes, add this pair in the list of fount pairs, then erase the row.
+                                                                                    - if no, mask the two cards and erase the memorized row.
+     */
+
+    // Already revealed -> Ignore.
+    if (domObject.classList.contains('flipped-card')){
+        return;
+    } else {
+        domObject.classList.add('flipped-card');
+        const urlData = domObject.firstElementChild.nextElementSibling.style.backgroundImage;
+        const currentCardImageUrl = urlData.substring(5, urlData.length-2);
+
+        if(lastPlayedCard===''){ // Not revealed card and first in a row
+            lastPlayedCard = currentCardImageUrl;
+        } else{ // Not revealed card and second in a row.
+            // We must check if both revealed cards are from the same pair.
+            if (areTheseCardsTheInTheSamePair(lastPlayedCard, currentCardImageUrl)){
+                // The same pair
+            } else{
+                // Not in the same pair.
+            }
+        }
+    }
+}
+
+
+function areTheseCardsTheInTheSamePair(cardUrl1='', cardUrl2=''){
+
 }
 
 

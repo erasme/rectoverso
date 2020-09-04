@@ -29,8 +29,6 @@ error_reporting(E_ALL);
  * réponse à ces requêtes qu'on peut leur faire passer des messages comme les images ou les notification de victoire.
  */
 
-
-
 if (
     (isset($_GET['message']) && !empty($_GET['message']))
  && (isset($_GET['playerId']) && !empty($_GET['playerId']))
