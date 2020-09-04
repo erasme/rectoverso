@@ -37,6 +37,19 @@ if (
         case 'i_want_to_start_a_game':
             echo canIStart($_GET['playerId']);
             break;
+        case 'is_game_finished':
+            $endGame = file_get_contents('gameFinished.txt');
+            if($endGame=='true'){
+                echo 'true';
+                // Game is finished. Let's restart everything.
+                eraseAllData();
+            } else{
+                echo 'false';
+            }
+            break;
+        case 'i_won':
+            echo file_put_contents('gameFinished.txt', 'true');
+            break;
         default:
             echo 'an unknown message has been sent to me.';
             break;
@@ -45,6 +58,18 @@ if (
 else{
     echo 'Error : your request must contain at least an identifier and a message.';
 }
+
+/**
+ *When a game is finished, we should make text files back to normal.
+ */
+function eraseAllData(){
+    sleep(3);
+    // state game back to false.
+    file_put_contents('gameFinished.txt', 'false');
+    // player ids back to empty
+    file_put_contents('player_queue.txt', '');
+}
+
 
 /**
  * Can we give to the asking player the signal to start playing ?

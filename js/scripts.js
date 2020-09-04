@@ -1,5 +1,3 @@
-
-
 /**
  * When we ask for a game, we need first to have a unique identifier.
  */
@@ -12,7 +10,7 @@ function askForGame(state='WAIT'){
     } else {
         cardPairs=JSON.parse(state);
         console.log('Other player is ready. Let\'s start the game.');
-        console.log(cardPairs);
+        //console.log(cardPairs);
         startGame(cardPairs);
     }
 }
@@ -39,7 +37,33 @@ function startGame(state){
     shuffleAndPlacePictures(state);
 
     // Now prepare the ajax recurrent transaction.
-    // todo
+    checkForOtherPlayersVictory('false');
+}
+
+function checkForOtherPlayersVictory(isGameFinished='false'){
+    if (isGameFinished === 'true'){
+        displayDefeat();
+    } else {
+        setTimeout(() => {  ajaxRequest(checkForOtherPlayersVictory, 'is_game_finished', player_id); }, 1000);
+    }
+}
+
+
+function displayDefeat(){
+    replaceModal('Vous avez perdu.');
+}
+
+
+function replaceModal(textToDisplay){
+    console.log(replaceModal.caller);
+
+    const modal = document.getElementById('block_containing_modal_box_for_messages');
+    modal.style.display='block';
+
+    const textModalBox = document.getElementById('textModalBox');
+    textModalBox.innerText = ''; // todo BUG mettre les textes de victoire et de défaite
+
+    document.location.reload(true);
 }
 
 /**
@@ -88,25 +112,73 @@ function selectCard(domObject){
         return;
     } else {
         domObject.classList.add('flipped-card');
-        const urlData = domObject.firstElementChild.nextElementSibling.style.backgroundImage;
-        const currentCardImageUrl = urlData.substring(5, urlData.length-2);
 
         if(lastPlayedCard===''){ // Not revealed card and first in a row
-            lastPlayedCard = currentCardImageUrl;
+            lastPlayedCard = domObject;
         } else{ // Not revealed card and second in a row.
             // We must check if both revealed cards are from the same pair.
-            if (areTheseCardsTheInTheSamePair(lastPlayedCard, currentCardImageUrl)){
-                // The same pair
+            if (areTheseCardsTheInTheSamePair(lastPlayedCard, domObject)){
+                /* The same pair :
+                - let them revealed.
+                - erase the memorized row.
+                - increment the score.
+                - is the game won ?
+                 */
+                lastPlayedCard = '';
+                score+=1;
+                if (score===9){
+                    claimVictory();
+                }
             } else{
-                // Not in the same pair.
+                /*
+                Not in the same pair :
+                - mask them both.
+                - erase the memorized row. -> done in the masking function.
+                 */
+                setTimeout(() => {mask2Cards(domObject, lastPlayedCard)}, 1000);
             }
         }
     }
 }
 
+function claimVictory(){
+    ajaxRequest(displayVictory, 'i_won', player_id);
+}
 
-function areTheseCardsTheInTheSamePair(cardUrl1='', cardUrl2=''){
+function displayVictory(){
+    replaceModal('Vous avez gagné.');
+}
 
+/**
+ *
+ * @param domObject1
+ * @param domObject2
+ */
+function mask2Cards(domObject1, domObject2){
+    domObject1.classList.remove('flipped-card');
+    domObject2.classList.remove('flipped-card');
+    lastPlayedCard='';
+}
+
+
+/**
+ * Using the uri of two images, we can check if they are from the same pair (i.e. if they are in the same folder).
+ * @return {boolean}
+ * @param card1
+ * @param card2
+ */
+function areTheseCardsTheInTheSamePair(card1='', card2=''){
+    const urlData1 = card1.firstElementChild.nextElementSibling.style.backgroundImage;
+    const cardUrl1 = urlData1.substring(5, urlData1.length-2);
+    //console.log(cardUrl1);
+
+    const urlData2 = card2.firstElementChild.nextElementSibling.style.backgroundImage;
+    const cardUrl2 = urlData2.substring(5, urlData2.length-2);
+    //console.log(cardUrl2);
+
+    const path1 = cardUrl1.split('/' );
+    const path2 = cardUrl2.split('/' );
+    return path1[2] === path2[2];
 }
 
 
@@ -115,9 +187,9 @@ function areTheseCardsTheInTheSamePair(cardUrl1='', cardUrl2=''){
  * @param identifier_length THe length of the random string we want.
  */
 function createIdentifier(identifier_length=10){
-    player_id = 'riQ00YI2zd'; // todo deploiement : supprimer cette ligne
-    return; // todo deploiement : supprimer cette ligne
-    let authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    //player_id = 'riQ00YI2zd'; // todo deploiement : supprimer cette ligne
+    //return; // todo deploiement : supprimer cette ligne
+    const authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for ( let i = 0; i < identifier_length; i++ ) {
         player_id += authorized_characters.charAt(Math.floor(Math.random() * authorized_characters.length));
     }
@@ -128,7 +200,6 @@ function createIdentifier(identifier_length=10){
  * This is our Ajax controller. It takes care of all messages sent to the server and send back responses.
  */
 function ajaxRequest(callback_function, request='', player_id='') {
-    console.log('id reçu : ' + player_id);
     let url;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -142,6 +213,14 @@ function ajaxRequest(callback_function, request='', player_id='') {
             break;
         case 'i_want_to_start_a_game':
             url = 'index.php?message=i_want_to_start_a_game&playerId='+ player_id.toString();
+            break;
+        case 'is_game_finished':
+            console.log('The player ' + player_id + ' is asking if the game has been won by the other player.');
+            url = 'index.php?message=is_game_finished&playerId='+ player_id.toString();
+            break;
+        case 'i_won':
+            console.log('The player ' + player_id + ' claims victory.');
+            url = 'index.php?message=i_won&playerId='+ player_id.toString();
             break;
         default:
             console.log('You made an unknown request ' + request + 'lors de votre ajaxRequest depuis ' + ajaxRequest.caller);

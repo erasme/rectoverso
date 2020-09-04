@@ -7,6 +7,7 @@ todo save the old node.js application version in a different branch.
 ## TODO
 
 Les paires choisies dans la version ajax ne sont pas aléatoires (urgence oblige).
+todo : placer toutes les infos côté serveur dans un fichier les regroupant toutes (json ?)
 
 
 ## But de l'application

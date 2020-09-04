@@ -36,13 +36,14 @@
         let serverUrl = 'localhost';
         let cardPairs='';
         let lastPlayedCard = '';
+        let score=0;
     </script>
     <div id="block_containing_modal_box_for_messages" class="modal active">
         <div class="logo">
             <img src="medias/Logo.svg">
             <img src="medias/LogoText.svg">
         </div>
-        <p class="status">En attente / gagné / perdu</p>
+        <p class="status" id="textModalBox">En attente</p>
         <button id="message_to_user" class="start" onclick="createIdentifier();askForGame();">Commencer !</button>
     </div>
     <div id="block_containing_all_cards" class="container">
