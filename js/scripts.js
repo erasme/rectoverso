@@ -1,3 +1,7 @@
+// todo afficher scores
+// todo carrés de couleur sur les paires déjçà trouéves afin de mieux les différencier.
+
+
 /**
  * When we ask for a game, we need first to have a unique identifier.
  */
