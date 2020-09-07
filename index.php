@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * @author : Pierre-Alexandre Racine (pierrealexandreracine -at(@)- gmail -dot(.)- com)
  * @owner : ERASME (https://www.erasme.org/)
@@ -34,6 +34,12 @@ if (
  && (isset($_GET['playerId']) && !empty($_GET['playerId']))
 ){
     switch (strval($_GET['message'])){
+        case 'is_console_verbose':
+            echo loadConfiguration()['verbose_mode'];
+            break;
+        case 'what_is_the_chosen_language':
+            echo loadConfiguration()['language'];
+            break;
         case 'i_want_to_start_a_game':
             echo canIStart($_GET['playerId']);
             break;

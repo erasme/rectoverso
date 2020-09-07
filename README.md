@@ -69,6 +69,9 @@ situé à la racine.
 - todo : formats acceptés
 - todo : organisation  de l'arborescence du dossier
 - todo : quantité de paires acceptées
+- todo : changer la langue de l'application
+- todo : ajouter une nouvelle traduction
+- todo : explain all possibilities in the configuration.json
 
 ## Installation
 

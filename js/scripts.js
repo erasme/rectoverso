@@ -1,6 +1,44 @@
 // todo afficher scores
 // todo carrés de couleur sur les paires déjçà trouéves afin de mieux les différencier.
 
+/**
+ * This function is called at each loaded page of jouer.php . It has to read the translations file and inject the
+ * correct text in the good places.
+ */
+function injectTranslations(){
+
+}
+
+/**
+ * For now, we only check if the application has been set to the modes :
+ * - is the console verbose ?
+ * - which language has been chosen ?
+ */
+function getModes(){
+    ajaxRequest(setConsoleMode, 'is_console_verbose', player_id, false);
+    ajaxRequest(setLanguage, 'what_is_the_chosen_language', player_id, false);
+}
+
+/**
+ *
+ * @param language
+ */
+function setLanguage(language='en'){
+    chosen_language = language;
+    if (console_verbosity){
+        console.log('Language set to : ' + chosen_language + '.');
+    }
+}
+
+/**
+ *
+ * @param consoleMode
+ */
+function setConsoleMode(consoleMode='false'){
+    console_verbosity = Boolean(consoleMode);
+    console.log('The console verbosity is set to : ' + console_verbosity + '.');
+}
+
 
 /**
  * When we ask for a game, we need first to have a unique identifier.
@@ -48,7 +86,7 @@ function checkForOtherPlayersVictory(isGameFinished='false'){
     if (isGameFinished === 'true'){
         displayDefeat();
     } else {
-        setTimeout(() => {  ajaxRequest(checkForOtherPlayersVictory, 'is_game_finished', player_id); }, 1000);
+        //setTimeout(() => {  ajaxRequest(checkForOtherPlayersVictory, 'is_game_finished', player_id); }, 1000);
     }
 }
 
@@ -193,17 +231,19 @@ function areTheseCardsTheInTheSamePair(card1='', card2=''){
 function createIdentifier(identifier_length=10){
     //player_id = 'riQ00YI2zd'; // todo deploiement : supprimer cette ligne
     //return; // todo deploiement : supprimer cette ligne
+    player_id = '';
     const authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for ( let i = 0; i < identifier_length; i++ ) {
         player_id += authorized_characters.charAt(Math.floor(Math.random() * authorized_characters.length));
     }
+    console.log('New player id created : ' + player_id);
 }
 
 
 /**
  * This is our Ajax controller. It takes care of all messages sent to the server and send back responses.
  */
-function ajaxRequest(callback_function, request='', player_id='') {
+function ajaxRequest(callback_function, request='', player_id='', asynchronicity= true) {
     let url;
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -214,6 +254,12 @@ function ajaxRequest(callback_function, request='', player_id='') {
     switch (request){
         case '':
             console.log('You requested an empty data in your ajax request.');
+            break;
+        case 'is_console_verbose':
+            url = 'index.php?message=is_console_verbose&playerId='+ player_id.toString();
+            break;
+        case 'what_is_the_chosen_language':
+            url = 'index.php?message=what_is_the_chosen_language&playerId='+ player_id.toString();
             break;
         case 'i_want_to_start_a_game':
             url = 'index.php?message=i_want_to_start_a_game&playerId='+ player_id.toString();
@@ -227,11 +273,11 @@ function ajaxRequest(callback_function, request='', player_id='') {
             url = 'index.php?message=i_won&playerId='+ player_id.toString();
             break;
         default:
-            console.log('You made an unknown request ' + request + 'lors de votre ajaxRequest depuis ' + ajaxRequest.caller);
+            console.log('You made an unknown request ' + request + ' lors de votre ajaxRequest depuis ' + ajaxRequest.caller);
             url = 'index.php?message=' + request;
             break;
     }
 
-    xhttp.open("GET", url, true);
+    xhttp.open("GET", url, asynchronicity);
     xhttp.send();
 }
