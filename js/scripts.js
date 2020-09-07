@@ -1,43 +1,15 @@
 // todo afficher scores
 // todo carrés de couleur sur les paires déjçà trouéves afin de mieux les différencier.
+let player_id = '';
+let console_verbosity = false;
+let chosen_language = 'en';
+let texts = {}; // Contains all texts displayed on this page.
 
-/**
- * This function is called at each loaded page of jouer.php . It has to read the translations file and inject the
- * correct text in the good places.
- */
-function injectTranslations(){
 
-}
 
-/**
- * For now, we only check if the application has been set to the modes :
- * - is the console verbose ?
- * - which language has been chosen ?
- */
-function getModes(){
-    ajaxRequest(setConsoleMode, 'is_console_verbose', player_id, false);
-    ajaxRequest(setLanguage, 'what_is_the_chosen_language', player_id, false);
-}
 
-/**
- *
- * @param language
- */
-function setLanguage(language='en'){
-    chosen_language = language;
-    if (console_verbosity){
-        console.log('Language set to : ' + chosen_language + '.');
-    }
-}
 
-/**
- *
- * @param consoleMode
- */
-function setConsoleMode(consoleMode='false'){
-    console_verbosity = Boolean(consoleMode);
-    console.log('The console verbosity is set to : ' + console_verbosity + '.');
-}
+
 
 
 /**
@@ -245,7 +217,7 @@ function createIdentifier(identifier_length=10){
  */
 function ajaxRequest(callback_function, request='', player_id='', asynchronicity= true) {
     let url;
-    var xhttp = new XMLHttpRequest();
+    let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
             callback_function(this.responseText);
@@ -260,6 +232,10 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
             break;
         case 'what_is_the_chosen_language':
             url = 'index.php?message=what_is_the_chosen_language&playerId='+ player_id.toString();
+            break;
+        case 'get_Translations':
+            xhttp.overrideMimeType("application/json");
+            url = 'translations.json';
             break;
         case 'i_want_to_start_a_game':
             url = 'index.php?message=i_want_to_start_a_game&playerId='+ player_id.toString();
@@ -280,4 +256,67 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
 
     xhttp.open("GET", url, asynchronicity);
     xhttp.send();
+}
+
+
+
+
+/**                          CONFIGURATION                          **/
+
+
+/**
+ * Loads all the translations.
+ */
+function loadTranslations(){
+    ajaxRequest(injectTranslations, 'get_Translations', player_id, false);
+}
+
+/**
+ * Injects all translations in their correct emplacements.
+ * @param json_translations String containing all translations.
+ */
+function injectTranslations(json_translations = ''){
+    const translations = JSON.parse(json_translations);
+    // As stupid as it sounds, I can't reach directly inside the json using translations[chosen_language].
+    // So I have to do this loop...
+    for (let language in translations){
+        if (language === chosen_language){
+            texts = translations[language];
+            // We're in. Let's inject the text.
+            document.getElementById('message_to_user').innerText = translations[language].start;
+            document.getElementById('textModalBox').innerText = translations[language].waiting_for_players;
+        }
+    }
+}
+
+/**
+ * For now, we only check if the application has been set to the modes :
+ * - is the console verbose ?
+ * - what is the language which has to be displayed ?
+ */
+function getModes(){
+    ajaxRequest(setConsoleMode, 'is_console_verbose', player_id, false);
+    ajaxRequest(setChosenLanguage, 'what_is_the_chosen_language', player_id, false);
+}
+
+/**
+ * Sets the correct chosen language in the application.
+ * @param language
+ */
+function setChosenLanguage(language='en'){
+    chosen_language = language.trim();
+    if (console_verbosity){
+        console.log('The chosen language is set to : ' + chosen_language + '.');
+    }
+}
+
+/**
+ * Just sets up the console verbosity mode.
+ * @param consoleMode
+ */
+function setConsoleMode(consoleMode='false'){
+    console_verbosity = Boolean(consoleMode);
+    if (console_verbosity){
+        console.log('The console verbosity is set to : ' + console_verbosity + '.');
+    }
 }

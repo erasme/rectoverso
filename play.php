@@ -30,11 +30,8 @@
   au joueur et on arrête de requêter.
 -->
 
-<body onload="createIdentifier();getModes();injectTranslations();">
+<body onload="createIdentifier();getModes();loadTranslations();">
     <script>
-        let player_id = '';
-        let console_verbosity = false;
-        let chosen_language = 'en';
         /*
         const delay = ms => new Promise(res => setTimeout(res, ms));
         let serverUrl = 'localhost';
@@ -49,7 +46,7 @@
             <img src="medias/LogoText.svg">
         </div>
         <p class="status" id="textModalBox">Texte test</p>
-        <button id="message_to_user" class="start" onclick="createIdentifier();askForGame();">texte test</button>
+        <button id="message_to_user" class="start" onclick="askForGame();">texte test</button>
     </div>
     <div id="block_containing_all_cards" class="container">
         <div id="card_0" class="flip-card">
