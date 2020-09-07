@@ -128,6 +128,7 @@ function canIStart($playerId=''){
             }
             // And there is no free slot. WHAAAAAAAAT-> big problem. -> throw error
             else{
+                var_dump(selectCards());
                 echo 'ERROR 1';
             }
         }
@@ -149,45 +150,35 @@ function selectCards(){
      * - place a shuffled ordre of cards in the current_game.json file.
      */
 
-
-
-
-
-
-
-
-
-    /*
-    $pairsOfCards = '{';
-
-    // Check the folder's chosen set of images.
-    $datasetFolder = loadConfiguration()['dataset_directory'];
-    $datasetChosen = loadConfiguration()['chosen_dataset_sub-folder'];
-
+    // Get the correct directory containing my dataset.
+    $pathToMyDataset = loadConfiguration()['dataset_directory'] . '/' . loadConfiguration()['chosen_dataset_sub-folder'] . '/';
     // Check all sub-folders.
-    $chosenFolderContent = scandir(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen);
-    $pairNumber = 0;
+    $chosenFolderContent = scandir(__DIR__ . '/' . $pathToMyDataset);
+    $pairs = array();
     foreach ($chosenFolderContent as $subFolder) {
-        if( $pairNumber<9 && $subFolder!='.' && $subFolder != '..' && is_dir(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder)){
+        if($subFolder!='.' && $subFolder != '..' && is_dir(__DIR__ . '/' . $pathToMyDataset . $subFolder)){
             // For each sub-folder, we have to check now if they contain two images
-            //var_dump(scandir(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder));
-            if(file_exists(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/0.jpg') &&
-                file_exists(__DIR__ . '/' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/1.jpg')
+            if(file_exists(__DIR__ . '/' . $pathToMyDataset . $subFolder . '/0.jpg') &&
+                file_exists(__DIR__ . '/' . $pathToMyDataset . $subFolder . '/1.jpg')
             ){
                 // A pair has been found in this folder.
-                $pairsOfCards .= '"' . $pairNumber . '":[ "' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/0.jpg", "' . $datasetFolder . '/' . $datasetChosen . '/' . $subFolder . '/1.jpg" ]';
-                if($pairNumber<8){
-                    $pairsOfCards .= ',';
-                }
-                $pairNumber++;
+                array_push($pairs, array($pathToMyDataset . $subFolder . '/0.jpg', $pathToMyDataset . $subFolder . '/1.jpg'));
             }
         }
     }
-    $pairsOfCards .= '}';
-    return $pairsOfCards;
+    // We have all our pairs. Are they enough (more han 9) ?
+    if(sizeof($pairs)>8){
+        shuffle($pairs);
+        $gameData = json_decode(file_get_contents('current_game.json'), true);
+        $gameData['pairs_of_cards'] = array_slice($pairs, 0, 9);
+        file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
+    } else{
+        return 'ERROR 3';
+    }
+
+    return $pairs;
     // todo make it chose randomly the 9 pairs among those available.
     //return array_slice($pairsOfCards, 0, 9); // todo check if it is at least 9 long !
-    */
 }
 
 /**
