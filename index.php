@@ -168,17 +168,21 @@ function selectCards(){
     }
     // We have all our pairs. Are they enough (more han 9) ?
     if(sizeof($pairs)>8){
+        $listOfCards = array();
         shuffle($pairs);
+        foreach (array_slice($pairs, 0, 9) as $pair) {
+            array_push($listOfCards, $pair[0]);
+            array_push($listOfCards, $pair[1]);
+        }
+        shuffle($listOfCards); // We have now all our cards shuffled in a pile.
+
+        // Let's record it in the current_game data.
         $gameData = json_decode(file_get_contents('current_game.json'), true);
-        $gameData['pairs_of_cards'] = array_slice($pairs, 0, 9);
+        $gameData['cards'] = $listOfCards;
         file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
     } else{
-        return 'ERROR 3';
+        return 'ERROR 3'; // not enough pairs of cards.
     }
-
-    return $pairs;
-    // todo make it chose randomly the 9 pairs among those available.
-    //return array_slice($pairsOfCards, 0, 9); // todo check if it is at least 9 long !
 }
 
 /**
