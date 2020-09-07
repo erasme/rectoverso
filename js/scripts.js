@@ -7,25 +7,24 @@ let texts = {}; // Contains all texts displayed on this page.
 
 
 
-
-
-
-
-
 /**
  * When we ask for a game, we need first to have a unique identifier.
  */
 function askForGame(state='WAIT'){
     // state is either 'WAIT' or a json string containing the pairs of cards.
+    console.log(state);
     if(state === 'WAIT'){
-        console.log('Waiting for other player.');
-        // todo change the text of the modalbox to 'Waiting the other player.'
+        if(console_verbosity){
+            console.log('Asked for a game start. Waiting other player(s).');
+        }
+        document.getElementById('textModalBox').innerText = texts['waiting_for_players'];
         setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
     } else {
-        cardPairs=JSON.parse(state);
+
+        //cardPairs=JSON.parse(state);
         console.log('Other player is ready. Let\'s start the game.');
         //console.log(cardPairs);
-        startGame(cardPairs);
+        //startGame(cardPairs);
     }
 }
 
@@ -284,7 +283,6 @@ function injectTranslations(json_translations = ''){
             texts = translations[language];
             // We're in. Let's inject the text.
             document.getElementById('message_to_user').innerText = translations[language].start;
-            document.getElementById('textModalBox').innerText = translations[language].waiting_for_players;
         }
     }
 }

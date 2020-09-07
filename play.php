@@ -31,22 +31,13 @@
 -->
 
 <body onload="createIdentifier();getModes();loadTranslations();">
-    <script>
-        /*
-        const delay = ms => new Promise(res => setTimeout(res, ms));
-        let serverUrl = 'localhost';
-        let cardPairs='';
-        let lastPlayedCard = '';
-        let score=0;
-        */
-    </script>
     <div id="block_containing_modal_box_for_messages" class="modal active">
         <div class="logo">
             <img src="medias/Logo.svg">
             <img src="medias/LogoText.svg">
         </div>
-        <p class="status" id="textModalBox">Texte test</p>
-        <button id="message_to_user" class="start" onclick="askForGame();">texte test</button>
+        <p class="status" id="textModalBox"></p>
+        <button id="message_to_user" class="start" onclick="askForGame();"></button>
     </div>
     <div id="block_containing_all_cards" class="container">
         <div id="card_0" class="flip-card">

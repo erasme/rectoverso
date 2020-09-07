@@ -84,60 +84,80 @@ function eraseAllData(){
  */
 function canIStart($playerId=''){
     $playerId = htmlentities($playerId, ENT_QUOTES);
-    /*
-     * In this case, wa have to see if i already have received a demand from the other player.
-     * We read the player_queue.txt.
-     * - if it is empty, we add the current id inside and we respond WAIT.
-     * - if it is not empty but contains the same id , we respond WAIT.
-     * - if it is not empty and contains not the same id, we add the id and we respond START.
-     * - if it is not empty and contains two ids including the current one AND we respond START .
-     */
-    try {
-        $playersFileContent = file_get_contents('player_queue.txt');
-        $idsInFile = explode("\n", $playersFileContent);
-        //var_dump($idsInFile);
-        if (sizeof($idsInFile) == 1){ // Empty file OR one line filled.
-            // Is the file empty ?
-            if ($playersFileContent==''){
-                file_put_contents('player_queue.txt', $playerId);
-                return 'WAIT';
-            } elseif ($playersFileContent == $playerId){ // Our current id is already inside and alone.
-                return 'WAIT';
-            }
-            else{ // our current id is not inside and another one is already in.
-                file_put_contents('player_queue.txt', "\n" . $playerId, FILE_APPEND);
-                // So it is a brand new game. Let's pck here the cards to play with.
-                return selectCards();
-            }
-        } elseif (sizeof($idsInFile) == 2){ // Two lines filled.
-            if(in_array($playerId, $idsInFile)){ // Two lines in the file and the current id is in.
-                return selectCards();
-            } else{
-                return 'ERROR 1'; // two lines but we are not in !
-            }
 
-        } else{
-            return 'ERROR 0'; // Error : two much data in the file.
+    try {
+        // Let's test all cases.
+        $gameData = json_decode(file_get_contents('current_game.json'), true);
+
+        // Both slots are free.
+        if($gameData['player_1']['id'] == '' AND $gameData['player_2']['id'] == ''){
+            // Subscribe the user in the file.
+            $gameData['player_1']['id'] = $playerId;
+            file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
+            // And we can already select the cards.
+            selectCards();
+            echo 'WAIT';
+            return;
+        }
+
+        // Already inside
+        elseif($gameData['player_1']['id'] == $playerId OR $gameData['player_2']['id'] == $playerId){
+            // And a slot is sill free.
+            if($gameData['player_1']['id'] == '' OR $gameData['player_2']['id'] == ''){
+                echo 'WAIT';
+                return;
+            }
+            // And the other slot is not free.
+            else{
+                // todo send cards ? or start only with loading cards later ?
+                return;
+            }
+        }
+        // Not inside.
+        else{
+            // And there is still a free slot.
+            if($gameData['player_1']['id'] == '' OR $gameData['player_2']['id'] == ''){
+                if($gameData['player_1']['id'] == ''){
+                    $gameData['player_1']['id'] = $playerId;
+                } else{
+                    $gameData['player_2']['id'] = $playerId;
+                }
+                file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
+                // todo send cards ? or start only with loading cards later ?
+                return;
+            }
+            // And there is no free slot. WHAAAAAAAAT-> big problem. -> throw error
+            else{
+                echo 'ERROR 1';
+            }
         }
     } catch (Exception $e){
-        //echo $e;
-        return 'ERROR'; // error reaching the file
+        echo 'ERROR 2';
     }
 }
 
 
 /**
  * Take 9 pairs from the folder chosen in the configuration file.
- * @return array
  */
 function selectCards(){
     /*
      * To select cards properly, we have to :
      * - read in the configuration.json which set of cards we have to use.
-     * - check the available pairs of cards
-     * - pick randomly 9 pairs.
-     * - return that pairs in a json string
+     * - check the available pairs of cards.
+     * - pick randomly 9 pairs and place them in the current_game.json .
+     * - place a shuffled ordre of cards in the current_game.json file.
      */
+
+
+
+
+
+
+
+
+
+    /*
     $pairsOfCards = '{';
 
     // Check the folder's chosen set of images.
@@ -167,6 +187,7 @@ function selectCards(){
     return $pairsOfCards;
     // todo make it chose randomly the 9 pairs among those available.
     //return array_slice($pairsOfCards, 0, 9); // todo check if it is at least 9 long !
+    */
 }
 
 /**
