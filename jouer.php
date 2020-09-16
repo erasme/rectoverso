@@ -38,7 +38,7 @@
         let lastPlayedCard = '';
         let score=0;
     </script>
-    <div id="block_containing_modal_box_for_messages" class="modal active">
+    <div id="block_containing_modal_box_for_messages" class="modal ">
         <div class="logo">
             <img src="medias/Logo.svg">
             <img src="medias/LogoText.svg">
@@ -191,6 +191,13 @@
                 </div>
             </div>
         </div>
+    </div>
+    <div class="game_status">
+        <div class="identifier orange"></div>
+        <div class="player"><p>Vous</span><p></div>
+        <div class="points"><p><span id=p1>10</span> - <span id=p2>0</span></p></div>
+        <div class="player"><p>Adversaire<p></div>
+        <div class="identifier blue"></div>
     </div>
 
 <script type="text/javascript" src="js/scripts.js"></script>
