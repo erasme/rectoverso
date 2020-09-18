@@ -1,8 +1,8 @@
 // todo afficher scores
 // todo carrés de couleur sur les paires déjà trouvées afin de mieux les différencier.
 let player_id = '';
-let console_verbosity = false;
-let chosen_language = 'en';
+let console_verbosity = false; // Default value which are going to be replaced by the server value (from configuration.json).
+let chosen_language = 'en'; // Default value which are going to be replaced by the server value (from configuration.json).
 let texts = {}; // Contains all texts displayed on this page.
 
 

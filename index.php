@@ -44,7 +44,7 @@ if (
             echo canIStart($_GET['playerId']);
             break;
         case 'check_updates':
-            echo 'take this update';
+            echo json_encode(getUpdates($_GET['playerId']));
             break;
         case 'is_game_finished':
             $endGame = file_get_contents('gameFinished.txt');
@@ -67,6 +67,42 @@ if (
 else{
     echo 'Error : your request must contain at least an identifier and a message.';
 }
+
+//getUpdates('nD6ZUYObUO');
+
+ /**
+  * We want these informations :
+  * - is the game finished ? (i.e. if the other player has already finished)
+  * - what is the other player's score ?
+  * - which cards do the other player chose to reveal ?
+  * @param string $askingPlayerId
+  * @return array
+  */
+function getUpdates($askingPlayerId=''){
+    $newData = [];
+    $currentGameData = json_decode(file_get_contents('current_game.json'), true);
+    //var_dump($currentGameData);
+
+    // Is game finished ?
+    $newData['is_game_finished'] = $currentGameData['is_game_finished'];
+
+    // What is the other player's score ?
+    // Which cards do the other player chose to reveal and we did not see ?
+    if( $currentGameData['player_1']['id'] == $askingPlayerId ){
+        $newData['otherPlayerScore'] = $currentGameData['player_2']['score'];
+        $newData['lastRevealedCards'] = $currentGameData['player_2']['list_of_played_cards'];
+        $newData['player_2']['list_of_played_cards'] = array();
+        file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+    } else{
+        $newData['otherPlayerScore'] = $currentGameData['player_1']['score'];
+        $newData['lastRevealedCards'] = $currentGameData['player_1']['list_of_played_cards'];
+        $newData['player_1']['list_of_played_cards'] = array();
+        file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+    }
+    return $newData;
+}
+
+
 
 /**
  *When a game is finished, we should make text files back to normal.
