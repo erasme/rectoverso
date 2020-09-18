@@ -53,7 +53,7 @@ function askForGame(state='WAIT'){
 
 /**
  * Everythng is ready, we can now let the player use the app.
- * @param state
+ * @param state json-data
  */
 function startGame(state){
     /*
@@ -308,7 +308,13 @@ function injectTranslations(json_translations = ''){
         if (language === chosen_language){
             texts = translations[language];
             // We're in. Let's inject the text.
+            console.log(translations[language]);
+            // Greeting text.
             document.getElementById('message_to_user').innerText = translations[language].start;
+
+            // Text in scores.
+            document.getElementById('player_1').innerText = translations[language].you;
+            document.getElementById('player_2').innerText = translations[language].opponent;
         }
     }
 }

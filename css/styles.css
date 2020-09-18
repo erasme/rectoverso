@@ -2,6 +2,14 @@ body {
   font-family: 'Nunito', sans-serif;
 }
 
+.orange {
+  background-color: #EDA943;
+}
+
+.blue {
+  background-color: #9688EE;
+
+}
 .container {
   padding: 35px 20px 0 35px;
 }
@@ -66,12 +74,12 @@ body {
   display: block;
 }
 
- /* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
- .flip-card {
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
   background-color: transparent;
   float: left;
   width: 310px;
-  height: 285px;
+  height: 268px;
   margin-right: 20px;
   margin-bottom: 20px;
   border: 1px solid #f1f1f1;
@@ -88,7 +96,7 @@ body {
   transform-style: preserve-3d;
 }
 
-.flip-card-front, 
+.flip-card-front,
 .flip-card-back {
   background-size: contain;
 }
@@ -125,4 +133,26 @@ body {
   background-color: dodgerblue;
   color: white;
   transform: rotateY(180deg);
-} 
+}
+
+.game_status {
+  position: absolute;
+  bottom: 30px;
+  font-size: 50px;
+  display: flex;
+  justify-content: space-between;
+  background: #bbb;
+  width: 80%;
+  left: 9%;
+}
+
+.game_status p {
+  font-weight: bold;
+  color: white;
+  margin: 15px;
+
+}
+
+.game_status .identifier {
+  width: 20px;
+}
