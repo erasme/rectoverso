@@ -43,6 +43,9 @@ if (
         case 'i_want_to_start_a_game':
             echo canIStart($_GET['playerId']);
             break;
+        case 'check_updates':
+            echo 'take this update';
+            break;
         case 'is_game_finished':
             $endGame = file_get_contents('gameFinished.txt');
             if($endGame=='true'){

@@ -1,5 +1,5 @@
 // todo afficher scores
-// todo carrés de couleur sur les paires déjçà trouéves afin de mieux les différencier.
+// todo carrés de couleur sur les paires déjà trouvées afin de mieux les différencier.
 let player_id = '';
 let console_verbosity = false;
 let chosen_language = 'en';
@@ -52,7 +52,7 @@ function askForGame(state='WAIT'){
 }
 
 /**
- * Everythng is ready, we can now let the player use the app.
+ * Everything is ready, we can now let the player use the app.
  * @param state json-data
  */
 function startGame(state){
@@ -76,15 +76,20 @@ function startGame(state){
     placePictures(state);
 
     // Now prepare the ajax recurrent transaction.
-    checkForOtherPlayersVictory('false');
+    checkForUpdatedData({});
 }
 
-function checkForOtherPlayersVictory(isGameFinished='false'){
-    if (isGameFinished === 'true'){
-        displayDefeat();
-    } else {
-        //setTimeout(() => {  ajaxRequest(checkForOtherPlayersVictory, 'is_game_finished', player_id); }, 1000);
-    }
+
+/**
+ * We set a recurrent ajax task each second asking :
+ * - is the game finished ? (i.e. if the other player has already finished)
+ * - what is the other player's score ?
+ * - which cards do the other player chose to reveal ?
+ * @param newData
+ */
+function checkForUpdatedData(newData={}){
+    console.log(newData);
+    setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
 }
 
 
@@ -106,7 +111,7 @@ function replaceModal(textToDisplay){
 }
 
 /**
- * Places all cards it in the page.
+ * Places all cards it in the page using pictures received in a json object.
  * @param pictures in a json object
  */
 function placePictures(pictures= {}){
@@ -238,7 +243,9 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
     };
     switch (request){
         case '':
-            console.log('You requested an empty data in your ajax request.');
+            if (console_verbosity){
+                console.log('You requested an empty data in your ajax request.');
+            }
             break;
         case 'is_console_verbose':
             url = 'index.php?message=is_console_verbose&playerId='+ player_id.toString();
@@ -253,16 +260,28 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
         case 'i_want_to_start_a_game':
             url = 'index.php?message=i_want_to_start_a_game&playerId='+ player_id.toString();
             break;
+        case 'check_updates':
+            if (console_verbosity){
+                console.log('The player ' + player_id + ' is asking for new updates.');
+            }
+            url = 'index.php?message=check_updates&playerId='+ player_id.toString();
+            break;
         case 'is_game_finished':
-            console.log('The player ' + player_id + ' is asking if the game has been won by the other player.');
+            if (console_verbosity){
+                console.log('The player ' + player_id + ' is asking if the game has been won by the other player.');
+            }
             url = 'index.php?message=is_game_finished&playerId='+ player_id.toString();
             break;
         case 'i_won':
-            console.log('The player ' + player_id + ' claims victory.');
+            if (console_verbosity){
+                console.log('The player ' + player_id + ' claims victory.');
+            }
             url = 'index.php?message=i_won&playerId='+ player_id.toString();
             break;
         default:
-            console.log('You made an unknown request ' + request + ' lors de votre ajaxRequest depuis ' + ajaxRequest.caller);
+            if (console_verbosity){
+                console.log('You made an unknown request ' + request + ' lors de votre ajaxRequest depuis ' + ajaxRequest.caller);
+            }
             url = 'index.php?message=' + request;
             break;
     }
