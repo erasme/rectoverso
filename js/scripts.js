@@ -73,7 +73,7 @@ function startGame(state){
     modal.style.display='none';
 
     // Then, place pictures in the grid.
-    shuffleAndPlacePictures(state);
+    placePictures(state);
 
     // Now prepare the ajax recurrent transaction.
     checkForOtherPlayersVictory('false');
@@ -106,28 +106,16 @@ function replaceModal(textToDisplay){
 }
 
 /**
- * Shuffles the cards in a single array. Then places it in the page.
- * @param picturesPairs The pairs of cards we must place in the grid.
+ * Places all cards it in the page.
+ * @param pictures in a json object
  */
-function shuffleAndPlacePictures(picturesPairs=''){
-    // First, place all cards in a one dimension array.
-    let crushedArray = Array();
-    for (const imagePair in picturesPairs) {
-        crushedArray.push(picturesPairs[imagePair][0]);
-        crushedArray.push(picturesPairs[imagePair][1]);
-    }
-    // Now, let's shuffle this array.
-    for(let i = crushedArray.length-1; i > 0; i--){
-        const j = Math.floor(Math.random() * i)
-        const temp = crushedArray[i]
-        crushedArray[i] = crushedArray[j]
-        crushedArray[j] = temp
-    }
-
-    // And place the pictures inside the cards.
+function placePictures(pictures= {}){
     let i = 0
-    for (const image in crushedArray) {
-        document.getElementById("card_"+ i).getElementsByClassName("flip-card-back")[0].setAttribute("style", "background-image: url('"+crushedArray[image]+"');");
+    for (const image in pictures) {
+        document
+            .getElementById("card_"+ i)
+            .getElementsByClassName("flip-card-back")[0]
+            .setAttribute("style", "background-image: url('"+pictures[image]+"');");
         i+=1;
     }
 }
@@ -308,11 +296,11 @@ function injectTranslations(json_translations = ''){
         if (language === chosen_language){
             texts = translations[language];
             // We're in. Let's inject the text.
-            console.log(translations[language]);
-            // Greeting text.
+
+            // -> Greeting text.
             document.getElementById('message_to_user').innerText = translations[language].start;
 
-            // Text in scores.
+            // -> Player names in scores.
             document.getElementById('player_1').innerText = translations[language].you;
             document.getElementById('player_2').innerText = translations[language].opponent;
         }
