@@ -1,4 +1,4 @@
 {
-  "en":{"start":"Start","waiting_for_players":"Waiting for players","you_lost":"You lost !","you_won":"You won !"},
-  "fr":{"start":"Commencer","waiting_for_players":"En attente de joueurs","you_lost":"Perdu !","you_won":"Gagné !"}
+  "en":{"error_from_server":"Error from server","start":"Start","waiting_for_players":"Waiting for players","you_lost":"You lost !","you_won":"You won !"},
+  "fr":{"error_from_server":"Erreur côté serveur","start":"Commencer","waiting_for_players":"En attente de joueurs","you_lost":"Perdu !","you_won":"Gagné !"}
 }

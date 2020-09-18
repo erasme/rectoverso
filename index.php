@@ -109,7 +109,13 @@ function canIStart($playerId=''){
             }
             // And the other slot is not free.
             else{
-                // todo send cards ? or start only with loading cards later ?
+                // So the game has started.
+                $gameData = json_decode(file_get_contents('current_game.json'), true);
+                $gameData['has_game_started']='true';
+                // We declare the game started in the current_game.json
+                file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
+                // We send the cards to the player.
+                echo json_encode($gameData['cards']);
                 return;
             }
         }
@@ -123,17 +129,18 @@ function canIStart($playerId=''){
                     $gameData['player_2']['id'] = $playerId;
                 }
                 file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
-                // todo send cards ? or start only with loading cards later ?
+                echo 'WAIT';
                 return;
             }
             // And there is no free slot. WHAAAAAAAAT-> big problem. -> throw error
             else{
-                var_dump(selectCards());
                 echo 'ERROR 1';
+                return;
             }
         }
     } catch (Exception $e){
         echo 'ERROR 2';
+        return;
     }
 }
 

@@ -11,32 +11,58 @@ let texts = {}; // Contains all texts displayed on this page.
  * When we ask for a game, we need first to have a unique identifier.
  */
 function askForGame(state='WAIT'){
+    state = state.trim(); // I have no idea why state is someone preceded with spaces...
+    if(console_verbosity){
+        console.log(state);
+    }
+
     // state is either 'WAIT' or a json string containing the pairs of cards.
-    console.log(state);
     if(state === 'WAIT'){
         if(console_verbosity){
             console.log('Asked for a game start. Waiting other player(s).');
         }
         document.getElementById('textModalBox').innerText = texts['waiting_for_players'];
         setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
+    } else if(typeof state === 'string' && state.substr(0,5)==='ERROR'){
+        // Checking for errors.
+        if(console_verbosity){
+            // For now, we only have two different errors.
+            if(state === 'ERROR 1'){
+                console.log('The current_game.json already have two players.');
+            }
+            else if(state === 'ERROR 2'){
+                console.log('The file current_game.json is unreachable by the server.');
+            }
+            else {
+                console.log('Unknown error : ' + state);
+            }
+        }
+        document.getElementById('textModalBox').innerText = texts['error_from_server'];
+    } else if(typeof state === 'string'){
+        // Both players are recorded as ready to play on the server. We can start.
+        cardPairs=JSON.parse(state);
+        if(console_verbosity){
+            console.log('The cards which we play with are : ')
+            console.log(cardPairs);
+        }
+        startGame(cardPairs);
     } else {
-
-        //cardPairs=JSON.parse(state);
-        console.log('Other player is ready. Let\'s start the game.');
-        //console.log(cardPairs);
-        //startGame(cardPairs);
+        console.log('Unknown state. What is happening ?');
     }
 }
 
 /**
- * Everythng is ready, we can now let the leyer use the app.
+ * Everythng is ready, we can now let the player use the app.
  * @param state
  */
 function startGame(state){
     /*
     Steps to follow :
     - hide the modalbox.
-    - set a recurrent ajax task each second asking if the game is finished (i.e. if the other player has already finished).
+    - set a recurrent ajax task each second asking :
+            - is the game finished ? (i.e. if the other player has already finished)
+            - what is the other player's score ?
+            - what cards do the other player chose to reveal ?
     - place the cards and create the game.
     - if we finish the game or we receive the signal the other player finished, we stop the game and replace the
     modalbox with new text
