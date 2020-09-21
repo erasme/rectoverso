@@ -91,14 +91,13 @@ function getUpdates($askingPlayerId=''){
     if( $currentGameData['player_1']['id'] == $askingPlayerId ){
         $newData['otherPlayerScore'] = $currentGameData['player_2']['score'];
         $newData['lastRevealedCards'] = $currentGameData['player_2']['list_of_played_cards'];
-        $newData['player_2']['list_of_played_cards'] = array();
-        file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+        $currentGameData['player_2']['list_of_played_cards'] = array(); // Reset the unknown played cards.
     } else{
         $newData['otherPlayerScore'] = $currentGameData['player_1']['score'];
         $newData['lastRevealedCards'] = $currentGameData['player_1']['list_of_played_cards'];
-        $newData['player_1']['list_of_played_cards'] = array();
-        file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+        $currentGameData['player_1']['list_of_played_cards'] = array(); // Reset the unknown played cards.
     }
+    file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
     return $newData;
 }
 

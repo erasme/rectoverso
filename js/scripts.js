@@ -4,6 +4,7 @@ let player_id = '';
 let console_verbosity = false; // Default value which are going to be replaced by the server value (from configuration.json).
 let chosen_language = 'en'; // Default value which are going to be replaced by the server value (from configuration.json).
 let texts = {}; // Contains all texts displayed on this page.
+let cardPairs = '';
 
 
 
@@ -140,9 +141,7 @@ function selectCard(domObject){
      */
 
     // Already revealed -> Ignore.
-    if (domObject.classList.contains('flipped-card')){
-        return;
-    } else {
+    if (! domObject.classList.contains('flipped-card')){
         domObject.classList.add('flipped-card');
 
         if(lastPlayedCard===''){ // Not revealed card and first in a row
