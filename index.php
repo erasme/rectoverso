@@ -93,6 +93,7 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
     file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
 }
 
+getUpdates('');
 
  /**
   * We want these informations :
@@ -112,20 +113,34 @@ function getUpdates($askingPlayerId=''){
 
     // What is the other player's score ?
     // Which cards do the other player chose to reveal and we did not see ?
+    $listOfPlayedCards = array();
     if( $currentGameData['player_1']['id'] == $askingPlayerId ){
         $newData['otherPlayerScore'] = $currentGameData['player_2']['score'];
         $newData['lastRevealedCards'] = $currentGameData['player_2']['list_of_played_cards'];
-        $currentGameData['player_2']['list_of_played_cards'] = array(); // Reset the unknown played cards.
+
+        foreach ($currentGameData['player_2']['list_of_played_cards'] as $card){
+            $card['has_been_shown_to_other_player'] = true;
+            array_push($listOfPlayedCards, $card);
+        }
+        $currentGameData['player_2']['list_of_played_cards']=$listOfPlayedCards;
     } else{
         $newData['otherPlayerScore'] = $currentGameData['player_1']['score'];
         $newData['lastRevealedCards'] = $currentGameData['player_1']['list_of_played_cards'];
-        $currentGameData['player_1']['list_of_played_cards'] = array(); // Reset the unknown played cards.
+
+        foreach ($currentGameData['player_1']['list_of_played_cards'] as $card){
+            $card['has_been_shown_to_other_player'] = true;
+            array_push($listOfPlayedCards, $card);
+        }
+        $currentGameData['player_1']['list_of_played_cards']=$listOfPlayedCards;
     }
     file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
     return $newData;
 }
 
 
+function setAllPlayedCardsAsSeenByOpponent($askinPlayer=''){
+
+}
 
 /**
  *When a game is finished, we should make text files back to normal.

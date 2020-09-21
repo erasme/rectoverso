@@ -1,15 +1,11 @@
 {
   "has_game_started":"false",
   "is_game_finished":"false",
-  "player_1":{
-    "id":"",
-    "list_of_played_cards":
-    [
+  "player_1":
+  {"id":"toto",
+    "list_of_played_cards":[
       {
-        "id":"masuperurl",
-        "has_been_shown_to_other_player":false
+        "id":"",
+        "has_been_shown_to_other_player":true
       }
-    ],
-    "score":0
-  },
-  "player_2":{"id":"","list_of_played_cards":[{"id":"","has_been_shown_to_other_player":"false"}],"score":0}}
+    ],"score":0},"player_2":{"id":"","list_of_played_cards":[{"id":"","has_been_shown_to_other_player":true}],"score":0}}
