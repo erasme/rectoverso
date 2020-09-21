@@ -46,6 +46,12 @@ if (
         case 'check_updates':
             echo json_encode(getUpdates($_GET['playerId']));
             break;
+        case 'a_card_has_been_played':
+            // When a card is played, we must record it.
+            if( isset($_GET['cardPlayed']) ){
+                recordPlayedCard($_GET['playerId'], $_GET['cardPlayed']);
+            }
+            break;
         case 'is_game_finished':
             $endGame = file_get_contents('gameFinished.txt');
             if($endGame=='true'){
@@ -68,7 +74,25 @@ else{
     echo 'Error : your request must contain at least an identifier and a message.';
 }
 
-//getUpdates('nD6ZUYObUO');
+ /**
+  * Each time a card is played, this function is called. Its endeavour is to record all played cards and if they have
+  * already been sent to the opponent.
+  * @param string $playerId
+  * @param string $urlPlayedImage
+  */
+function recordPlayedCard($playerId='', $urlPlayedImage=''){
+    $currentGameData = json_decode(file_get_contents('current_game.json'), true);
+    $playedCard = array('id'=>$urlPlayedImage, 'has_been_shown_to_other_player'=>false);
+
+    if ($currentGameData['player_1']['id'] == $playerId){
+        array_push($currentGameData['player_1']['list_of_played_cards'], $playedCard);
+
+    } elseif ($currentGameData['player_2']['id'] == $playerId) {
+        array_push($currentGameData['player_2']['list_of_played_cards'], $urlPlayedImage);
+    }
+    file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+}
+
 
  /**
   * We want these informations :

@@ -146,7 +146,7 @@ function selectCard(domObject){
     // Already revealed -> Ignore.
     if (! domObject.classList.contains('flipped-card')){
         domObject.classList.add('flipped-card');
-        // todo ajaxrequest "a card has been played"
+        ajaxRequest(emptyCallback, 'a_card_has_been_played', player_id, true, domObject.firstElementChild.nextElementSibling.style.backgroundImage);
 
         if(lastPlayedCard ===''){ // Not revealed card and first in a row
             lastPlayedCard = domObject;
@@ -176,6 +176,15 @@ function selectCard(domObject){
         }
     }
 }
+
+/**
+ * THis function does nothing and is here to catch all unnecessary callbacks... until i find a better idea.
+ * @param args
+ */
+function emptyCallback(args=''){
+    console.log('callback : ' + args);
+}
+
 
 /**
  * Updates the score at the bottom of the page.
@@ -252,7 +261,7 @@ function createIdentifier(identifier_length=10){
 /**
  * This is our Ajax controller. It takes care of all messages sent to the server and send back responses.
  */
-function ajaxRequest(callback_function, request='', player_id='', asynchronicity= true) {
+function ajaxRequest(callback_function, request='', player_id='', asynchronicity= true, extra_parameter='') {
     let url;
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
@@ -284,6 +293,13 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
                 //console.log('The player ' + player_id + ' is asking for new updates.');
             }
             url = 'index.php?message=check_updates&playerId='+ player_id.toString();
+            break;
+        case 'a_card_has_been_played':
+            if (console_verbosity){
+                console.log('A card has been played.');
+                console.log(extra_parameter);
+            }
+            url = 'index.php?message=a_card_has_been_played&playerId='+ player_id.toString() + '&cardPlayed=' + extra_parameter;
             break;
         case 'is_game_finished':
             if (console_verbosity){
