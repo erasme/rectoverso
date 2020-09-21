@@ -4,8 +4,9 @@ let player_id = '';
 let console_verbosity = false; // Default value which are going to be replaced by the server value (from configuration.json).
 let chosen_language = 'en'; // Default value which are going to be replaced by the server value (from configuration.json).
 let texts = {}; // Contains all texts displayed on this page.
-let cardPairs = '';
-
+let cards = {}; // Contains all our (shuffled) cards.
+let lastPlayedCard = ''; // The name of the last played card.
+let current_score = 0; // The current player's score.
 
 
 /**
@@ -41,12 +42,12 @@ function askForGame(state='WAIT'){
         document.getElementById('textModalBox').innerText = texts['error_from_server'];
     } else if(typeof state === 'string'){
         // Both players are recorded as ready to play on the server. We can start.
-        cardPairs=JSON.parse(state);
+        cards=JSON.parse(state);
         if(console_verbosity){
             console.log('The cards which we play with are : ')
-            console.log(cardPairs);
+            console.log(cards);
         }
-        startGame(cardPairs);
+        startGame(cards);
     } else {
         console.log('Unknown state. What is happening ?');
     }
@@ -89,8 +90,10 @@ function startGame(state){
  * @param newData
  */
 function checkForUpdatedData(newData={}){
-    console.log(newData);
+    //console.log(newData);
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
+
+    // todo : at each update, we must display cards played by the opponent and update the score.
 }
 
 
@@ -143,10 +146,11 @@ function selectCard(domObject){
     // Already revealed -> Ignore.
     if (! domObject.classList.contains('flipped-card')){
         domObject.classList.add('flipped-card');
+        // todo ajaxrequest "a card has been played"
 
-        if(lastPlayedCard===''){ // Not revealed card and first in a row
+        if(lastPlayedCard ===''){ // Not revealed card and first in a row
             lastPlayedCard = domObject;
-        } else{ // Not revealed card and second in a row.
+        } else { // Not revealed card and second in a row.
             // We must check if both revealed cards are from the same pair.
             if (areTheseCardsTheInTheSamePair(lastPlayedCard, domObject)){
                 /* The same pair :
@@ -156,8 +160,9 @@ function selectCard(domObject){
                 - is the game won ?
                  */
                 lastPlayedCard = '';
-                score+=1;
-                if (score===9){
+                current_score+=1;
+                updateScore(1, current_score);
+                if (current_score === 9){
                     claimVictory();
                 }
             } else{
@@ -169,6 +174,19 @@ function selectCard(domObject){
                 setTimeout(() => {mask2Cards(domObject, lastPlayedCard)}, 1000);
             }
         }
+    }
+}
+
+/**
+ * Updates the score at the bottom of the page.
+ * @param player_number The player to modify. 1 = current player, 2 = opponent.
+ * @param player_score The new score to inject.
+ */
+function updateScore(player_number= 1, player_score = 0){
+    if (player_number){ // If we want to modify player 1's score.
+        document.getElementById('p1').innerText = current_score;
+    } else {
+        document.getElementById('p2').innerText = current_score;
     }
 }
 
@@ -201,14 +219,16 @@ function mask2Cards(domObject1, domObject2){
 function areTheseCardsTheInTheSamePair(card1='', card2=''){
     const urlData1 = card1.firstElementChild.nextElementSibling.style.backgroundImage;
     const cardUrl1 = urlData1.substring(5, urlData1.length-2);
-    //console.log(cardUrl1);
+    console.log(cardUrl1);
 
     const urlData2 = card2.firstElementChild.nextElementSibling.style.backgroundImage;
     const cardUrl2 = urlData2.substring(5, urlData2.length-2);
-    //console.log(cardUrl2);
+    console.log(cardUrl2);
 
     const path1 = cardUrl1.split('/' );
     const path2 = cardUrl2.split('/' );
+    console.log(path1);
+    console.log(path2);
     return path1[2] === path2[2];
 }
 
@@ -261,7 +281,7 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
             break;
         case 'check_updates':
             if (console_verbosity){
-                console.log('The player ' + player_id + ' is asking for new updates.');
+                //console.log('The player ' + player_id + ' is asking for new updates.');
             }
             url = 'index.php?message=check_updates&playerId='+ player_id.toString();
             break;
