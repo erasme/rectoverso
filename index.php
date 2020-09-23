@@ -46,6 +46,11 @@ if (
         case 'check_updates':
             echo json_encode(getUpdates($_GET['playerId']));
             break;
+        case 'i_scored':
+            if( isset($_GET['score']) ){
+                updatePlayerScore($_GET['playerId'], $_GET['score']);
+            }
+            break;
         case 'a_card_has_been_played':
             // When a card is played, we must record it.
             if( isset($_GET['cardPlayed']) ){
@@ -74,7 +79,23 @@ else{
     echo 'Error : your request must contain at least an identifier and a message.';
 }
 
-//recordPlayedCard('toto', 'nelson');
+
+ /**
+  * Records the score of a certain player using its id.
+  * @param string $idPlayer
+  * @param int $scorePlayer
+  */
+function updatePlayerScore($idPlayer='', $scorePlayer=0){
+    $currentGameData = json_decode(file_get_contents('current_game.json'), true);
+    if ($currentGameData['player_1']['id'] === $idPlayer){
+        $currentGameData['player_1']['score'] = $scorePlayer;
+    } else{
+        $currentGameData['player_2']['score'] = $scorePlayer;
+    }
+    file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+}
+
+
 
  /**
   * Each time a card is played, this function is called. Its endeavour is to record all played cards and if they have
@@ -103,7 +124,6 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
 }
 
 
-//getUpdates('');
  /**
   * We want these informations :
   * - is the game finished ? (i.e. if the other player has already finished)
@@ -153,9 +173,6 @@ function getUpdates($askingPlayerId=''){
 }
 
 
-function setAllPlayedCardsAsSeenByOpponent($askinPlayer=''){
-
-}
 
 /**
  *When a game is finished, we should make text files back to normal.

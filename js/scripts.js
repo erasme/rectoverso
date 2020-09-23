@@ -110,7 +110,9 @@ function checkForUpdatedData(newData={}){
                     setTimeout(() => {maskACard(cardToDisplay)}, 1000); // And hide it one second later.
                 }
             }
-            // todo update opponenet's score
+            console.log('other player score is : ');
+            console.log(myData.otherPlayerScore);
+            updateScore(2, myData.otherPlayerScore);
         } else {
             // todo : the game is finished. What must be done ?
         }
@@ -225,6 +227,7 @@ function selectCard(domObject){
                 lastPlayedCard = '';
                 current_score+=1;
                 updateScore(1, current_score);
+                ajaxRequest(emptyCallback, 'i_scored', player_id, true, current_score);
                 if (current_score === 9){
                     claimVictory();
                 }
@@ -255,10 +258,13 @@ function emptyCallback(args=''){
  * @param player_score The new score to inject.
  */
 function updateScore(player_number= 1, player_score = 0){
-    if (player_number){ // If we want to modify player 1's score.
-        document.getElementById('p1').innerText = current_score;
+    if (player_number===1){ // If we want to modify player 1's score.
+        console.log('i must update p1\'s score to ' + player_score);
+        //document.getElementById('p1').innerText = current_score;
+        document.getElementById('p1').innerHTML = player_score.toString();
     } else {
-        document.getElementById('p2').innerText = current_score;
+        console.log('i must update p2\'s score to ' + player_score);
+        document.getElementById('p2').innerHTML = player_score.toString();
     }
 }
 
@@ -356,6 +362,9 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
                 //console.log('The player ' + player_id + ' is asking for new updates.');
             }
             url = 'index.php?message=check_updates&playerId='+ player_id.toString();
+            break;
+        case 'i_scored':
+            url = 'index.php?message=i_scored&playerId='+ player_id.toString() + '&score=' + extra_parameter;
             break;
         case 'a_card_has_been_played':
             if (console_verbosity){
