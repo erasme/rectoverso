@@ -1,4 +1,5 @@
-// todo afficher scores
+// todo display defeat
+// todo proper restart of the game.
 // todo carrés de couleur sur les paires déjà trouvées afin de mieux les différencier.
 let player_id = '';
 let console_verbosity = false; // Default value which are going to be replaced by the server value (from configuration.json).
