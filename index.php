@@ -74,6 +74,8 @@ else{
     echo 'Error : your request must contain at least an identifier and a message.';
 }
 
+//recordPlayedCard('toto', 'nelson');
+
  /**
   * Each time a card is played, this function is called. Its endeavour is to record all played cards and if they have
   * already been sent to the opponent.
@@ -84,17 +86,24 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
     $currentGameData = json_decode(file_get_contents('current_game.json'), true);
     $playedCard = array('id'=>$urlPlayedImage, 'has_been_shown_to_other_player'=>false);
 
+
     if ($currentGameData['player_1']['id'] == $playerId){
+        var_dump($playedCard);
         array_push($currentGameData['player_1']['list_of_played_cards'], $playedCard);
 
+
     } elseif ($currentGameData['player_2']['id'] == $playerId) {
-        array_push($currentGameData['player_2']['list_of_played_cards'], $urlPlayedImage);
+        var_dump($playedCard);
+        array_push($currentGameData['player_2']['list_of_played_cards'], $playedCard);
+    } else{
+        echo 'problèèèèèèèèèèèèèèèèèèèèèèèèèèèème !';
     }
+
     file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
 }
 
-getUpdates('');
 
+//getUpdates('');
  /**
   * We want these informations :
   * - is the game finished ? (i.e. if the other player has already finished)
@@ -106,7 +115,6 @@ getUpdates('');
 function getUpdates($askingPlayerId=''){
     $newData = [];
     $currentGameData = json_decode(file_get_contents('current_game.json'), true);
-    //var_dump($currentGameData);
 
     // Is game finished ?
     $newData['is_game_finished'] = $currentGameData['is_game_finished'];
@@ -118,20 +126,27 @@ function getUpdates($askingPlayerId=''){
         $newData['otherPlayerScore'] = $currentGameData['player_2']['score'];
         $newData['lastRevealedCards'] = $currentGameData['player_2']['list_of_played_cards'];
 
-        foreach ($currentGameData['player_2']['list_of_played_cards'] as $card){
-            $card['has_been_shown_to_other_player'] = true;
-            array_push($listOfPlayedCards, $card);
+        if($currentGameData['player_2']['list_of_played_cards'] != array()){
+            // We put all cards as seen by the opponent.
+            foreach ($currentGameData['player_2']['list_of_played_cards'] as $card){
+                $newCard = array('id'=>$card['id'], 'has_been_shown_to_other_player'=>true);
+                array_push($listOfPlayedCards, $newCard);
+            }
+            $currentGameData['player_2']['list_of_played_cards']=$listOfPlayedCards;
         }
-        $currentGameData['player_2']['list_of_played_cards']=$listOfPlayedCards;
+
     } else{
         $newData['otherPlayerScore'] = $currentGameData['player_1']['score'];
         $newData['lastRevealedCards'] = $currentGameData['player_1']['list_of_played_cards'];
 
-        foreach ($currentGameData['player_1']['list_of_played_cards'] as $card){
-            $card['has_been_shown_to_other_player'] = true;
-            array_push($listOfPlayedCards, $card);
+        if($currentGameData['player_1']['list_of_played_cards'] != array()){
+            // We put all cards as seen by the opponent.
+            foreach ($currentGameData['player_1']['list_of_played_cards'] as $card){
+                $newCard = array('id'=>$card['id'], 'has_been_shown_to_other_player'=>true);
+                array_push($listOfPlayedCards, $newCard);
+            }
+            $currentGameData['player_1']['list_of_played_cards']=$listOfPlayedCards;
         }
-        $currentGameData['player_1']['list_of_played_cards']=$listOfPlayedCards;
     }
     file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
     return $newData;

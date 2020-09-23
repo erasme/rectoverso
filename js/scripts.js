@@ -90,11 +90,73 @@ function startGame(state){
  * @param newData
  */
 function checkForUpdatedData(newData={}){
-    //console.log(newData);
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
-
-    // todo : at each update, we must display cards played by the opponent and update the score.
+    /*
+     {
+     "is_game_finished":"false",
+     "otherPlayerScore":0,
+     "lastRevealedCards":[{"id":"url(\"images_sets\/images_rectoverso\/2\/0.jpg\")","has_been_shown_to_other_player":true},{"id":"url(\"images_sets\/images_rectoverso\/7\/0.jpg\")","has_been_shown_to_other_player":true},{"id":"url(\"images_sets\/images_rectoverso\/8\/1.jpg\")","has_been_shown_to_other_player":true},{"id":"url(\"images_sets\/images_rectoverso\/4\/0.jpg\")","has_been_shown_to_other_player":true}]}
+     */
+    if (typeof newData === 'string') {
+        const myData = JSON.parse(newData);
+        if(myData.is_game_finished === false){
+            // The game is not finished, we only have to :
+            // - show for one second the card played by the opponent.
+            // - update the opponent score.
+            for (const playedCard in myData.lastRevealedCards) {
+                if(myData.lastRevealedCards[playedCard].has_been_shown_to_other_player === false){
+                    const cardToDisplay = getCardByurl(myData.lastRevealedCards[playedCard].id);
+                    revealCard(cardToDisplay); // Reveal the card.
+                    setTimeout(() => {maskACard(cardToDisplay)}, 1000); // And hide it one second later.
+                }
+            }
+            // todo update opponenet's score
+        } else {
+            // todo : the game is finished. What must be done ?
+        }
+    }
 }
+
+
+/**
+ * Masks a card by removing a CSS class in its DOM object.
+ * @param domObject
+ */
+function maskACard(domObject={}){
+    domObject.classList.remove('flipped-card');
+}
+
+/**
+ * Reveals a card in the game by adding a CSS class do the DOM object..
+ * @param domObjectCard
+ */
+function revealCard(domObjectCard={}){
+    if (! domObjectCard.classList.contains('flipped-card')) {
+        domObjectCard.classList.add('flipped-card');
+    }
+}
+
+
+
+/**
+ * Using a url, we can retrieve the corresponding DOM object representing this card.
+ * @param urlValue
+ * @return {boolean|*}
+ */
+function getCardByurl(urlValue=''){
+    const cards = document.getElementsByClassName("flip-card-back");
+    for (const card in cards){
+        try { // Not all items are dom objects (and so not having these attributes)
+            if(cards[card].style.backgroundImage === urlValue){
+                return cards[card].parentElement;
+            }
+        } catch (error){
+            // We pass eventual errors iterating meaningless items of the dom collection.
+        }
+    }
+    return false;
+}
+
 
 
 function displayDefeat(){
@@ -128,6 +190,7 @@ function placePictures(pictures= {}){
         i+=1;
     }
 }
+
 
 /**
  * Called when a card has been selected. It decides what happens next.
@@ -178,11 +241,11 @@ function selectCard(domObject){
 }
 
 /**
- * THis function does nothing and is here to catch all unnecessary callbacks... until i find a better idea.
+ * This function does nothing and is here to catch all unnecessary callbacks... until i find a better idea.
  * @param args
  */
 function emptyCallback(args=''){
-    console.log('callback : ' + args);
+    //console.log('callback : ' + args);
 }
 
 
