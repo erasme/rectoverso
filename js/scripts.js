@@ -175,10 +175,8 @@ function replaceModal(textToDisplay){
     const modal = document.getElementById('block_containing_modal_box_for_messages');
     modal.style.display='block';
 
-    //document.getElementById('textModalBox').innerText = texts['you_won'];
+    document.getElementById('textModalBox').innerText = textToDisplay;
 
-    const textModalBox = document.getElementById('textModalBox');
-    textModalBox.innerText = ''; // todo BUG mettre les textes de victoire et de défaite
 
     //document.location.reload(true);
 }
