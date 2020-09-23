@@ -68,7 +68,7 @@ if (
             }
             break;
         case 'i_won':
-            echo file_put_contents('gameFinished.txt', 'true');
+            declareGameAsFinished();
             break;
         default:
             echo 'an unknown message has been sent to me.';
@@ -77,6 +77,13 @@ if (
 }
 else{
     echo 'Error : your request must contain at least an identifier and a message.';
+}
+
+
+function declareGameAsFinished(){
+    $currentGameData = json_decode(file_get_contents('current_game.json'), true);
+    $currentGameData['is_game_finished']=true;
+    file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
 }
 
 

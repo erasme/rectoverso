@@ -91,12 +91,7 @@ function startGame(state){
  */
 function checkForUpdatedData(newData={}){
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
-    /*
-     {
-     "is_game_finished":"false",
-     "otherPlayerScore":0,
-     "lastRevealedCards":[{"id":"url(\"images_sets\/images_rectoverso\/2\/0.jpg\")","has_been_shown_to_other_player":true},{"id":"url(\"images_sets\/images_rectoverso\/7\/0.jpg\")","has_been_shown_to_other_player":true},{"id":"url(\"images_sets\/images_rectoverso\/8\/1.jpg\")","has_been_shown_to_other_player":true},{"id":"url(\"images_sets\/images_rectoverso\/4\/0.jpg\")","has_been_shown_to_other_player":true}]}
-     */
+
     if (typeof newData === 'string') {
         const myData = JSON.parse(newData);
         if(myData.is_game_finished === false){
@@ -106,19 +101,32 @@ function checkForUpdatedData(newData={}){
             for (const playedCard in myData.lastRevealedCards) {
                 if(myData.lastRevealedCards[playedCard].has_been_shown_to_other_player === false){
                     const cardToDisplay = getCardByurl(myData.lastRevealedCards[playedCard].id);
-                    revealCard(cardToDisplay); // Reveal the card.
-                    setTimeout(() => {maskACard(cardToDisplay)}, 1000); // And hide it one second later.
+                    if ( revealCard(cardToDisplay) ) {// Reveal the card.
+                        setTimeout(() => {maskACard(cardToDisplay)}, 1000); // And hide it one second later.
+                    }
                 }
             }
-            console.log('other player score is : ');
-            console.log(myData.otherPlayerScore);
             updateScore(2, myData.otherPlayerScore);
         } else {
-            // todo : the game is finished. What must be done ?
+            declareDefeat();
         }
     }
 }
 
+/**
+ * Displays the defeat screen to the player.
+ */
+function declareDefeat(){
+    replaceModal(translations[language].you_lost);
+}
+
+/**
+ * Declares the end of the game to the server and to the current player.
+ */
+function claimVictory(){
+    ajaxRequest(emptyCallback, 'i_won', player_id, true);
+    replaceModal(translations[language].you_won);
+}
 
 /**
  * Masks a card by removing a CSS class in its DOM object.
@@ -134,8 +142,11 @@ function maskACard(domObject={}){
  */
 function revealCard(domObjectCard={}){
     if (! domObjectCard.classList.contains('flipped-card')) {
+        console.log('i reveal the card.');
         domObjectCard.classList.add('flipped-card');
+        return true;
     }
+    return false;
 }
 
 
@@ -160,22 +171,14 @@ function getCardByurl(urlValue=''){
 }
 
 
-
-function displayDefeat(){
-    replaceModal('Vous avez perdu.');
-}
-
-
 function replaceModal(textToDisplay){
-    console.log(replaceModal.caller);
-
     const modal = document.getElementById('block_containing_modal_box_for_messages');
     modal.style.display='block';
 
     const textModalBox = document.getElementById('textModalBox');
     textModalBox.innerText = ''; // todo BUG mettre les textes de victoire et de défaite
 
-    document.location.reload(true);
+    //document.location.reload(true);
 }
 
 /**
@@ -259,22 +262,12 @@ function emptyCallback(args=''){
  */
 function updateScore(player_number= 1, player_score = 0){
     if (player_number===1){ // If we want to modify player 1's score.
-        console.log('i must update p1\'s score to ' + player_score);
-        //document.getElementById('p1').innerText = current_score;
         document.getElementById('p1').innerHTML = player_score.toString();
     } else {
-        console.log('i must update p2\'s score to ' + player_score);
         document.getElementById('p2').innerHTML = player_score.toString();
     }
 }
 
-function claimVictory(){
-    ajaxRequest(displayVictory, 'i_won', player_id);
-}
-
-function displayVictory(){
-    replaceModal('Vous avez gagné.');
-}
 
 /**
  *
@@ -297,16 +290,12 @@ function mask2Cards(domObject1, domObject2){
 function areTheseCardsTheInTheSamePair(card1='', card2=''){
     const urlData1 = card1.firstElementChild.nextElementSibling.style.backgroundImage;
     const cardUrl1 = urlData1.substring(5, urlData1.length-2);
-    console.log(cardUrl1);
 
     const urlData2 = card2.firstElementChild.nextElementSibling.style.backgroundImage;
     const cardUrl2 = urlData2.substring(5, urlData2.length-2);
-    console.log(cardUrl2);
 
     const path1 = cardUrl1.split('/' );
     const path2 = cardUrl2.split('/' );
-    console.log(path1);
-    console.log(path2);
     return path1[2] === path2[2];
 }
 
