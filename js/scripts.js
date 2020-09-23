@@ -117,7 +117,7 @@ function checkForUpdatedData(newData={}){
  * Displays the defeat screen to the player.
  */
 function declareDefeat(){
-    replaceModal(translations[language].you_lost);
+    replaceModal(texts['you_lost']);
 }
 
 /**
@@ -125,7 +125,7 @@ function declareDefeat(){
  */
 function claimVictory(){
     ajaxRequest(emptyCallback, 'i_won', player_id, true);
-    replaceModal(translations[language].you_won);
+    replaceModal(texts['you_won']);
 }
 
 /**
@@ -174,6 +174,8 @@ function getCardByurl(urlValue=''){
 function replaceModal(textToDisplay){
     const modal = document.getElementById('block_containing_modal_box_for_messages');
     modal.style.display='block';
+
+    //document.getElementById('textModalBox').innerText = texts['you_won'];
 
     const textModalBox = document.getElementById('textModalBox');
     textModalBox.innerText = ''; // todo BUG mettre les textes de victoire et de défaite
