@@ -57,16 +57,6 @@ if (
                 recordPlayedCard($_GET['playerId'], $_GET['cardPlayed']);
             }
             break;
-        case 'is_game_finished':
-            $endGame = file_get_contents('gameFinished.txt');
-            if($endGame=='true'){
-                echo 'true';
-                // Game is finished. Let's restart everything.
-                eraseAllData();
-            } else{
-                echo 'false';
-            }
-            break;
         case 'i_won':
             declareGameAsFinished();
             break;
@@ -80,9 +70,12 @@ else{
 }
 
 
+//declareGameAsFinished();
+
 function declareGameAsFinished(){
     $currentGameData = json_decode(file_get_contents('current_game.json'), true);
     $currentGameData['is_game_finished']=true;
+    var_dump($currentGameData);
     file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
 }
 

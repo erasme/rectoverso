@@ -8,7 +8,7 @@ let texts = {}; // Contains all texts displayed on this page.
 let cards = {}; // Contains all our (shuffled) cards.
 let lastPlayedCard = ''; // The name of the last played card.
 let current_score = 0; // The current player's score.
-
+let i_won = false;
 
 /**
  * When we ask for a game, we need first to have a unique identifier.
@@ -109,7 +109,9 @@ function checkForUpdatedData(newData={}){
             }
             updateScore(2, myData.otherPlayerScore);
         } else {
-            declareDefeat();
+            if (!i_won){
+                declareDefeat();
+            }
         }
     }
 }
@@ -126,6 +128,7 @@ function declareDefeat(){
  */
 function claimVictory(){
     ajaxRequest(emptyCallback, 'i_won', player_id, true);
+    i_won = true;
     replaceModal(texts['you_won']);
 }
 
@@ -362,12 +365,6 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
                 console.log(extra_parameter);
             }
             url = 'index.php?message=a_card_has_been_played&playerId='+ player_id.toString() + '&cardPlayed=' + extra_parameter;
-            break;
-        case 'is_game_finished':
-            if (console_verbosity){
-                console.log('The player ' + player_id + ' is asking if the game has been won by the other player.');
-            }
-            url = 'index.php?message=is_game_finished&playerId='+ player_id.toString();
             break;
         case 'i_won':
             if (console_verbosity){
