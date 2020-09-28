@@ -1,6 +1,3 @@
-// todo display defeat
-// todo proper restart of the game.
-// todo carrés de couleur sur les paires déjà trouvées afin de mieux les différencier.
 let player_id = '';
 let console_verbosity = false; // Default value which are going to be replaced by the server value (from configuration.json).
 let chosen_language = 'en'; // Default value which are going to be replaced by the server value (from configuration.json).
@@ -94,6 +91,7 @@ function checkForUpdatedData(newData={}){
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
 
     if (typeof newData === 'string') {
+        console.log(newData);
         const myData = JSON.parse(newData);
         if(myData.is_game_finished === false){
             // The game is not finished, we only have to :
@@ -146,13 +144,11 @@ function maskACard(domObject={}){
  */
 function revealCard(domObjectCard={}){
     if (! domObjectCard.classList.contains('flipped-card')) {
-        console.log('i reveal the card.');
         domObjectCard.classList.add('flipped-card');
         return true;
     }
     return false;
 }
-
 
 
 /**
@@ -180,9 +176,6 @@ function replaceModal(textToDisplay){
     modal.style.display='block';
 
     document.getElementById('textModalBox').innerText = textToDisplay;
-
-
-    //document.location.reload(true);
 }
 
 /**
@@ -355,6 +348,9 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
                 //console.log('The player ' + player_id + ' is asking for new updates.');
             }
             url = 'index.php?message=check_updates&playerId='+ player_id.toString();
+            break;
+        case 'restart_game':
+            url = 'index.php?message=restart_game&playerId='+ player_id.toString();
             break;
         case 'i_scored':
             url = 'index.php?message=i_scored&playerId='+ player_id.toString() + '&score=' + extra_parameter;

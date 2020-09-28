@@ -60,6 +60,9 @@ if (
         case 'i_won':
             declareGameAsFinished();
             break;
+        case 'restart_game':
+            restartGame();
+            break;
         default:
             echo 'an unknown message has been sent to me.';
             break;
@@ -70,12 +73,20 @@ else{
 }
 
 
-//declareGameAsFinished();
+ /**
+  * Resarts the game by writing defaults values in the current-game.json file.
+  */
+function restartGame(){
+    file_put_contents('current_game.json', file_get_contents('data/current_game_empty.json'), LOCK_EX);
+}
 
+
+ /**
+  * Declares the game as finished in the current_game.json
+  */
 function declareGameAsFinished(){
     $currentGameData = json_decode(file_get_contents('current_game.json'), true);
     $currentGameData['is_game_finished']=true;
-    var_dump($currentGameData);
     file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
 }
 
@@ -175,18 +186,6 @@ function getUpdates($askingPlayerId=''){
 
 
 /**
- *When a game is finished, we should make text files back to normal.
- */
-function eraseAllData(){
-    sleep(3);
-    // state game back to false.
-    file_put_contents('gameFinished.txt', 'false');
-    // player ids back to empty
-    file_put_contents('player_queue.txt', '');
-}
-
-
-/**
  * Can we give to the asking player the signal to start playing ?
  * @param string $playerId The id of the demanding player.
  * @return string WAIT|ERROR|json_pairs
@@ -195,8 +194,13 @@ function canIStart($playerId=''){
     $playerId = htmlentities($playerId, ENT_QUOTES);
 
     try {
-        // Let's test all cases.
         $gameData = json_decode(file_get_contents('current_game.json'), true);
+        // First of all, we just check if a game has already been finished. If yes, let's reset the data.
+        if($gameData['is_game_finished']){
+            restartGame();
+        }
+
+        // Let's test all cases.
 
         // Both slots are free.
         if($gameData['player_1']['id'] == '' AND $gameData['player_2']['id'] == ''){
@@ -243,7 +247,7 @@ function canIStart($playerId=''){
             }
             // And there is no free slot. WHAAAAAAAAT-> big problem. -> throw error
             else{
-                echo 'ERROR 1';
+                restartGame();
                 return;
             }
         }

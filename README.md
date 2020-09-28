@@ -77,3 +77,10 @@ situé à la racine.
 
 git pull
 chmod 777 sur player_queue.txt
+
+
+
+## TODOS 
+
+- Use sqlite instead of json file...
+- when a pair of cards has been correctly fount, give them an appropriate design ie the fount pairs are clearly distinct of played cards.
