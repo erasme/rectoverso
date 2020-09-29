@@ -187,6 +187,7 @@ function getUpdates($askingPlayerId=''){
 
 
 canIStart('toto');
+canIStart('titi');
 
 /**
  * Can we give to the asking player the signal to start playing ?
@@ -195,92 +196,49 @@ canIStart('toto');
  */
 function canIStart($playerId=''){
     $playerId = htmlentities($playerId, ENT_QUOTES);
-
     $db = new DataBaseConnection();
     $dbConnexion = $db->getDBConnection();
     $stmt = $dbConnexion->prepare("SELECT * FROM games");
     $stmt->execute(array());
     $lastEntryGame = $stmt->fetch();
 
-    var_dump($lastEntryGame);
-
-
     if(!$lastEntryGame OR $lastEntryGame['is_game_finished']){ // empty database OR last game is finished -> create a brand new game.
         $newGame = $dbConnexion->prepare("INSERT INTO games (player1) VALUES (:player1)");
         $newGame->execute(array(
             'player1'=> $playerId,
         ));
-    }
-
-
-
-    if($lastEntryGame['player1']){
-        echo 'toto';
-    }
-
-
-
-    try {
-        $gameData = json_decode(file_get_contents('current_game.json'), true);
-        // First of all, we just check if a game has already been finished. If yes, let's reset the data.
-        if($gameData['is_game_finished']){
-            restartGame();
-        }
-
-        // Let's test all cases.
-
-        // Both slots are free.
-        if($gameData['player_1']['id'] == '' AND $gameData['player_2']['id'] == ''){
-            // Subscribe the user in the file.
-            $gameData['player_1']['id'] = $playerId;
-            file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
-            // And we can already select the cards.
-            selectCards();
+    } elseif($lastEntryGame['player1']==$playerId OR $lastEntryGame['player2']==$playerId){ // Player already recorded as waiting for a new game.
+        // Is the other player already recorded too ?
+        if($lastEntryGame['player1']==null OR $lastEntryGame['player2']==null){ // The other player is not here -> WAIT
             echo 'WAIT';
-            return;
-        }
-
-        // Already inside
-        elseif($gameData['player_1']['id'] == $playerId OR $gameData['player_2']['id'] == $playerId){
-            // And a slot is sill free.
-            if($gameData['player_1']['id'] == '' OR $gameData['player_2']['id'] == ''){
-                echo 'WAIT';
-                return;
-            }
-            // And the other slot is not free.
-            else{
-                // So the game has started.
-                $gameData = json_decode(file_get_contents('current_game.json'), true);
-                $gameData['has_game_started']='true';
-                // We declare the game started in the current_game.json
-                file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
-                // We send the cards to the player.
-                echo json_encode($gameData['cards']);
-                return;
+        } else{ // The other player is already recorded -> give the cards
+            if($lastEntryGame['list_of_cards']==null){
+                $cards = json_encode(selectCards());
+                $newGame = $dbConnexion->prepare("UPDATE games SET list_of_cards=:cards, has_game_started=:startGame WHERE id_game=:id_game");
+                $newGame->execute(array(
+                    'startGame'=> true,
+                    'cards'    => $cards,
+                    'id_game'  => $lastEntryGame['id_game'],
+                ));
+                echo $cards;
+            } else{
+                echo $lastEntryGame['list_of_cards'];
             }
         }
-        // Not inside.
-        else{
-            // And there is still a free slot.
-            if($gameData['player_1']['id'] == '' OR $gameData['player_2']['id'] == ''){
-                if($gameData['player_1']['id'] == ''){
-                    $gameData['player_1']['id'] = $playerId;
-                } else{
-                    $gameData['player_2']['id'] = $playerId;
-                }
-                file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
-                echo 'WAIT';
-                return;
-            }
-            // And there is no free slot. WHAAAAAAAAT-> big problem. -> throw error
-            else{
-                restartGame();
-                return;
-            }
+    } else{ // Player not recorded in the new game -> insert him in the current game, declare game as started and give him cards.
+        if($lastEntryGame['list_of_cards']==null){
+            $cards = json_encode(selectCards());
+            $newGame = $dbConnexion->prepare("UPDATE games SET player2=:player2, has_game_started=:startGame, list_of_cards=:cards WHERE id_game=:id_game");
+            $newGame->execute(array(
+                'player2'  => $playerId,
+                'startGame'=> true,
+                'cards'    => $cards,
+                'id_game'  => $lastEntryGame['id_game'],
+            ));
+            echo $cards;
+        } else{
+            echo $lastEntryGame['list_of_cards'];
         }
-    } catch (Exception $e){
-        echo 'ERROR 2';
-        return;
     }
 }
 
@@ -322,11 +280,14 @@ function selectCards(){
             array_push($listOfCards, $pair[1]);
         }
         shuffle($listOfCards); // We have now all our cards shuffled in a pile.
-
+        return $listOfCards;
+        /* todo delete
         // Let's record it in the current_game data.
         $gameData = json_decode(file_get_contents('current_game.json'), true);
         $gameData['cards'] = $listOfCards;
         file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
+         *
+         */
     } else{
         return 'ERROR 3'; // not enough pairs of cards.
     }
