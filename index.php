@@ -152,6 +152,8 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
 }
 
 
+getUpdates('MYog2T8Z6y');
+
  /**
   * We want these informations :
   * - is the game finished ? (i.e. if the other player has already finished)
@@ -172,9 +174,17 @@ function getUpdates($askingPlayerId=''){
     if($askingPlayerId == $lastEntryGame['player1']){ // The player 1 wants player 2's data.
         $updates['otherPlayerScore'] = $lastEntryGame['player2_score'];
         $updates['lastRevealedCards'] = json_decode($lastEntryGame['player2_played_cards'], true);
+        var_dump($updates);
+        // Sets all played cards as revealed.
+        // todo
     } else{ // The player 2 wants player 1's data.
-
+        $updates['otherPlayerScore'] = $lastEntryGame['player1_score'];
+        $updates['lastRevealedCards'] = json_decode($lastEntryGame['player1_played_cards'], true);
+        var_dump($updates);
+        // Sets all played cards as revealed.
+        // todo
     }
+    return $updates;
 
     $newData = [];
     $currentGameData = json_decode(file_get_contents('current_game.json'), true);
