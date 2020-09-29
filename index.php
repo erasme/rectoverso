@@ -109,7 +109,6 @@ function updatePlayerScore($idPlayer='', $scorePlayer=0){
 }
 
 
-
  /**
   * Each time a card is played, this function is called. Its endeavour is to record all played cards and if they have
   * already been sent to the opponent.
@@ -117,23 +116,39 @@ function updatePlayerScore($idPlayer='', $scorePlayer=0){
   * @param string $urlPlayedImage
   */
 function recordPlayedCard($playerId='', $urlPlayedImage=''){
-    $currentGameData = json_decode(file_get_contents('current_game.json'), true);
-    $playedCard = array('id'=>$urlPlayedImage, 'has_been_shown_to_other_player'=>false);
+    $db = new DataBaseConnection();
+    $dbConnexion = $db->getDBConnection();
+    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt->execute(array());
+    $lastEntryGame = $stmt->fetch();
 
+    if($lastEntryGame['player1'] == $playerId){
+        if($lastEntryGame['player1_played_cards']==null){ // No card has been recorded yet.
+            $playedCards = array();
+        } else{
+            $playedCards = json_decode($lastEntryGame['player1_played_cards'], true);
+        }
+        array_push($playedCards, $urlPlayedImage);
 
-    if ($currentGameData['player_1']['id'] == $playerId){
-        var_dump($playedCard);
-        array_push($currentGameData['player_1']['list_of_played_cards'], $playedCard);
-
-
-    } elseif ($currentGameData['player_2']['id'] == $playerId) {
-        var_dump($playedCard);
-        array_push($currentGameData['player_2']['list_of_played_cards'], $playedCard);
+        $newCard = $dbConnexion->prepare("UPDATE games SET player1_played_cards=:player1_played_cards WHERE id_game=:id_game");
+        $newCard->execute(array(
+            'player1_played_cards' => json_encode($playedCards),
+            'id_game'              => $lastEntryGame['id_game'],
+        ));
     } else{
-        echo 'problèèèèèèèèèèèèèèèèèèèèèèèèèèèème !';
-    }
+        if($lastEntryGame['player2_played_cards']==null){ // No card has been recorded yet.
+            $playedCards = array();
+        } else{
+            $playedCards = json_decode($lastEntryGame['player2_played_cards'], true);
+        }
+        array_push($playedCards, $urlPlayedImage);
 
-    file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+        $newCard = $dbConnexion->prepare("UPDATE games SET player2_played_cards=:player2_played_cards WHERE id_game=:id_game");
+        $newCard->execute(array(
+            'player2_played_cards' => json_encode($playedCards),
+            'id_game'              => $lastEntryGame['id_game'],
+        ));
+    }
 }
 
 
@@ -279,13 +294,6 @@ function selectCards(){
         }
         shuffle($listOfCards); // We have now all our cards shuffled in a pile.
         return $listOfCards;
-        /* todo delete
-        // Let's record it in the current_game data.
-        $gameData = json_decode(file_get_contents('current_game.json'), true);
-        $gameData['cards'] = $listOfCards;
-        file_put_contents('current_game.json', json_encode($gameData), LOCK_EX);
-         *
-         */
     } else{
         return 'ERROR 3'; // not enough pairs of cards.
     }
