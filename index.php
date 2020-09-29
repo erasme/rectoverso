@@ -186,7 +186,7 @@ function getUpdates($askingPlayerId=''){
 }
 
 
-canIStart();
+canIStart('toto');
 
 /**
  * Can we give to the asking player the signal to start playing ?
@@ -200,8 +200,23 @@ function canIStart($playerId=''){
     $dbConnexion = $db->getDBConnection();
     $stmt = $dbConnexion->prepare("SELECT * FROM games");
     $stmt->execute(array());
-    $result = $stmt->fetch();
-    var_dump($result);
+    $lastEntryGame = $stmt->fetch();
+
+    var_dump($lastEntryGame);
+
+
+    if(!$lastEntryGame OR $lastEntryGame['is_game_finished']){ // empty database OR last game is finished -> create a brand new game.
+        $newGame = $dbConnexion->prepare("INSERT INTO games (player1) VALUES (:player1)");
+        $newGame->execute(array(
+            'player1'=> $playerId,
+        ));
+    }
+
+
+
+    if($lastEntryGame['player1']){
+        echo 'toto';
+    }
 
 
 
