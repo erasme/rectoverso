@@ -128,7 +128,7 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
         } else{
             $playedCards = json_decode($lastEntryGame['player1_played_cards'], true);
         }
-        array_push($playedCards, $urlPlayedImage);
+        array_push($playedCards, array($urlPlayedImage,false)); // False means the card has not been shown to the other player yet.
 
         $newCard = $dbConnexion->prepare("UPDATE games SET player1_played_cards=:player1_played_cards WHERE id_game=:id_game");
         $newCard->execute(array(
@@ -141,7 +141,7 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
         } else{
             $playedCards = json_decode($lastEntryGame['player2_played_cards'], true);
         }
-        array_push($playedCards, $urlPlayedImage);
+        array_push($playedCards, array($urlPlayedImage,false)); // False means the card has not been shown to the other player yet.
 
         $newCard = $dbConnexion->prepare("UPDATE games SET player2_played_cards=:player2_played_cards WHERE id_game=:id_game");
         $newCard->execute(array(
@@ -161,6 +161,21 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
   * @return array
   */
 function getUpdates($askingPlayerId=''){
+    $db = new DataBaseConnection();
+    $dbConnexion = $db->getDBConnection();
+    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt->execute(array());
+    $lastEntryGame = $stmt->fetch();
+
+    $updates['is_game_finished'] = $lastEntryGame['is_game_finished'];
+
+    if($askingPlayerId == $lastEntryGame['player1']){ // The player 1 wants player 2's data.
+        $updates['otherPlayerScore'] = $lastEntryGame['player2_score'];
+        $updates['lastRevealedCards'] = json_decode($lastEntryGame['player2_played_cards'], true);
+    } else{ // The player 2 wants player 1's data.
+
+    }
+
     $newData = [];
     $currentGameData = json_decode(file_get_contents('current_game.json'), true);
 
