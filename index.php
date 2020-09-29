@@ -13,6 +13,8 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
+require_once 'data/DataBaseConnection.php';
+
 /*
  * Pour une compréhension globale du fonctionnement du prototype, référez-vous eu readme.md
  *
@@ -184,6 +186,7 @@ function getUpdates($askingPlayerId=''){
 }
 
 
+canIStart();
 
 /**
  * Can we give to the asking player the signal to start playing ?
@@ -192,6 +195,15 @@ function getUpdates($askingPlayerId=''){
  */
 function canIStart($playerId=''){
     $playerId = htmlentities($playerId, ENT_QUOTES);
+
+    $db = new DataBaseConnection();
+    $dbConnexion = $db->getDBConnection();
+    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt->execute(array());
+    $result = $stmt->fetch();
+    var_dump($result);
+
+
 
     try {
         $gameData = json_decode(file_get_contents('current_game.json'), true);
