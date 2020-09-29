@@ -186,9 +186,6 @@ function getUpdates($askingPlayerId=''){
 }
 
 
-canIStart('toto');
-canIStart('titi');
-
 /**
  * Can we give to the asking player the signal to start playing ?
  * @param string $playerId The id of the demanding player.
@@ -207,6 +204,7 @@ function canIStart($playerId=''){
         $newGame->execute(array(
             'player1'=> $playerId,
         ));
+        echo 'WAIT';
     } elseif($lastEntryGame['player1']==$playerId OR $lastEntryGame['player2']==$playerId){ // Player already recorded as waiting for a new game.
         // Is the other player already recorded too ?
         if($lastEntryGame['player1']==null OR $lastEntryGame['player2']==null){ // The other player is not here -> WAIT

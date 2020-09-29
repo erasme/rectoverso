@@ -40,6 +40,7 @@ function askForGame(state='WAIT'){
         document.getElementById('textModalBox').innerText = texts['error_from_server'];
     } else if(typeof state === 'string'){
         // Both players are recorded as ready to play on the server. We can start.
+        console.log('state' + state);
         cards=JSON.parse(state);
         if(console_verbosity){
             console.log('The cards which we play with are : ')
