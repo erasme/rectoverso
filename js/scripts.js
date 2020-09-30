@@ -108,9 +108,12 @@ function checkForUpdatedData(newData={}){
             }
             updateScore(2, myData.otherPlayerScore);
         } else {
+            /* todo check if it should stay here
             if (!i_won){
+                console.log('toto');
                 declareDefeat();
             }
+            */
         }
     }
 }
