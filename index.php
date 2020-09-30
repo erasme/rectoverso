@@ -62,9 +62,6 @@ if (
         case 'i_won':
             declareGameAsFinished();
             break;
-        case 'restart_game':
-            restartGame();
-            break;
         default:
             echo 'an unknown message has been sent to me.';
             break;
@@ -76,20 +73,28 @@ else{
 
 
  /**
-  * Resarts the game by writing defaults values in the current-game.json file.
-  */
-function restartGame(){
-    file_put_contents('current_game.json', file_get_contents('data/current_game_empty.json'), LOCK_EX);
-}
-
-
- /**
   * Declares the game as finished in the current_game.json
   */
 function declareGameAsFinished(){
-    $currentGameData = json_decode(file_get_contents('current_game.json'), true);
-    $currentGameData['is_game_finished']=true;
-    file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
+    $db = new DataBaseConnection();
+    $dbConnexion = $db->getDBConnection();
+    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt->execute(array());
+    $lastEntryGame = $stmt->fetch();
+
+    $newScore = $dbConnexion->prepare("UPDATE games SET is_game_finished=:is_game_finished WHERE id_game=:id_game");
+    try {
+        $newScore->execute(array(
+            'is_game_finished' => 1,
+            'id_game'          => $lastEntryGame['id_game'],
+        ));
+    } catch (Exception $e){
+        // If you fail... try again...
+        $newScore->execute(array(
+            'is_game_finished' => 1,
+            'id_game'          => $lastEntryGame['id_game'],
+        ));
+    }
 }
 
 
@@ -211,10 +216,17 @@ function getUpdates($askingPlayerId=''){
             array_push($updatedCards, array($card[0], true));
         }
         $update = $dbConnexion->prepare("UPDATE games SET player2_played_cards=:player2_played_cards WHERE id_game=:id_game");
-        $update->execute(array(
-            'player2_played_cards' => json_encode($updatedCards),
-            'id_game'              => $lastEntryGame['id_game'],
-        ));
+        try {
+            $update->execute(array(
+                'player2_played_cards' => json_encode($updatedCards),
+                'id_game'              => $lastEntryGame['id_game'],
+            ));
+        } catch (Exception $e){
+            $update->execute(array(
+                'player2_played_cards' => json_encode($updatedCards),
+                'id_game'              => $lastEntryGame['id_game'],
+            ));
+        }
     } else{ // The player 2 wants player 1's data.
         $updates['otherPlayerScore'] = $lastEntryGame['player1_score'];
         $updates['lastRevealedCards'] = json_decode($lastEntryGame['player1_played_cards'], true);
@@ -226,10 +238,17 @@ function getUpdates($askingPlayerId=''){
             array_push($updatedCards, array($card[0], true));
         }
         $update = $dbConnexion->prepare("UPDATE games SET player1_played_cards=:player1_played_cards WHERE id_game=:id_game");
-        $update->execute(array(
-            'player1_played_cards' => json_encode($updatedCards),
-            'id_game'              => $lastEntryGame['id_game'],
-        ));
+        try {
+            $update->execute(array(
+                'player1_played_cards' => json_encode($updatedCards),
+                'id_game'              => $lastEntryGame['id_game'],
+            ));
+        } catch (Exception $e){
+            $update->execute(array(
+                'player1_played_cards' => json_encode($updatedCards),
+                'id_game'              => $lastEntryGame['id_game'],
+            ));
+        }
     }
     return $updates;
 }

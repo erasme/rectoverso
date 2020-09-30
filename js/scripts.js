@@ -28,10 +28,10 @@ function askForGame(state='WAIT'){
         if(console_verbosity){
             // For now, we only have two different errors.
             if(state === 'ERROR 1'){
-                console.log('The current_game.json already have two players.');
+                //console.log('The current_game.json already have two players.'); todo remake errors
             }
             else if(state === 'ERROR 2'){
-                console.log('The file current_game.json is unreachable by the server.');
+                // console.log('The file current_game.json is unreachable by the server.'); todo remake errors
             }
             else {
                 console.log('Unknown error : ' + state);
@@ -90,8 +90,8 @@ function startGame(state){
  */
 function checkForUpdatedData(newData={}){
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
-    console.log('update');
-    console.log(newData);
+    //console.log('update');
+    //console.log(newData);
 
     if (typeof newData === 'string') {
         const myData = JSON.parse(newData);
@@ -109,12 +109,9 @@ function checkForUpdatedData(newData={}){
             }
             updateScore(2, myData.otherPlayerScore);
         } else {
-            /* todo check if it should stay here
             if (!i_won){
-                console.log('toto');
                 declareDefeat();
             }
-            */
         }
     }
 }
@@ -232,7 +229,6 @@ function selectCard(domObject){
                 lastPlayedCard = '';
                 current_score+=1;
                 updateScore(1, current_score);
-                console.log('i scored ! ' + ' id = ' + player_id + ' score = ' + current_score);
                 ajaxRequest(emptyCallback, 'i_scored', player_id, true, current_score);
                 if (current_score === 9){
                     claimVictory();
@@ -308,8 +304,6 @@ function areTheseCardsTheInTheSamePair(card1='', card2=''){
  * @param identifier_length THe length of the random string we want.
  */
 function createIdentifier(identifier_length=10){
-    //player_id = 'riQ00YI2zd'; // todo deploiement : supprimer cette ligne
-    //return; // todo deploiement : supprimer cette ligne
     player_id = '';
     const authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
     for ( let i = 0; i < identifier_length; i++ ) {
@@ -354,9 +348,6 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
                 //console.log('The player ' + player_id + ' is asking for new updates.');
             }
             url = 'index.php?message=check_updates&playerId='+ player_id.toString();
-            break;
-        case 'restart_game':
-            url = 'index.php?message=restart_game&playerId='+ player_id.toString();
             break;
         case 'i_scored':
             url = 'index.php?message=i_scored&playerId='+ player_id.toString() + '&score=' + extra_parameter;
