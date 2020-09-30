@@ -92,15 +92,16 @@ function checkForUpdatedData(newData={}){
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
 
     if (typeof newData === 'string') {
-        console.log(newData);
         const myData = JSON.parse(newData);
-        if(myData.is_game_finished === false){
+        if(myData.is_game_finished === "0"){
             // The game is not finished, we only have to :
             // - show for one second the card played by the opponent.
             // - update the opponent score.
             for (const playedCard in myData.lastRevealedCards) {
-                if(myData.lastRevealedCards[playedCard].has_been_shown_to_other_player === false){
-                    const cardToDisplay = getCardByurl(myData.lastRevealedCards[playedCard].id);
+                console.log('this card has been played by the other player : ');
+                console.log(myData.lastRevealedCards[playedCard]);
+                if(myData.lastRevealedCards[playedCard][1] === false){
+                    const cardToDisplay = getCardByurl(myData.lastRevealedCards[playedCard][0]);
                     if ( revealCard(cardToDisplay) ) {// Reveal the card.
                         setTimeout(() => {maskACard(cardToDisplay)}, 1000); // And hide it one second later.
                     }
