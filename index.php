@@ -152,7 +152,6 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
 }
 
 
-getUpdates('MYog2T8Z6y');
 
  /**
   * We want these informations :
@@ -171,18 +170,33 @@ function getUpdates($askingPlayerId=''){
 
     $updates['is_game_finished'] = $lastEntryGame['is_game_finished'];
 
+    $updatedCards = array();
     if($askingPlayerId == $lastEntryGame['player1']){ // The player 1 wants player 2's data.
         $updates['otherPlayerScore'] = $lastEntryGame['player2_score'];
         $updates['lastRevealedCards'] = json_decode($lastEntryGame['player2_played_cards'], true);
-        var_dump($updates);
         // Sets all played cards as revealed.
-        // todo
+        foreach ($updates['lastRevealedCards'] as $card){
+            array_push($updatedCards, array($card[0], true));
+        }
+        $update = $dbConnexion->prepare("UPDATE games SET player2_played_cards=:player2_played_cards WHERE id_game=:id_game");
+        $update->execute(array(
+            'player2_played_cards' => json_encode($updatedCards),
+            'id_game'              => $lastEntryGame['id_game'],
+        ));
+        echo 'les cartes du joueur 2 sont marquées comme vues';
     } else{ // The player 2 wants player 1's data.
         $updates['otherPlayerScore'] = $lastEntryGame['player1_score'];
         $updates['lastRevealedCards'] = json_decode($lastEntryGame['player1_played_cards'], true);
-        var_dump($updates);
         // Sets all played cards as revealed.
-        // todo
+        foreach ($updates['lastRevealedCards'] as $card){
+            array_push($updatedCards, array($card[0], true));
+        }
+        $update = $dbConnexion->prepare("UPDATE games SET player1_played_cards=:player1_played_cards WHERE id_game=:id_game");
+        $update->execute(array(
+            'player1_played_cards' => json_encode($updatedCards),
+            'id_game'              => $lastEntryGame['id_game'],
+        ));
+        echo 'les cartes du joueur 1 sont marquées comme vues';
     }
     return $updates;
 
