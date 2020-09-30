@@ -98,8 +98,6 @@ function checkForUpdatedData(newData={}){
             // - show for one second the card played by the opponent.
             // - update the opponent score.
             for (const playedCard in myData.lastRevealedCards) {
-                console.log('this card has been played by the other player : ');
-                console.log(myData.lastRevealedCards[playedCard]);
                 if(myData.lastRevealedCards[playedCard][1] === false){
                     const cardToDisplay = getCardByurl(myData.lastRevealedCards[playedCard][0]);
                     if ( revealCard(cardToDisplay) ) {// Reveal the card.
