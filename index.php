@@ -78,7 +78,7 @@ else{
 function declareGameAsFinished(){
     $db = new DataBaseConnection();
     $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
     $stmt->execute(array());
     $lastEntryGame = $stmt->fetch();
 
@@ -106,7 +106,7 @@ function declareGameAsFinished(){
 function updatePlayerScore($idPlayer='', $scorePlayer=0){
     $db = new DataBaseConnection();
     $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
     $stmt->execute(array());
     $lastEntryGame = $stmt->fetch();
 
@@ -152,7 +152,7 @@ function updatePlayerScore($idPlayer='', $scorePlayer=0){
 function recordPlayedCard($playerId='', $urlPlayedImage=''){
     $db = new DataBaseConnection();
     $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
     $stmt->execute(array());
     $lastEntryGame = $stmt->fetch();
 
@@ -198,7 +198,7 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
 function getUpdates($askingPlayerId=''){
     $db = new DataBaseConnection();
     $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
     $stmt->execute(array());
     $lastEntryGame = $stmt->fetch();
 
@@ -254,6 +254,12 @@ function getUpdates($askingPlayerId=''){
 }
 
 
+
+//canIStart('Uw3a0JpoDj');
+//canIStart('USU2AqdT8j');
+//canIStart('KSaEWnl7td');
+//canIStart('toto');
+
 /**
  * Can we give to the asking player the signal to start playing ?
  * @param string $playerId The id of the demanding player.
@@ -263,11 +269,17 @@ function canIStart($playerId=''){
     $playerId = htmlentities($playerId, ENT_QUOTES);
     $db = new DataBaseConnection();
     $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
     $stmt->execute(array());
     $lastEntryGame = $stmt->fetch();
 
-    if(!$lastEntryGame OR $lastEntryGame['is_game_finished']){ // empty database OR last game is finished -> create a brand new game.
+    if(!$lastEntryGame){ // empty database -> create a brand new game.
+        $newGame = $dbConnexion->prepare("INSERT INTO games (player1) VALUES (:player1)");
+        $newGame->execute(array(
+            'player1'=> $playerId,
+        ));
+        echo 'WAIT';
+    } elseif ( $lastEntryGame['is_game_finished']=='1'){ // last game is finished -> create a brand new game.
         $newGame = $dbConnexion->prepare("INSERT INTO games (player1) VALUES (:player1)");
         $newGame->execute(array(
             'player1'=> $playerId,
