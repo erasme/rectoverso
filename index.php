@@ -99,13 +99,42 @@ function declareGameAsFinished(){
   * @param int $scorePlayer
   */
 function updatePlayerScore($idPlayer='', $scorePlayer=0){
-    $currentGameData = json_decode(file_get_contents('current_game.json'), true);
-    if ($currentGameData['player_1']['id'] === $idPlayer){
-        $currentGameData['player_1']['score'] = $scorePlayer;
+    $db = new DataBaseConnection();
+    $dbConnexion = $db->getDBConnection();
+    $stmt = $dbConnexion->prepare("SELECT * FROM games");
+    $stmt->execute(array());
+    $lastEntryGame = $stmt->fetch();
+
+    if($lastEntryGame['player1'] == $idPlayer){
+        $newScore = $dbConnexion->prepare("UPDATE games SET player1_score=:player1_score WHERE id_game=:id_game");
+        try {
+            $newScore->execute(array(
+                'player1_score' => $scorePlayer,
+                'id_game'       => $lastEntryGame['id_game'],
+            ));
+        } catch (Exception $e){
+            // If you fail... try again...
+            $newScore->execute(array(
+                'player1_score' => $scorePlayer,
+                'id_game'       => $lastEntryGame['id_game'],
+            ));
+        }
+
     } else{
-        $currentGameData['player_2']['score'] = $scorePlayer;
+        $newScore = $dbConnexion->prepare("UPDATE games SET player2_score=:player2_score WHERE id_game=:id_game");
+        try {
+            $newScore->execute(array(
+                'player2_score' => $scorePlayer,
+                'id_game'       => $lastEntryGame['id_game'],
+            ));
+        } catch (Exception $e){
+            // If you fail... try again...
+            $newScore->execute(array(
+                'player2_score' => $scorePlayer,
+                'id_game'       => $lastEntryGame['id_game'],
+            ));
+        }
     }
-    file_put_contents('current_game.json', json_encode($currentGameData), LOCK_EX);
 }
 
 

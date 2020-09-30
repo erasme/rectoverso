@@ -90,6 +90,8 @@ function startGame(state){
  */
 function checkForUpdatedData(newData={}){
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
+    console.log('update');
+    console.log(newData);
 
     if (typeof newData === 'string') {
         const myData = JSON.parse(newData);
@@ -230,6 +232,7 @@ function selectCard(domObject){
                 lastPlayedCard = '';
                 current_score+=1;
                 updateScore(1, current_score);
+                console.log('i scored ! ' + ' id = ' + player_id + ' score = ' + current_score);
                 ajaxRequest(emptyCallback, 'i_scored', player_id, true, current_score);
                 if (current_score === 9){
                     claimVictory();
