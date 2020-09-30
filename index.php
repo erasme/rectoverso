@@ -89,11 +89,7 @@ function declareGameAsFinished(){
             'id_game'          => $lastEntryGame['id_game'],
         ));
     } catch (Exception $e){
-        // If you fail... try again...
-        $newScore->execute(array(
-            'is_game_finished' => 1,
-            'id_game'          => $lastEntryGame['id_game'],
-        ));
+        declareGameAsFinished();
     }
 }
 
@@ -197,10 +193,7 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
   */
 function getUpdates($askingPlayerId=''){
     $db = new DataBaseConnection();
-    $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
-    $stmt->execute(array());
-    $lastEntryGame = $stmt->fetch();
+    $lastEntryGame = $db->getLastEntry();
 
     $updates['is_game_finished'] = $lastEntryGame['is_game_finished'];
 
@@ -215,18 +208,8 @@ function getUpdates($askingPlayerId=''){
         foreach ($updates['lastRevealedCards'] as $card){
             array_push($updatedCards, array($card[0], true));
         }
-        $update = $dbConnexion->prepare("UPDATE games SET player2_played_cards=:player2_played_cards WHERE id_game=:id_game");
-        try {
-            $update->execute(array(
-                'player2_played_cards' => json_encode($updatedCards),
-                'id_game'              => $lastEntryGame['id_game'],
-            ));
-        } catch (Exception $e){
-            $update->execute(array(
-                'player2_played_cards' => json_encode($updatedCards),
-                'id_game'              => $lastEntryGame['id_game'],
-            ));
-        }
+        $db->updatePlayedCards(2, json_encode($updatedCards), intval($lastEntryGame['id_game']));
+
     } else{ // The player 2 wants player 1's data.
         $updates['otherPlayerScore'] = $lastEntryGame['player1_score'];
         $updates['lastRevealedCards'] = json_decode($lastEntryGame['player1_played_cards'], true);
@@ -237,28 +220,13 @@ function getUpdates($askingPlayerId=''){
         foreach ($updates['lastRevealedCards'] as $card){
             array_push($updatedCards, array($card[0], true));
         }
-        $update = $dbConnexion->prepare("UPDATE games SET player1_played_cards=:player1_played_cards WHERE id_game=:id_game");
-        try {
-            $update->execute(array(
-                'player1_played_cards' => json_encode($updatedCards),
-                'id_game'              => $lastEntryGame['id_game'],
-            ));
-        } catch (Exception $e){
-            $update->execute(array(
-                'player1_played_cards' => json_encode($updatedCards),
-                'id_game'              => $lastEntryGame['id_game'],
-            ));
-        }
+        $db->updatePlayedCards(1, json_encode($updatedCards), intval($lastEntryGame['id_game']));
+
     }
     return $updates;
 }
 
 
-
-//canIStart('Uw3a0JpoDj');
-//canIStart('USU2AqdT8j');
-//canIStart('KSaEWnl7td');
-//canIStart('toto');
 
 /**
  * Can we give to the asking player the signal to start playing ?
@@ -268,22 +236,10 @@ function getUpdates($askingPlayerId=''){
 function canIStart($playerId=''){
     $playerId = htmlentities($playerId, ENT_QUOTES);
     $db = new DataBaseConnection();
-    $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
-    $stmt->execute(array());
-    $lastEntryGame = $stmt->fetch();
+    $lastEntryGame = $db->getLastEntry();
 
-    if(!$lastEntryGame){ // empty database -> create a brand new game.
-        $newGame = $dbConnexion->prepare("INSERT INTO games (player1) VALUES (:player1)");
-        $newGame->execute(array(
-            'player1'=> $playerId,
-        ));
-        echo 'WAIT';
-    } elseif ( $lastEntryGame['is_game_finished']=='1'){ // last game is finished -> create a brand new game.
-        $newGame = $dbConnexion->prepare("INSERT INTO games (player1) VALUES (:player1)");
-        $newGame->execute(array(
-            'player1'=> $playerId,
-        ));
+    if(!$lastEntryGame OR $lastEntryGame['is_game_finished']=='1'){ // empty database OR last game is finished -> create a brand new game.
+        $db->createNewGame($playerId);
         echo 'WAIT';
     } elseif($lastEntryGame['player1']==$playerId OR $lastEntryGame['player2']==$playerId){ // Player already recorded as waiting for a new game.
         // Is the other player already recorded too ?
@@ -292,12 +248,7 @@ function canIStart($playerId=''){
         } else{ // The other player is already recorded -> give the cards
             if($lastEntryGame['list_of_cards']==null){
                 $cards = json_encode(selectCards());
-                $newGame = $dbConnexion->prepare("UPDATE games SET list_of_cards=:cards, has_game_started=:startGame WHERE id_game=:id_game");
-                $newGame->execute(array(
-                    'startGame'=> true,
-                    'cards'    => $cards,
-                    'id_game'  => $lastEntryGame['id_game'],
-                ));
+                $db->startGame($cards, $lastEntryGame['id_game']);
                 echo $cards;
             } else{
                 echo $lastEntryGame['list_of_cards'];
@@ -306,13 +257,7 @@ function canIStart($playerId=''){
     } else{ // Player not recorded in the new game -> insert him in the current game, declare game as started and give him cards.
         if($lastEntryGame['list_of_cards']==null){
             $cards = json_encode(selectCards());
-            $newGame = $dbConnexion->prepare("UPDATE games SET player2=:player2, has_game_started=:startGame, list_of_cards=:cards WHERE id_game=:id_game");
-            $newGame->execute(array(
-                'player2'  => $playerId,
-                'startGame'=> true,
-                'cards'    => $cards,
-                'id_game'  => $lastEntryGame['id_game'],
-            ));
+            $db->startGameAsPlayer2($playerId, $cards, $lastEntryGame['id_game']);
             echo $cards;
         } else{
             echo $lastEntryGame['list_of_cards'];

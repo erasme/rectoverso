@@ -90,8 +90,8 @@ function startGame(state){
  */
 function checkForUpdatedData(newData={}){
     setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
-    //console.log('update');
-    //console.log(newData);
+    console.log('update');
+    console.log(newData);
 
     if (typeof newData === 'string') {
         const myData = JSON.parse(newData);
@@ -109,7 +109,7 @@ function checkForUpdatedData(newData={}){
             }
             updateScore(2, myData.otherPlayerScore);
         } else {
-            if (!i_won){
+            if (!i_won || myData.otherPlayerScore===9 || myData.otherPlayerScore==='9'){
                 declareDefeat();
             }
         }
@@ -121,6 +121,7 @@ function checkForUpdatedData(newData={}){
  */
 function declareDefeat(){
     replaceModal(texts['you_lost']);
+    resetCards();
 }
 
 /**
@@ -130,6 +131,21 @@ function claimVictory(){
     ajaxRequest(emptyCallback, 'i_won', player_id, true);
     i_won = true;
     replaceModal(texts['you_won']);
+    resetCards();
+}
+
+/**
+ * Masks all cards.
+ */
+function resetCards() {
+    const allCards = document.getElementsByClassName('flip-card-inner');
+    console.log(allCards);
+
+    for (let i = 0; i < allCards.length; i++) {
+        if (typeof allCards[i] === "object") {
+            allCards[i].classList.remove('flipped-card');
+        }
+    }
 }
 
 /**
