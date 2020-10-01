@@ -77,20 +77,8 @@ else{
   */
 function declareGameAsFinished(){
     $db = new DataBaseConnection();
-    $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
-    $stmt->execute(array());
-    $lastEntryGame = $stmt->fetch();
-
-    $newScore = $dbConnexion->prepare("UPDATE games SET is_game_finished=:is_game_finished WHERE id_game=:id_game");
-    try {
-        $newScore->execute(array(
-            'is_game_finished' => 1,
-            'id_game'          => $lastEntryGame['id_game'],
-        ));
-    } catch (Exception $e){
-        declareGameAsFinished();
-    }
+    $lastEntryGame = $db->getLastEntry();
+    $db->declareEndOfGame($lastEntryGame['id_game']);
 }
 
 

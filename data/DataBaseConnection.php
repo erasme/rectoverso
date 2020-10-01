@@ -102,7 +102,18 @@ class DataBaseConnection
         }catch (Exception $e){
             $this->updatePlayedCards($playerNumber, $cards, $idGame);
         }
+    }
 
+    public function declareEndOfGame($idGame){
+        try {
+            $endGame = $this->connection->prepare("UPDATE games SET is_game_finished=:is_game_finished WHERE id_game=:id_game");
+            $endGame->execute(array(
+                'is_game_finished' => 1,
+                'id_game'          => $idGame,
+            ));
+        }catch (Exception $e){
+            $this->declareEndOfGame($idGame);
+        }
     }
 
 }
