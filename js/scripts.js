@@ -144,7 +144,6 @@ function claimVictory(){
  */
 function resetCards() {
     const allCards = document.getElementsByClassName('flip-card-inner');
-    console.log(allCards);
 
     for (let i = 0; i < allCards.length; i++) {
         if (typeof allCards[i] === "object") {
