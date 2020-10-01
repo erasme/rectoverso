@@ -139,6 +139,7 @@ function updatePlayerScore($idPlayer='', $scorePlayer=0){
 }
 
 
+
  /**
   * Each time a card is played, this function is called. Its endeavour is to record all played cards and if they have
   * already been sent to the opponent.
@@ -147,24 +148,17 @@ function updatePlayerScore($idPlayer='', $scorePlayer=0){
   */
 function recordPlayedCard($playerId='', $urlPlayedImage=''){
     $db = new DataBaseConnection();
-    $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
-    $stmt->execute(array());
-    $lastEntryGame = $stmt->fetch();
+    $lastEntryGame = $db->getLastEntry();
 
     if($lastEntryGame['player1'] == $playerId){
+
         if($lastEntryGame['player1_played_cards']==null){ // No card has been recorded yet.
             $playedCards = array();
         } else{
             $playedCards = json_decode($lastEntryGame['player1_played_cards'], true);
         }
         array_push($playedCards, array($urlPlayedImage,false)); // False means the card has not been shown to the other player yet.
-
-        $newCard = $dbConnexion->prepare("UPDATE games SET player1_played_cards=:player1_played_cards WHERE id_game=:id_game");
-        $newCard->execute(array(
-            'player1_played_cards' => json_encode($playedCards),
-            'id_game'              => $lastEntryGame['id_game'],
-        ));
+        $db->updatePlayedCards(1, json_encode($playedCards), $lastEntryGame['id_game']);
     } else{
         if($lastEntryGame['player2_played_cards']==null){ // No card has been recorded yet.
             $playedCards = array();
@@ -172,14 +166,10 @@ function recordPlayedCard($playerId='', $urlPlayedImage=''){
             $playedCards = json_decode($lastEntryGame['player2_played_cards'], true);
         }
         array_push($playedCards, array($urlPlayedImage,false)); // False means the card has not been shown to the other player yet.
-
-        $newCard = $dbConnexion->prepare("UPDATE games SET player2_played_cards=:player2_played_cards WHERE id_game=:id_game");
-        $newCard->execute(array(
-            'player2_played_cards' => json_encode($playedCards),
-            'id_game'              => $lastEntryGame['id_game'],
-        ));
+        $db->updatePlayedCards(2, json_encode($playedCards), $lastEntryGame['id_game']);
     }
 }
+
 
 
 
