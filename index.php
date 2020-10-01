@@ -89,40 +89,12 @@ function declareGameAsFinished(){
   */
 function updatePlayerScore($idPlayer='', $scorePlayer=0){
     $db = new DataBaseConnection();
-    $dbConnexion = $db->getDBConnection();
-    $stmt = $dbConnexion->prepare("SELECT * FROM games ORDER BY id_game DESC LIMIT 1");
-    $stmt->execute(array());
-    $lastEntryGame = $stmt->fetch();
+    $lastEntryGame = $db->getLastEntry();
 
     if($lastEntryGame['player1'] == $idPlayer){
-        $newScore = $dbConnexion->prepare("UPDATE games SET player1_score=:player1_score WHERE id_game=:id_game");
-        try {
-            $newScore->execute(array(
-                'player1_score' => $scorePlayer,
-                'id_game'       => $lastEntryGame['id_game'],
-            ));
-        } catch (Exception $e){
-            // If you fail... try again...
-            $newScore->execute(array(
-                'player1_score' => $scorePlayer,
-                'id_game'       => $lastEntryGame['id_game'],
-            ));
-        }
-
+        $db->updatePlayer1Score($scorePlayer, $lastEntryGame['id_game']);
     } else{
-        $newScore = $dbConnexion->prepare("UPDATE games SET player2_score=:player2_score WHERE id_game=:id_game");
-        try {
-            $newScore->execute(array(
-                'player2_score' => $scorePlayer,
-                'id_game'       => $lastEntryGame['id_game'],
-            ));
-        } catch (Exception $e){
-            // If you fail... try again...
-            $newScore->execute(array(
-                'player2_score' => $scorePlayer,
-                'id_game'       => $lastEntryGame['id_game'],
-            ));
-        }
+        $db->updatePlayer2Score($scorePlayer, $lastEntryGame['id_game']);
     }
 }
 

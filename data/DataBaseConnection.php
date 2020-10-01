@@ -116,4 +116,30 @@ class DataBaseConnection
         }
     }
 
+    public function updatePlayer1Score($score, $idGame){
+        try {
+            $newScore = $this->connection->prepare("UPDATE games SET player1_score=:player1_score WHERE id_game=:id_game");
+            $newScore->execute(array(
+                'player1_score' => $score,
+                'id_game'       => $idGame,
+            ));
+        } catch (Exception $e){
+            // If you fail... try again...
+            $this->updatePlayer1Score($score, $idGame);
+        }
+    }
+
+    public function updatePlayer2Score($score, $idGame){
+        try {
+            $newScore = $this->connection->prepare("UPDATE games SET player2_score=:player2_score WHERE id_game=:id_game");
+            $newScore->execute(array(
+                'player2_score' => $score,
+                'id_game'       => $idGame,
+            ));
+        } catch (Exception $e){
+            // If you fail... try again...
+            $this->updatePlayer2Score($score, $idGame);
+        }
+    }
+
 }
