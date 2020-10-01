@@ -7,6 +7,8 @@ let lastPlayedCard = ''; // The name of the last played card.
 let current_score = 0; // The current player's score.
 let i_won = false;
 
+// todo check verbosity when cards are masked after end game.
+
 /**
  * When we ask for a game, we need first to have a unique identifier.
  */
@@ -89,9 +91,10 @@ function startGame(state){
  * @param newData
  */
 function checkForUpdatedData(newData={}){
-    setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
-    console.log('update');
-    console.log(newData);
+    if(console_verbosity){
+        console.log('update' + Math.random());
+        console.log(newData);
+    }
 
     if (typeof newData === 'string') {
         const myData = JSON.parse(newData);
@@ -108,12 +111,14 @@ function checkForUpdatedData(newData={}){
                 }
             }
             updateScore(2, myData.otherPlayerScore);
-        } else {
-            if (!i_won || myData.otherPlayerScore===9 || myData.otherPlayerScore==='9'){
+        } else if (!i_won || myData.otherPlayerScore===9 || myData.otherPlayerScore==='9'){
                 declareDefeat();
-            }
+                return;
+        } else if(myData.is_game_finished === "1"){
+            return;
         }
     }
+    setTimeout(() => {  ajaxRequest(checkForUpdatedData, 'check_updates', player_id); }, 1000);
 }
 
 /**
