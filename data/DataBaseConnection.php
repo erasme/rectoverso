@@ -13,8 +13,6 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 error_reporting(E_ALL);
 
-// todo check if loop via catch on all functions
-
 class DataBaseConnection
 {
     protected $connection;
@@ -58,34 +56,65 @@ class DataBaseConnection
     }
 
 
+    /**
+     * Prepares a new game in the database.
+     * @param string $cards
+     * @param int $idGame
+     */
     public function startGame($cards='', $idGame=1){
-        $newGame = $this->connection->prepare("UPDATE games SET list_of_cards=:cards, has_game_started=:startGame WHERE id_game=:id_game");
-        $newGame->execute(array(
-            'startGame'=> true,
-            'cards'    => $cards,
-            'id_game'  => $idGame,
-        ));
+        try {
+            $newGame = $this->connection->prepare("UPDATE games SET list_of_cards=:cards, has_game_started=:startGame WHERE id_game=:id_game");
+            $newGame->execute(array(
+                'startGame'=> true,
+                'cards'    => $cards,
+                'id_game'  => $idGame,
+            ));
+        } catch (Exception $e){
+            $this->startGame($cards, $idGame);
+        }
     }
 
+    /**
+     * Prepares a new game in the database just in case player 1 has been too slow.
+     * @param string $playerId
+     * @param string $cards
+     * @param int $idGame
+     */
     public function startGameAsPlayer2($playerId='', $cards='', $idGame=1){
-        $newGame = $this->connection->prepare("UPDATE games SET player2=:player2, has_game_started=:startGame, list_of_cards=:cards WHERE id_game=:id_game");
-        $newGame->execute(array(
-            'player2'  => $playerId,
-            'startGame'=> true,
-            'cards'    => $cards,
-            'id_game'  => $idGame,
-        ));
+        try{
+            $newGame = $this->connection->prepare("UPDATE games SET player2=:player2, has_game_started=:startGame, list_of_cards=:cards WHERE id_game=:id_game");
+            $newGame->execute(array(
+                'player2'  => $playerId,
+                'startGame'=> true,
+                'cards'    => $cards,
+                'id_game'  => $idGame,
+            ));
+        } catch (Exception $e){
+            $this->startGameAsPlayer2($playerId, $cards, $idGame);
+        }
     }
 
-
+    /**
+     * Creates a new game in the database, i.e. a new entry.
+     * @param string $playerId
+     */
     public function createNewGame($playerId=''){
-        $newGame = $this->connection->prepare("INSERT INTO games (player1) VALUES (:player1)");
-        $newGame->execute(array(
-            'player1'=> $playerId,
-        ));
+        try {
+            $newGame = $this->connection->prepare("INSERT INTO games (player1) VALUES (:player1)");
+            $newGame->execute(array(
+                'player1'=> $playerId,
+            ));
+        } catch (Exception $e){
+            $this->createNewGame($playerId);
+        }
     }
 
-
+    /**
+     * Updates the cards played by the player given in argument. It is recorded as a stringed json array.
+     * @param int $playerNumber
+     * @param string $cards
+     * @param int $idGame
+     */
     public function updatePlayedCards($playerNumber=1, $cards='', $idGame=1){
         try {
             if($playerNumber==2){
@@ -106,6 +135,10 @@ class DataBaseConnection
         }
     }
 
+    /**
+     * Declares the end of the game, it is a boolean stored in a field.
+     * @param $idGame
+     */
     public function declareEndOfGame($idGame){
         try {
             $endGame = $this->connection->prepare("UPDATE games SET is_game_finished=:is_game_finished WHERE id_game=:id_game");
@@ -118,6 +151,11 @@ class DataBaseConnection
         }
     }
 
+    /**
+     * Updates the player 1's score (an interger).
+     * @param $score
+     * @param $idGame
+     */
     public function updatePlayer1Score($score, $idGame){
         try {
             $newScore = $this->connection->prepare("UPDATE games SET player1_score=:player1_score WHERE id_game=:id_game");
@@ -131,6 +169,12 @@ class DataBaseConnection
         }
     }
 
+
+    /**
+     * Updates the player 2's score (an interger).
+     * @param $score
+     * @param $idGame
+     */
     public function updatePlayer2Score($score, $idGame){
         try {
             $newScore = $this->connection->prepare("UPDATE games SET player2_score=:player2_score WHERE id_game=:id_game");

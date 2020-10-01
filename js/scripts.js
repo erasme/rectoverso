@@ -7,7 +7,7 @@ let lastPlayedCard = ''; // The name of the last played card.
 let current_score = 0; // The current player's score.
 let i_won = false;
 
-// todo check verbosity when cards are masked after end game.
+// todo check if comments are all in english in all files.
 
 /**
  * When we ask for a game, we need first to have a unique identifier.
