@@ -268,6 +268,7 @@ function selectCards(){
     }
 }
 
+
 /**
  * Just load the configuration.json file and make it an associative array. Then returns that array.
  * @return array
