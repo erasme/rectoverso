@@ -15,6 +15,8 @@ error_reporting(E_ALL);
 
 require_once 'data/DataBaseConnection.php';
 
+// todo create table if not exists
+
 /*
  * For a better understanding of the application, refer yourself to the readme.md file.
  *
