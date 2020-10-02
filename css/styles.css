@@ -1,0 +1,158 @@
+body {
+  font-family: 'Nunito', sans-serif;
+}
+
+.orange {
+  background-color: #EDA943;
+}
+
+.blue {
+  background-color: #9688EE;
+
+}
+.container {
+  padding: 35px 20px 0 35px;
+}
+
+.modal {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  background: red;
+  width: 100%;
+  height: 105%;
+  top: 0;
+  left: 0;
+  background: rgb(103,103,103);
+  background: linear-gradient(90deg, rgba(103,103,103,1) 0%, rgba(138,138,138,1) 35%);
+}
+
+.modal.active {
+  display: block;
+}
+
+.logo {
+  width: 75%;
+  margin: auto;
+}
+
+.status {
+  text-align: center;
+  font-size: 55px;
+  color: white;
+  font-weight: bold;
+  background: black;
+  width: 90%;
+  margin: auto;
+}
+
+.start {
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: none;
+  margin-left: 36%;
+  margin-top: 200px;
+  background-color: white;
+  font-size: 40px;
+  font-weight: bold;
+  animation-name: startSize;
+  animation: startSize 0.8s linear 0.2s infinite alternate;
+}
+
+@keyframes startSize {
+  from {
+    transform: scale(100%);
+
+  }
+  to {
+    transform: scale(105%);
+  }
+}
+
+.active {
+  display: block;
+}
+
+/* The flip card container - set the width and height to whatever you want. We have added the border property to demonstrate that the flip itself goes out of the box on hover (remove perspective if you don't want the 3D effect */
+.flip-card {
+  background-color: transparent;
+  float: left;
+  width: 300px;
+  height: 268px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  border: 1px solid #f1f1f1;
+  perspective: 1000px; /* Remove this if you don't want the 3D effect */
+}
+
+/* This container is needed to position the front and back side */
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card-front,
+.flip-card-back {
+  background-size: contain;
+}
+
+/* Do an horizontal flip when you move the mouse over the flip box container */
+.flip-card.active .flip-card-inner {
+  transform: rotateY(180deg);
+}
+.flip-card:hover .flip-card-inner {
+  /* transform: rotateY(180deg);*/
+}
+
+.flipped-card{
+  transform: rotateY(180deg);
+}
+
+/* Position the front and back side */
+.flip-card-front, .flip-card-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden; /* Safari */
+  backface-visibility: hidden;
+}
+
+/* Style the front side (fallback if image is missing) */
+.flip-card-front {
+  background-color: #bbb;
+  color: black;
+}
+
+/* Style the back side */
+.flip-card-back {
+  background-color: dodgerblue;
+  color: white;
+  transform: rotateY(180deg);
+}
+
+.game_status {
+  position: absolute;
+  bottom: 30px;
+  font-size: 50px;
+  display: flex;
+  justify-content: space-between;
+  background: #bbb;
+  width: 80%;
+  left: 9%;
+}
+
+.game_status p {
+  font-weight: bold;
+  color: white;
+  margin: 15px;
+
+}
+
+.game_status .identifier {
+  width: 20px;
+}

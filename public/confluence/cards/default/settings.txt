@@ -1,2 +1,0 @@
-# Nombre de paires jouables par joueur
-nbPairs: 6

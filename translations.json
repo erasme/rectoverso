@@ -1,0 +1,4 @@
+{
+  "en":{"error_from_server":"Error from server", "opponent": "OPPONENT","start":"Start","waiting_for_players":"Waiting for players","you_lost":"You lost !","you_won":"You won !", "you": "YOU"},
+  "fr":{"error_from_server":"Erreur côté serveur", "opponent": "ADVERSAIRE","start":"Commencer","waiting_for_players":"En attente de joueurs","you_lost":"Perdu !","you_won":"Gagné !", "you": "VOUS"}
+}
