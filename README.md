@@ -39,121 +39,85 @@ Simple server using Nodejs & socket.io
 2. Get the list of locations via API : https://api.instagram.com/v1/locations/search?lat=LAT&lng=LNG&access_token=YOUR_TOKEN
 3. copy the id
 
-    {
-    latitude: 48.85867696,
-    id: "274044375",
-    longitude: 2.294464218,
-    name: "la Tour Eiffel"
-    }
+todo save the old node.js application version in a different branch.
 
-### Get recent images by location ID
+## TODO
 
-https://api.instagram.com/v1/locations/LOCATION_ID/media/recent?access_token=YOUR_TOKEN
+Les paires choisies dans la version ajax ne sont pas aléatoires (urgence oblige).
+todo : placer toutes les infos côté serveur dans un fichier les regroupant toutes (json ?)
 
 
-### Integrate Instagram to the server
+## But de l'application
 
-https://www.npmjs.com/package/instagram-node
+Recto-Verso a pour but de connecter deux bornes entre elles pour permettre à deux joueurs de jouer
+à un jeu de mémoire avec des cartes à retourner par paires. (type [Mémory](https://fr.wikipedia.org/wiki/Memory_(jeu)))
 
-# Setup screens
 
-## Retourner l'écran Ubuntu / écran de droite
-Lien du tutoriel [en anglais] : https://www.thefanclub.co.za/how-to/how-ubuntu-1204-touchscreen-calibration
+## Fonctionnement général de l'application
 
-* Paramètres système > Affichage > Rotation > Sens antihoraire > Appliquer
-* Installler uTouch : `sudo apt-get install utouch`
-* Installer xinput calibrator : `sudo apt-get install xinput-calibrator`
-* Lancer Calibrate Touchscreen et toucher les 4 croix l'une après l'autre
-* Faire `sudo gedit /usr/share/X11/xorg.conf.d/10-evdev.conf`
-* Coller les valeurs trouvées dans le terminal de Calibrate Touchscreen commençant par Option dans la dernière section
+Pour le moment, et par souci de simplification, trois machines sont nécessaires.
+- une machine-serveur qui sera le maître du jeu
+- deux machines-joueuses au code strictement identique
 
-## Retourner l'écran Ubuntu / écran de gauche
-Issu de http://ubuntuforums.org/showthread.php?t=1493407&p=9380642#post9380642 (essayer différentes combinaisons selon la rotation souhaitée)
+### Actions côté machine serveur
 
-* Dans la console : `xinput list`
-* Noter l'id du TouchScreen
+La machine-serveur doit gérer plusieurs choses :
+1. attendre un message de départ de la part des deux machines-joueuses et leur répondre en même temps qu'elles
+peuvent commencer
+1. attendre un message de la part d'une des machines-joueuses annonçant qu'elle a fini et envoyer à l'autre
+machine-joueuse qu'elle a perdu
 
-Script lancé à chaque démarrage  
-`xinput set-prop xx "Evdev Axis Inversion" 1, 0` avec xx l'id du TouchScreen  
-`xinput set-prop xx "Evdev Axes Swap" 1`  
-`firefox yyyy.zz` avec yyyy.zz l'url du jeu
 
-## RectoVerso aujourd'hui
------------
-- RectoVerso fonctionne actuellement sur les deux bornes RV
-- Le jeu est à jour sur le GitHub
-- Le jeu est adapté à une résolution de 1920x1080 uniquement : tout affichage en dessous de ces dimensions/ratio sera sans doute déceptif. 
-*=> UPGRADE : version responsive du jeu*
-- Le serveur du jeu tourne sur un des deux Zotac (urbanlab17-zmi.local)
-- Le dispositif complet n'a pas besoin d'une connexion à Internet
-- Les deux bornes doivent être connectées sur le même réseau local (en filaire par un switch ou en wi-fi à un point d'accès) (pas besoin d'Internet sur le réseau) pour communiquer entre elles 
-*=> UPGRADE : connexion Ad Hoc*
-- Au besoin, les deux bornes peuvent être connectées via Internet : dans ce cas, il faut mettre en place un serveur en ligne 
-- Les deux bornes ne se lancent pas toutes seules au boot, il faut ouvrir un Terminal et taper `/home/erasme/Bureau/rectoverso_2_demarrage.sh`
-*=> UPGRADE : lancer le script `/home/erasme/Bureau/rectoverso_2_demarrage.sh` au boot du Linux*
+### Actions côté machines-joueuses
 
-### Pour lancer le serveur socket sur `lab.erasme.lan`
-1. Se connecter en SSH sur erasme@lab.erasme.lan (user: erasme | pass: t…) PS : le projet se trouve `var/www/rectoverso/rectoverso`
+Les machines joueuses ont strictement le même comportement. Elles doivent :
+- requêter en Ajax la machine-serveur si elles veulent jouer
+- dire en Ajax à la machine-serveur si elles ont gagné
 
-2. Entrer ``service rectoverso start``
+## Installation
 
-3. Chaque écran doit afficher la page ``rectoverso.erasme.org/laroom`` ou ``lab.erasme.lan:5000`` sous Chromium
+### SUr la machine-serveur
 
-### Mettre en place RV sur les bornes
+todo
 
-2.a. Une fois connecté au réseau filaire, aller dans Modifier la connexion puis dans l'onglet IPv4 modifier l'adressage Automatique en Partager avec d'autres ordinateurs
+### Sur les machines-joueuses
 
-2.b. Constater que l'icône de connexion en haut à droite de Ubuntu est devenue deux flèches haut/bas. Si ce n'est pas le cas, redémarrer l'ordi puis se reconnecter au réseau filaire Ethernet
+todo
 
-3. Cliquer sur l'icône de connexion (deux flèches haut/bas) puis sur Informations de connexion
+## Cas d'utilisation
 
-4. Lancer le serveur Rectoverso via `node index.js` à la racine du dossier du projet (normalement : `/home/erasme/projets/rectoverso`)
+### Modify datasets general folder
 
-5. Lancer le script d'exécution `lancer-rectoverso.sh` en double-cliquant ou clic droit > ouvrir avec > lancer le logiciel
+todo : explain configuration file
 
-### Mettre à jour Rectoverso sur la borne serveur
+### Modifier le jeu de données
 
-1. Identifier l'ordinateur serveur
+Vous pouvez avoir plusieurs jeux de données d'images. Pour en changer, placez un dossier contenant ces
+images sur la machine-serveur dans le dossier `images/`. Puis modifiez le fichier _configuration.json_
+situé à la racine.
+```json
+{
+  "image_directory": "images_rectoverso" 
+}
+```
 
-2. Aller dans l'icône de connexion en haut à droite et décocher `Activer le Wifi` puis se connecter au filaire : si ça fonctionne, tant mieux ; sinon, redémarrer l'ordinateur et constater que le Wifi fonctionne
+### Informations sur les jeux de données
 
-3. Ouvrir le Terminal et aller dans le dossier racine du projet (normalement `/var/www/projets/rectoverso`)
+- todo : formats acceptés
+- todo : organisation  de l'arborescence du dossier
+- todo : quantité de paires acceptées
+- todo : changer la langue de l'application
+- todo : ajouter une nouvelle traduction
+- todo : explain all possibilities in the configuration.json
 
-4. Respirer un grand coup et taper `git pull` puis Entrée
+## Installation
 
-5. Une fois que la mise à jour est faite, relancer le dispositif
+git pull
+chmod 777 sur player_queue.txt
 
-### Pour que rectoverso se lance au démarrage
 
-Déposer sur le bureau de la machne le script rectoverso_2_demarrage.sh (situé dans "rectoverso/scripts")
 
-Ouvrir le terminal
+## TODOS 
 
-`chmod +x lab_monitoring`
-
-`chmod +x lab_monitoring/utils`
-
-`chmod +x lab_monitoring/utils/forDevices`
-
-`chmod +x lab_monitoring/utils/forDevices/handleRotatedScreen.sh`
-
-`chmod +x /home/erasme/Bureau/rectoverso_2_demarrage.sh`
-
-Dans le mode de recherche ubuntu taper "application" et ouvrir "Applications au démarrage"
-
-Dans la pop-up qui s'ouvre, cliquer sur "Ajouter"
-
-Remplir les champs Nom:"au choix", Commande:"`/home/erasme/Bureau/rectoverso_2_demarrage.sh` Commenatire:"au choix"
-
-Si besoin, supprimer la clé de trousseau en tapant "trousseau" dans le mode de recherche, ouvrir "Mots de passe et clés", clic droit sur l'onglet "connexion" à gauche, "modifier le mot de passe". Là entrer le mot de passe actuel et laisser un mot de passe vide pour le nouveau mot de passe.
-
-## Maintenance
-
-Nav privée par défaut pour empêcher les notifications de restauration de session :**
-
-- ``sudo nano /etc/chromium-browser/default``
-- Changer ``CHROMIUM_FLAGS ="--incognito"``
-
-Empêcher clique long/droit
-Télécharger module : https://chrome.google.com/webstore/detail/context-menu-blocker/gomhdignfhgeamkdgnhaimjigoppgihh
-(Ou consigne ici : http://stackoverflow.com/questions/28222548/how-to-disable-context-menu-on-right-click-long-touch-in-a-kiosk-mode-of-chrome)
+- Use sqlite instead of json file...
+- when a pair of cards has been correctly fount, give them an appropriate design ie the fount pairs are clearly distinct of played cards.
