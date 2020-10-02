@@ -181,7 +181,6 @@ function getUpdates($askingPlayerId=''){
 }
 
 
-
 /**
  * Can we give to the asking player the signal to start playing ?
  * @param string $playerId The id of the demanding player.
@@ -194,27 +193,34 @@ function canIStart($playerId=''){
 
     if(!$lastEntryGame OR $lastEntryGame['is_game_finished']=='1'){ // empty database OR last game is finished -> create a brand new game.
         $db->createNewGame($playerId);
-        echo 'WAIT';
+        return 'WAIT';
     } elseif($lastEntryGame['player1']==$playerId OR $lastEntryGame['player2']==$playerId){ // Player already recorded as waiting for a new game.
         // Is the other player already recorded too ?
         if($lastEntryGame['player1']==null OR $lastEntryGame['player2']==null){ // The other player is not here -> WAIT
-            echo 'WAIT';
+            return 'WAIT';
         } else{ // The other player is already recorded -> give the cards
             if($lastEntryGame['list_of_cards']==null){
                 $cards = json_encode(selectCards());
                 $db->startGame($cards, $lastEntryGame['id_game']);
-                echo $cards;
+                return $cards;
             } else{
-                echo $lastEntryGame['list_of_cards'];
+                return $lastEntryGame['list_of_cards'];
             }
         }
     } else{ // Player not recorded in the new game -> insert him in the current game, declare game as started and give him cards.
-        if($lastEntryGame['list_of_cards']==null){
-            $cards = json_encode(selectCards());
-            $db->startGameAsPlayer2($playerId, $cards, $lastEntryGame['id_game']);
-            echo $cards;
+
+        // But what if the player is not recorded because the last game was not finished and has been canceled ?
+        if($lastEntryGame['is_game_finished']=='0' AND $lastEntryGame['has_game_started']=='1'){
+            $db->createNewGame($playerId);
+            return 'WAIT';
         } else{
-            echo $lastEntryGame['list_of_cards'];
+            if($lastEntryGame['list_of_cards']==null){
+                $cards = json_encode(selectCards());
+                $db->startGameAsPlayer2($playerId, $cards, $lastEntryGame['id_game']);
+                return $cards;
+            } else{
+                return $lastEntryGame['list_of_cards'];
+            }
         }
     }
 }

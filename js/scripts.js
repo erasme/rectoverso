@@ -12,6 +12,8 @@ let i_won = false;
  */
 function askForGame(state='WAIT'){
     state = state.trim(); // I have no idea why state is someone preceded with spaces...
+    console.log('state received is : ');
+    console.log(state);
     if(console_verbosity){
         console.log(state);
     }
@@ -22,6 +24,7 @@ function askForGame(state='WAIT'){
             console.log('Asked for a game start. Waiting other player(s).');
         }
         document.getElementById('textModalBox').innerText = texts['waiting_for_players'];
+        console.log('i am going to ask for this player : ' + player_id);
         setTimeout(() => {  ajaxRequest(askForGame, 'i_want_to_start_a_game', player_id); }, 1000);
     } else if(typeof state === 'string' && state.substr(0,5)==='ERROR'){
         // Checking for errors.
@@ -355,6 +358,7 @@ function ajaxRequest(callback_function, request='', player_id='', asynchronicity
     let xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function() {
         if (this.readyState === 4 && this.status === 200) {
+            console.log('réponse reçue avant callback : ' + this.responseText);
             callback_function(this.responseText);
         }
     };
@@ -472,7 +476,7 @@ function setChosenLanguage(language='en'){
  * Just sets up the console verbosity mode.
  * @param consoleMode
  */
-function setConsoleMode(consoleMode='false'){
+function setConsoleMode(consoleMode=false){
     console_verbosity = Boolean(consoleMode);
     if (console_verbosity){
         console.log('The console verbosity is set to : ' + console_verbosity + '.');

@@ -1,5 +1,36 @@
 # Recto-Verso
 
+## Presentation
+
+Recto-Verso is a prototype making 
+
+
+## Usage
+
+
+
+## Installation
+
+### Requirements
+
+
+### Main server
+
+
+make sure data folder has writing rights
+
+### Secondary devices
+
+
+
+
+todo : documentation of
+- configuration of the application
+- add/modify/choose a language
+- document how to set up the screen vertically
+- check everything in the github depot (desciption/actions/projects...
+- img folder -> what is used ? 
+
 Only tested on linux Ubuntu (shall work on other linux though).
 
 todo save the old node.js application version in a different branch.
