@@ -15,20 +15,24 @@ error_reporting(E_ALL);
 
 require_once 'data/DataBaseConnection.php';
 
+// todo suppress the verbose mode
+
 /*
- * Pour une compréhension globale du fonctionnement du prototype, référez-vous eu readme.md
+ * For a better understanding of the application, refer yourself to the readme.md file.
  *
- * Cette page contient le code du serveur. Celui-ci doit suivre l'algorithme suivant :
+ * Here is the BO code. This page is called as an API by the UI.
  *
- * - charger le fichier de la configuration voulue (configuration.json).
- * - attendre de recevoir un signal de départ voulu par les deux machines-joueuses.
- * - si deux messages de départ ont été émis, le serveur leur répondra que le jeu peut commencer tout en fournissant
- * les données d'image.
- * - si un message de victoire est envoyé par une des machines-joueuses, on annonce à l'autre qu'elle a perdu.
+ * It does these actions :
+ *
+ * - loads the configuration file (configuration.json).
+ * - waits for all players.
+ * - if all players have sent their willing to play, it creates the new game in the database and send the players the
+ * data for this new game.
+ * - if a victory message is received, the end of game is declared in the database.
  *
  *
- * NOTE : quand une machine-joueuse désire jouer, elle fait un appel Ajax toutes les secondes et c'est lors de la
- * réponse à ces requêtes qu'on peut leur faire passer des messages comme les images ou les notification de victoire.
+ * NOTE : when a device wants to play, it initiates a regular request each second asking for updates in the new game.
+ *            This file answers to those request by sending them all data about the current game.
  */
 
 if (
@@ -73,7 +77,7 @@ else{
 
 
  /**
-  * Declares the game as finished in the current_game.json
+  * Declares the game as finished in the database.
   */
 function declareGameAsFinished(){
     $db = new DataBaseConnection();
@@ -224,8 +228,7 @@ function selectCards(){
      * To select cards properly, we have to :
      * - read in the configuration.json which set of cards we have to use.
      * - check the available pairs of cards.
-     * - pick randomly 9 pairs and place them in the current_game.json .
-     * - place a shuffled ordre of cards in the current_game.json file.
+     * - pick randomly 9 pairs and place them shuffled in the database.
      */
 
     // Get the correct directory containing my dataset.

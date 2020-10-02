@@ -7,8 +7,6 @@ let lastPlayedCard = ''; // The name of the last played card.
 let current_score = 0; // The current player's score.
 let i_won = false;
 
-// todo check if comments are all in english in all files.
-
 /**
  * When we ask for a game, we need first to have a unique identifier.
  */
@@ -127,17 +125,29 @@ function checkForUpdatedData(newData={}){
 function declareDefeat(){
     replaceModal(texts['you_lost']);
     resetCards();
+    resetScores();
 }
 
 /**
  * Declares the end of the game to the server and to the current player.
  */
 function claimVictory(){
+    resetScores();
     ajaxRequest(emptyCallback, 'i_won', player_id, true);
     i_won = true;
     replaceModal(texts['you_won']);
     resetCards();
 }
+
+/**
+ * Resets al scores at 0 when a game is finished.
+ */
+function resetScores(){
+    document.getElementById('p1').innerHTML= '0';
+    document.getElementById('p2').innerHTML= '0';
+    current_score = 0;
+}
+
 
 /**
  * Masks all cards.
@@ -193,6 +203,10 @@ function getCardByurl(urlValue=''){
 }
 
 
+/**
+ * Replaces the text in the modalbox (displayed as a home page).
+ * @param textToDisplay
+ */
 function replaceModal(textToDisplay){
     const modal = document.getElementById('block_containing_modal_box_for_messages');
     modal.style.display='block';
