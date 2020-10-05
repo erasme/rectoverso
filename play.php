@@ -33,8 +33,8 @@
 <body onload="createIdentifier();getModes();loadTranslations();">
     <div id="block_containing_modal_box_for_messages" class="modal active">
         <div class="logo">
-            <img src="medias/Logo.svg">
-            <img src="medias/LogoText.svg">
+            <img src="medias/Logo.svg" alt="">
+            <img src="medias/LogoText.svg" alt="">
         </div>
         <p class="status" id="textModalBox"></p>
         <button id="message_to_user" class="start" onclick="askForGame();"></button>
