@@ -57,7 +57,29 @@ install the last updates...)
 
 ##### Rotate the screen
 
-todo
+The way to solve this problem changes depending on which *raspberry* you have.
+
+***Raspberry 3***
+
+
+```bash
+# Open the configuration file in a text editor.
+sudo nano /boot.config.txt
+```
+
+
+```yaml
+# Check if the option display_hdmi_rotate exists.
+# - if yes, change it to 1 (or to whatever rotation you need)
+# - if no, just copy this line in the text.
+display_hdmi_rotate=1
+```
+
+Once you added/modified the option in the config file, reboot tour system.
+
+```sh
+sudo reboot
+```
 
 ##### Automatic updates
 
