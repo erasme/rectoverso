@@ -188,9 +188,9 @@
 
     <div class="game_status">
         <div class="identifier orange"></div>
-        <div class="player"><p id="player_1"></span></p></div>
+        <div class="player"><p><span id="player_1"></span></p></div>
         <div class="points"><p><span id=p1>0</span> - <span id=p2>0</span></p></div>
-        <div class="player"><p id="player_2"><p></div>
+        <div class="player"><p><span id="player_2"></span><p></div>
         <div class="identifier blue"></div>
     </div>
 
