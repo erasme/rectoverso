@@ -57,6 +57,18 @@ git clone https://github.com/urbanlab/rectoverso.git
 And remember to make sure your server has the rights to read and write the data folder.
 
 
+#### Uodate the code server side
+
+If you want to apply some changes on the server, just update the depot using *git*.
+
+```sh
+# Browse until you're in the correct directory.
+cd /path/to/your/www/rectoverso
+
+# And clone the repository there using git.
+git pull
+```
+
 ### Secondary devices
 
 
