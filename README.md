@@ -36,8 +36,26 @@ we put a computer with its touchscreen in both machines.
 
 ### Main server
 
+#### Requirements
 
-make sure data folder has writing rights
+You need a server which have apache2, PHP (5 or 7), sqlite and all plugins connecting them each other. This
+changes greatly depending on your operating system. You might want *git* too to update safely the application. 
+
+
+#### Installing the server app
+
+Go to your server file system (most of the time something like `/var/www/html`) and clone the repository.
+
+```sh
+# Browse until you're in the correct directory.
+cd /path/to/your/www/
+
+# And clone the repository there using git.
+git clone https://github.com/urbanlab/rectoverso.git
+```
+
+And remember to make sure your server has the rights to read and write the data folder.
+
 
 ### Secondary devices
 
