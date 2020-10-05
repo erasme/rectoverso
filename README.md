@@ -42,6 +42,44 @@ make sure data folder has writing rights
 ### Secondary devices
 
 
+#### System installation
+
+We are going to install two ***raspberry pi*** in each playable device. They only need to display a web page.
+
+For instance, we choose to use ***raspbian*** as our OS. We must proceed this way :   
+
+- [download](https://www.raspberrypi.org/downloads/raspberry-pi-os/) the last version of ***raspbian OS***.
+- Install it on a micro-SD card which will be used in the *pi*.
+- Turn on your raspberry (while its SD card is in) and follow the instructions (choose the language, keyboard,
+install the last updates...)
+
+#### Minor tweaks
+
+##### Rotate the screen
+
+todo
+
+##### Automatic updates
+
+todo
+
+#### Frequent problems
+
+##### My raspberry won't start
+
+The *pi* might need to be connected to a screen. Connect one to your *pi* and turn it on. 
+
+
+## Old version of the game (using node.js)
+
+The precedent version of the application was written with node.js but we couldn't manage to make it work
+again. If you want to access this code, [check the saved v1-branch](https://github.com/urbanlab/rectoverso/tree/sauvegarde-V1).
+
+
+
+
+
+
 
 
 todo : documentation of
@@ -50,10 +88,6 @@ todo : documentation of
 - document how to set up the screen vertically
 - check everything in the github depot (desciption/actions/projects...
 - img folder -> what is used ? 
-
-Only tested on linux Ubuntu (shall work on other linux though).
-
-todo save the old node.js application version in a different branch.
 
 ## TODO
 
