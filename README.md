@@ -80,15 +80,20 @@ For instance, we choose to use ***raspbian*** as our OS. We must proceed this wa
 
 - [download](https://www.raspberrypi.org/downloads/raspberry-pi-os/) the last version of ***raspbian OS***.
 - Install it on a micro-SD card which will be used in the *pi*.
-- Turn on your raspberry (while its SD card is in) and follow the instructions (choose the language, keyboard,
-install the last updates...)
+- Turn on your raspberry (while its SD card is in) and follow the instructions (choose the language, keyboard, 
+Wi-Fi network, install the last updates...)
+
+
 
 ***Tips*** :
 
-- You can choose whatever version of raspbian you want. The *Lite* may be a bit... light and require
-additional actions.
+- You can choose whatever version of raspbian you want. The *Lite* may be a bit... too light and require
+additional actions while the desktop version has all you need (although do not take the one with all recommended
+software).
 - Create a disk image on the SD Card using a common software like *gnome-disk-utility* (on Ubuntu, type
 `sudo apt install gnome-disk-utility` to install it and `gnome-disks` to start it)
+
+
 
 #### Minor tweaks
 
