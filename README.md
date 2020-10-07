@@ -71,33 +71,46 @@ git pull
 
 ### Secondary devices
 
-
 #### System installation
 
 We are going to install two ***raspberry pi*** in each playable device. They only need to display a web page.
 
 For instance, we choose to use ***raspbian*** as our OS. We must proceed this way :   
 
-- [download](https://www.raspberrypi.org/downloads/raspberry-pi-os/) the last version of ***raspbian OS***.
-- Install it on a micro-SD card which will be used in the *pi*.
+1. [download](https://www.raspberrypi.org/downloads/raspberry-pi-os/) the last version of ***raspbian OS***.You can
+choose whatever version of raspbian you want. The *Lite* may be a bit... too light and require additional actions while
+the desktop version has all you need (although do not take the one with all recommended software).
+1. Create a disk image on the SD Card using a common software like *gnome-disk-utility* (on Ubuntu, type
+`sudo apt install gnome-disk-utility` to install it and `gnome-disks` to start it)
 - Turn on your raspberry (while its SD card is in) and follow the instructions (choose the language, keyboard, 
 Wi-Fi network, install the last updates...)
 
+#### Autostart rectoverso
+
+Create a file somewhere and give it an evident name like `rectoverso_autostart.sh` and place it in an obvious and
+easily accessible emplacement like the desktop. Now, write this inside (*remember to modify the url !*).
+
+```sh
+#!/usr/bin/env bash
+DISPLAY=:0 chromium-browser --kiosk url/to/access/rectoverso/play.php
+```
+
+Once the file is written, give it execution rights, then create a cronjob :
+
+```sh
+crontab -e
+```
+
+The precedent command will open a file where you have to add an extra line to its end :
+
+```log
+@reboot /path/to/your/rectoverso_autostart.sh > /home/pi/Desktop/cron_logs.txt  2>&1
+``` 
+
+That will launch the command at each stratup of the *pi*.
 
 
-***Tips*** :
-
-- You can choose whatever version of raspbian you want. The *Lite* may be a bit... too light and require
-additional actions while the desktop version has all you need (although do not take the one with all recommended
-software).
-- Create a disk image on the SD Card using a common software like *gnome-disk-utility* (on Ubuntu, type
-`sudo apt install gnome-disk-utility` to install it and `gnome-disks` to start it)
-
-
-
-#### Minor tweaks
-
-##### Rotate the screen
+####  Rotate the screen
 
 The way to solve this problem changes depending on which *raspberry* you have.
 
@@ -122,6 +135,7 @@ Once you added/modified the option in the config file, reboot tour system.
 ```sh
 sudo reboot
 ```
+
 
 ##### Automatic updates
 
