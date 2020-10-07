@@ -83,6 +83,13 @@ For instance, we choose to use ***raspbian*** as our OS. We must proceed this wa
 - Turn on your raspberry (while its SD card is in) and follow the instructions (choose the language, keyboard,
 install the last updates...)
 
+***Tips*** :
+
+- You can choose whatever version of raspbian you want. The *Lite* may be a bit... light and require
+additional actions.
+- Create a disk image on the SD Card using a common software like *gnome-disk-utility* (on Ubuntu, type
+`sudo apt install gnome-disk-utility` to install it and `gnome-disks` to start it)
+
 #### Minor tweaks
 
 ##### Rotate the screen
