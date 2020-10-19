@@ -119,15 +119,18 @@ The way to solve this problem changes depending on which *raspberry* you have.
 
 ```bash
 # Open the configuration file in a text editor.
-sudo nano /boot.config.txt
+sudo nano /boot/config.txt
 ```
 
 
 ```yaml
 # Check if the option display_hdmi_rotate exists.
-# - if yes, change it to 1 (or to whatever rotation you need)
+# - if yes, change it to 3 (or to whatever rotation you need)
 # - if no, just copy this line in the text.
-display_hdmi_rotate=1
+# The number increments for each rotation of 90° you do to the screen counter-clockwise (or the trigonometric way).
+
+# Here a rotation of 90° clockwise
+display_hdmi_rotate=3
 ```
 
 Once you added/modified the option in the config file, reboot tour system.
@@ -135,6 +138,29 @@ Once you added/modified the option in the config file, reboot tour system.
 ```sh
 sudo reboot
 ```
+
+#### Rotate the touchscreen
+
+```bash
+# Install the calibrator 
+sudo apt install xinput-calibrator
+
+# Open the file to rotate the touchscreen
+sudo nano /usr/share/X11/xorg.conf.d/40-libinput.conf
+```
+
+Look for the block of text concerning your touchscreen and add this line :
+
+```text
+Section "InputClass"
+        Identifier "libinput touchscreen catchall"
+        MatchIsTouchscreen "on"
+        MatchDevicePath "/dev/input/event*"
+        Driver "libinput"
+        Option "TransformationMatrix" "0 -1 1 1 0 0 0 0 1"
+```
+
+Adding the option `TransformationMatrix` rotates your touchscreen 90° clockwise.
 
 
 ##### Automatic updates
