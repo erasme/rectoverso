@@ -31,12 +31,12 @@
 -->
 
 <body onload="createIdentifier();getModes();loadTranslations();">
-    <div id="block_containing_modal_box_for_messages" onclick="incrementForceRefresh();" class="modal active">
+    <div id="block_containing_modal_box_for_messages" class="modal active">
         <div class="logo">
             <img src="medias/Logo.svg" alt="">
             <img src="medias/LogoText.svg" alt="">
         </div>
-        <p class="status" id="textModalBox"></p>
+        <p class="status" id="textModalBox" onclick="incrementForceRefresh();" ></p>
         <button id="message_to_user" class="start" onclick="askForGame();"></button>
     </div>
     <div id="block_containing_all_cards" class="container">
