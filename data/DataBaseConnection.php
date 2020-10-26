@@ -4,7 +4,7 @@
  * @owner : ERASME (https://www.erasme.org/)
  * @copyright : ERASME (https://www.erasme.org/)
  * @license  : ALFERO GPL ( https://www.gnu.org/licenses/agpl-3.0.fr.html )
- * Project : TODO
+ * Project : Takes care of the connection with the database via a singleton.
  * Date: 29/09/2020
  * Time: 10:02
  */
@@ -25,6 +25,20 @@ class DataBaseConnection
         $this->connection = new PDO('sqlite:'.dirname(__FILE__).'/rectoverso.sqlite');
         $this->connection->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
         $this->connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+        $this->connection->prepare(
+            'CREATE TABLE IF NOT EXISTS "games" (
+            `id_game` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
+            `player1` TEXT,
+            `player2` TEXT,
+            `has_game_started` INTEGER DEFAULT 0,
+            `is_game_finished` INTEGER DEFAULT 0,
+            `list_of_cards` TEXT,
+            `player1_played_cards` TEXT,
+            `player2_played_cards` TEXT,
+            `player1_score` INTEGER DEFAULT 0,
+            `player2_score` INTEGER DEFAULT 0 
+            )'
+        );
     }
 
     private function __clone()
