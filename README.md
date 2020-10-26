@@ -205,6 +205,11 @@ Add a crontab to execute it at each startup.
 
 The *pi* might need to be connected to a screen. Connect one to your *pi* and turn it on. 
 
+### Force restart rectoverso using touchscreen
+
+You have two different ways to force a refresh of the page. Click 5 times in a row on either :
+- the block containing the scores (during a game)  
+- the block containing the text in a modalbox (at startup, the texte saying *waiting for other players*)
 
 ## Usage
 
@@ -282,7 +287,7 @@ again. If you want to access this code, [check the saved v1-branch](https://gith
 
 ## TODOS 
 
-- when a pair of cards has been correctly fount, give them an appropriate design ie the fount pairs are clearly distinct of played cards.
+- 
 - explain the force refresh
 
 - check everything in the github depot (desciption/actions/projects...
