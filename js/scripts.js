@@ -337,10 +337,15 @@ function areTheseCardsTheInTheSamePair(card1='', card2=''){
  * @param identifier_length THe length of the random string we want.
  */
 function createIdentifier(identifier_length=10){
-    player_id = '';
-    const authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-    for ( let i = 0; i < identifier_length; i++ ) {
-        player_id += authorized_characters.charAt(Math.floor(Math.random() * authorized_characters.length));
+    if (localStorage.getItem('player_id')===null){
+        player_id = '';
+        const authorized_characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+        for ( let i = 0; i < identifier_length; i++ ) {
+            player_id += authorized_characters.charAt(Math.floor(Math.random() * authorized_characters.length));
+        }
+        localStorage.setItem('player_id', player_id);
+    } else {
+        player_id = localStorage.getItem('player_id');
     }
     console.log('New player id created : ' + player_id);
 }

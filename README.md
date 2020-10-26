@@ -57,7 +57,7 @@ git clone https://github.com/urbanlab/rectoverso.git
 And remember to make sure your server has the rights to read and write the data folder.
 
 
-#### Uodate the code server side
+#### Update the code server side
 
 If you want to apply some changes on the server, just update the depot using *git*.
 
@@ -92,6 +92,7 @@ easily accessible emplacement like the desktop. Now, write this inside (*remembe
 
 ```sh
 #!/usr/bin/env bash
+sleep 10 # wait few seconds for network connection.
 DISPLAY=:0 chromium-browser --kiosk url/to/access/rectoverso/play.php
 ```
 
@@ -107,7 +108,7 @@ The precedent command will open a file where you have to add an extra line to it
 @reboot /path/to/your/rectoverso_autostart.sh > /home/pi/Desktop/cron_logs.txt  2>&1
 ``` 
 
-That will launch the command at each stratup of the *pi*.
+That will launch the command at each startup of the *pi*.
 
 
 ####  Rotate the screen
@@ -165,7 +166,14 @@ Adding the option `TransformationMatrix` rotates your touchscreen 90° clockwise
 
 ##### Automatic updates
 
-todo
+Create a file somewhere like `update_system.sh` on your desktop and make it executable.
+
+```bash
+#!/usr/bin/env/ bash
+sudo apt update && sudo apt upgrade -y
+``` 
+
+Add a crontab to execute it at each startup.
 
 #### Frequent problems
 
