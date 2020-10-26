@@ -3,12 +3,21 @@
 - [Presentation](#presentation)
 - [Usage](#usage)
 - [Installation](#installation)
-
-
-
-
-
-
+  * [Requirements](#requirements)
+  * [Main server](#main-server)
+    1. [Server requirements](#server-requirements)
+    1. [Installing the server app](#installing-the-server-app)
+    1. [Update the code server side](#update-the-code-server-side)
+  * [Secondary devices](#secondary-devices)
+    1. [System installation](#system-installation)
+    1. [Autostart rectoverso](#autostart-rectoverso)
+    1. [Rotate the screen](#rotate-the-screen)
+    1. [Rotate the touchscreen](#rotate-the-touchscreen)
+    1. [Automatic system updates](#automatic-system-updates)
+- [Frequent problems](#frequent-problems)
+  * [My raspberry won't start](#my-raspberry-wont-start)
+- [Get the od version of the game (using node.js)](#get-the-od-version-of-the-game-using-nodejs)
+- [TODOs](#todos)
 
 
 ## Presentation
@@ -50,7 +59,7 @@ we put a computer with its touchscreen in both machines.
 
 ### Main server
 
-#### Requirements
+#### Server requirements
 
 You need a server which have apache2, PHP (5 or 7), sqlite and all plugins connecting them each other. This
 changes greatly depending on your operating system. You might want *git* too to update safely the application. 
@@ -178,7 +187,7 @@ Section "InputClass"
 Adding the option `TransformationMatrix` rotates your touchscreen 90° clockwise.
 
 
-##### Automatic updates
+#### Automatic system updates
 
 Create a file somewhere like `update_system.sh` on your desktop and make it executable.
 
@@ -189,14 +198,14 @@ sudo apt update && sudo apt upgrade -y
 
 Add a crontab to execute it at each startup.
 
-#### Frequent problems
+## Frequent problems
 
-##### My raspberry won't start
+### My raspberry won't start
 
 The *pi* might need to be connected to a screen. Connect one to your *pi* and turn it on. 
 
 
-## Old version of the game (using node.js)
+## Get the od version of the game (using node.js)
 
 The precedent version of the application was written with node.js but we couldn't manage to make it work
 again. If you want to access this code, [check the saved v1-branch](https://github.com/urbanlab/rectoverso/tree/sauvegarde-V1).
@@ -204,16 +213,6 @@ again. If you want to access this code, [check the saved v1-branch](https://gith
 
 
 
-
-
-
-
-todo : documentation of
-- configuration of the application
-- add/modify/choose a language
-- document how to set up the screen vertically
-- check everything in the github depot (desciption/actions/projects...
-- img folder -> what is used ? 
 
 ## TODO
 
