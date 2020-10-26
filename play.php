@@ -194,7 +194,6 @@
         <div class="identifier blue"></div>
     </div>
 
-<script type="application/json" src="translations.json"></script>
-<script type="application/javascript" src="js/scripts.js"></script>
+<script src="js/scripts.js"></script>
 </body>
 </html>
