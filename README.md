@@ -1,7 +1,6 @@
 # Recto-Verso
 
 - [Presentation](#presentation)
-- [Usage](#usage)
 - [Installation](#installation)
   * [Requirements](#requirements)
   * [Main server](#main-server)
@@ -14,6 +13,11 @@
     1. [Rotate the screen](#rotate-the-screen)
     1. [Rotate the touchscreen](#rotate-the-touchscreen)
     1. [Automatic system updates](#automatic-system-updates)
+- [Usage](#usage)
+  * [Application configuration](#application-configuration)
+    1. [Languages](#languages)
+      * [Change application language](#change-application-language)
+      * [Add a language](#add-a-language)
 - [Frequent problems](#frequent-problems)
   * [My raspberry won't start](#my-raspberry-wont-start)
 - [Get the od version of the game (using node.js)](#get-the-od-version-of-the-game-using-nodejs)
@@ -35,12 +39,6 @@ Using the touchscreen, a user can play a card game named _Concentration_
 [french description](https://fr.wikipedia.org/wiki/Memory_(jeu))).
 
 Both players start simultaneously, and the first who finds all pairs of cards wins.
-
-
-
-## Usage
-
-todo add video
 
 
 ## Installation
@@ -203,6 +201,45 @@ Add a crontab to execute it at each startup.
 ### My raspberry won't start
 
 The *pi* might need to be connected to a screen. Connect one to your *pi* and turn it on. 
+
+
+## Usage
+
+### Application configuration
+
+#### Languages
+
+##### Change application language
+
+Two languages are currently available : french and english. You can modify the application language by connecting to the
+server and modify the `configuration.json` file in the project root.
+
+Here is an example of the file :
+
+```json
+{"chosen_dataset_sub-folder":"images_rectoverso","dataset_directory":"images_sets","language":"fr","number_of_players":"2","verbose_mode":"false"}
+```
+
+Modify the value of the language field to `"en"` or `"fr"` as you prefer.
+
+##### Add a language
+
+All translations are available in a file named `translations.json` on the server. Add your translation(s) to this file,
+you can use them later in the `configuration.json`.
+
+
+
+
+todo : documentation of
+- configuration of the application
+- document how to set up the screen vertically
+- check everything in the github depot (desciption/actions/projects...
+- img folder -> what is used ? 
+
+
+todo add video
+
+
 
 
 ## Get the od version of the game (using node.js)
