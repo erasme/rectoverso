@@ -23,7 +23,7 @@
     1. [Create a new dataset](#create-a-new-dataset)
 - [Frequent problems](#frequent-problems)
   * [My raspberry won't start](#my-raspberry-wont-start)
-- [Get the od version of the game (using node.js)](#get-the-od-version-of-the-game-using-nodejs)
+- [Get the old version of the game (using node.js)](#get-the-old-version-of-the-game-using-nodejs)
 - [TODOs](#todos)
 
 
@@ -243,6 +243,7 @@ Once again, the solution is in the `configuration.json` file. Especially two fie
 
 `dataset_directory` s the folder containing all your datasets (an absolute path if you can but a relative one might
 work) whereas chosen_dataset_sub-folder` is the folder name of your dataset.
+
  
 #### Create a new dataset
 
@@ -261,100 +262,26 @@ structure.
   * Dublin
     - 0.jpg
     - 1.jpg
-.
-.
-.
+  * ...
+  * ...
+  * ...
     
 
+***N.B. :*** All common picture formats and extensions are accepted (*.jpeg, *.png, *.gif, etc...).
 
-## Get the od version of the game (using node.js)
+***N.B. :*** You can use more than 9 pairs. If you do so, the server will randomly pick 9 of them, and all players
+will play with the same cards.
+
+
+## Get the old version of the game (using node.js)
 
 The precedent version of the application was written with node.js but we couldn't manage to make it work
 again. If you want to access this code, [check the saved v1-branch](https://github.com/urbanlab/rectoverso/tree/sauvegarde-V1).
 
 
 
-
-
-## TODO
-
-Les paires choisies dans la version ajax ne sont pas aléatoires (urgence oblige).
-todo : placer toutes les infos côté serveur dans un fichier les regroupant toutes (json ?)
-
-
-## But de l'application
-
-Recto-Verso a pour but de connecter deux bornes entre elles pour permettre à deux joueurs de jouer
-à un jeu de mémoire avec des cartes à retourner par paires. (type [Mémory](https://fr.wikipedia.org/wiki/Memory_(jeu)))
-
-
-## Fonctionnement général de l'application
-
-Pour le moment, et par souci de simplification, trois machines sont nécessaires.
-- une machine-serveur qui sera le maître du jeu
-- deux machines-joueuses au code strictement identique
-
-### Actions côté machine serveur
-
-La machine-serveur doit gérer plusieurs choses :
-1. attendre un message de départ de la part des deux machines-joueuses et leur répondre en même temps qu'elles
-peuvent commencer
-1. attendre un message de la part d'une des machines-joueuses annonçant qu'elle a fini et envoyer à l'autre
-machine-joueuse qu'elle a perdu
-
-
-### Actions côté machines-joueuses
-
-Les machines joueuses ont strictement le même comportement. Elles doivent :
-- requêter en Ajax la machine-serveur si elles veulent jouer
-- dire en Ajax à la machine-serveur si elles ont gagné
-
-## Installation
-
-### SUr la machine-serveur
-
-todo
-
-### Sur les machines-joueuses
-
-todo
-
-## Cas d'utilisation
-
-### Modify datasets general folder
-
-todo : explain configuration file
-
-### Modifier le jeu de données
-
-Vous pouvez avoir plusieurs jeux de données d'images. Pour en changer, placez un dossier contenant ces
-images sur la machine-serveur dans le dossier `images/`. Puis modifiez le fichier _configuration.json_
-situé à la racine.
-```json
-{
-  "image_directory": "images_rectoverso" 
-}
-```
-
-### Informations sur les jeux de données
-
-- todo : formats acceptés
-- todo : organisation  de l'arborescence du dossier
-- todo : quantité de paires acceptées
-- todo : changer la langue de l'application
-- todo : ajouter une nouvelle traduction
-- todo : explain all possibilities in the configuration.json
-
-## Installation
-
-git pull
-chmod 777 sur player_queue.txt
-
-
-
 ## TODOS 
 
-- Use sqlite instead of json file...
 - when a pair of cards has been correctly fount, give them an appropriate design ie the fount pairs are clearly distinct of played cards.
 - explain the force refresh
 
