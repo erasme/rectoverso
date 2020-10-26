@@ -6,6 +6,7 @@ let cards = {}; // Contains all our (shuffled) cards.
 let lastPlayedCard = ''; // The name of the last played card.
 let current_score = 0; // The current player's score.
 let i_won = false;
+let force_refresh_count = 0;
 
 /**
  * When we ask for a game, we need first to have a unique identifier.
@@ -348,6 +349,25 @@ function createIdentifier(identifier_length=10){
         player_id = localStorage.getItem('player_id');
     }
     console.log('New player id created : ' + player_id);
+}
+
+/**
+ * A simple counter. At 5, it forces the page to refresh.
+ */
+function incrementForceRefresh(){
+    force_refresh_count +=1;
+    console.log('admin refresh count : ' + force_refresh_count);
+    if (force_refresh_count >= 5){
+        forceRefresh();
+    }
+}
+
+
+/**
+ * Force the page to refresh from the server.
+ */
+function forceRefresh(){
+    document.location.reload(true);
 }
 
 

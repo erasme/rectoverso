@@ -31,7 +31,7 @@
 -->
 
 <body onload="createIdentifier();getModes();loadTranslations();">
-    <div id="block_containing_modal_box_for_messages" class="modal active">
+    <div id="block_containing_modal_box_for_messages" onclick="incrementForceRefresh();" class="modal active">
         <div class="logo">
             <img src="medias/Logo.svg" alt="">
             <img src="medias/LogoText.svg" alt="">
@@ -186,7 +186,7 @@
         </div>
     </div>
 
-    <div class="game_status">
+    <div class="game_status" onclick="incrementForceRefresh();">
         <div class="identifier orange"></div>
         <div class="player"><p><span id="player_1"></span></p></div>
         <div class="points"><p><span id=p1>0</span> - <span id=p2>0</span></p></div>
