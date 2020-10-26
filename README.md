@@ -1,5 +1,16 @@
 # Recto-Verso
 
+- [Presentation](#presentation)
+- [Usage](#usage)
+- [Installation](#installation)
+
+
+
+
+
+
+
+
 ## Presentation
 
 Recto-Verso is a prototype consisting mainly of two big devices. You can see here one of them :
@@ -19,6 +30,9 @@ Both players start simultaneously, and the first who finds all pairs of cards wi
 
 
 ## Usage
+
+todo add video
+
 
 ## Installation
 
@@ -281,3 +295,4 @@ chmod 777 sur player_queue.txt
 
 - Use sqlite instead of json file...
 - when a pair of cards has been correctly fount, give them an appropriate design ie the fount pairs are clearly distinct of played cards.
+- explain the force refresh
