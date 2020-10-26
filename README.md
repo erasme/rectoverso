@@ -16,8 +16,11 @@
 - [Usage](#usage)
   * [Application configuration](#application-configuration)
     1. [Languages](#languages)
-      * [Change application language](#change-application-language)
-      * [Add a language](#add-a-language)
+       - [Change application language](#change-application-language)
+       - [Add a language](#add-a-language)
+    1. [Toggle verbosity](#toggle-verbosity)
+    1. [Choosing a different set of pictures](#choosing-a-different-set-of-pictures)
+    1. [Create a new dataset](#create-a-new-dataset)
 - [Frequent problems](#frequent-problems)
   * [My raspberry won't start](#my-raspberry-wont-start)
 - [Get the od version of the game (using node.js)](#get-the-od-version-of-the-game-using-nodejs)
@@ -227,19 +230,41 @@ Modify the value of the language field to `"en"` or `"fr"` as you prefer.
 All translations are available in a file named `translations.json` on the server. Add your translation(s) to this file,
 you can use them later in the `configuration.json`.
 
+#### Toggle verbosity
 
+You can force the application client-side to be way more verbose by modifying the verbosity mode in the
+`configuration.json` on the server.
 
+#### Choosing a different set of pictures
 
-todo : documentation of
-- configuration of the application
-- document how to set up the screen vertically
-- check everything in the github depot (desciption/actions/projects...
-- img folder -> what is used ? 
+Once again, the solution is in the `configuration.json` file. Especially two fields :
+- *chosen_dataset_sub-folder*
+- *dataset_directory*
 
+`dataset_directory` s the folder containing all your datasets (an absolute path if you can but a relative one might
+work) whereas chosen_dataset_sub-folder` is the folder name of your dataset.
+ 
+#### Create a new dataset
 
-todo add video
+A *rectoverso* dataset is a collection of pictures placed as pairs in sub-folders. ***You need at least 9 pairs.***
 
+Imagine we would like to create a sub-folder of pictures of european capital cities. YOu have to respect this tree
+structure.
 
+- images_capitals
+  * Paris
+    - 0.jpg
+    - 1.jpg
+  * Bruxelles
+    - 0.jpg
+    - 1.jpg
+  * Dublin
+    - 0.jpg
+    - 1.jpg
+.
+.
+.
+    
 
 
 ## Get the od version of the game (using node.js)
@@ -332,3 +357,5 @@ chmod 777 sur player_queue.txt
 - Use sqlite instead of json file...
 - when a pair of cards has been correctly fount, give them an appropriate design ie the fount pairs are clearly distinct of played cards.
 - explain the force refresh
+
+- check everything in the github depot (desciption/actions/projects...
