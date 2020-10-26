@@ -24,7 +24,6 @@
 - [Frequent problems](#frequent-problems)
   * [My raspberry won't start](#my-raspberry-wont-start)
 - [Get the old version of the game (using node.js)](#get-the-old-version-of-the-game-using-nodejs)
-- [TODOs](#todos)
 
 
 ## Presentation
@@ -282,12 +281,3 @@ will play with the same cards.
 
 The precedent version of the application was written with node.js but we couldn't manage to make it work
 again. If you want to access this code, [check the saved v1-branch](https://github.com/urbanlab/rectoverso/tree/sauvegarde-V1).
-
-
-
-## TODOS 
-
-- 
-- explain the force refresh
-
-- check everything in the github depot (desciption/actions/projects...
