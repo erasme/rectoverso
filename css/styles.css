@@ -10,6 +10,14 @@ body {
   background-color: #9688EE;
 
 }
+
+.orange-border {
+  border: solid 15px #EDA943 !important;
+}
+
+.blue-border {
+  border: solid 15px #9688EE !important;
+}
 .container {
   padding: 35px 20px 0 35px;
 }
@@ -130,6 +138,8 @@ body {
 
 /* Style the back side */
 .flip-card-back {
+  border: solid 15px #353535;
+  box-sizing: border-box;
   background-color: dodgerblue;
   color: white;
   transform: rotateY(180deg);
