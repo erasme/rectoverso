@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+
+	<title>Recto Verso</title>
+
+	<link rel="stylesheet" type="text/css" href="/assets/<%= room %>/css/styles.css">
+	<link href='https://fonts.googleapis.com/css?family=Varela+Round' rel='stylesheet' type='text/css'>
+
+	<meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+</head>
+<body class="enable-3D-cards">
+  <div class="Screen">
+    <a href="#" onclick="location.reload();" style="position:absolute;top:0;right:0;width:50px;height:50px;z-index:100000000000000000000"></a>
+
+
+		<div class="State inactive" data-background-color>
+
+			<section class="Bloc inactive">
+				<img class="Logo StateTransition" src="/assets/<%= room %>/img/Logo.svg">
+				<img class="LogoText StateTransition" src="/assets/<%= room %>/img/LogoText.svg">
+			</section>
+
+			<div class="NavButtons inactive StateTransition">
+				<div class="Tap" data-folder="" data-pairs="">Démarrer</div>
+			</div>
+
+
+
+
+
+			<section class="Bloc rules">
+				<div class="TutoDemo">
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/1.jpg)"></div>
+	  				</div>
+	  		  </div>
+
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/1.jpg)"></div>
+	  				</div>
+	  		  </div>
+
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/2/0.jpg)"></div>
+	  				</div>
+	  		  </div>
+
+					<div class="card">
+						<div class="card_wrap">
+	  					<div class="back"></div>
+	  					<div class="card_image card_child front" style="background-image:url(/assets/<%= room %>/cards/default/1/0.jpg)"></div>
+	  				</div>
+	  		  </div>
+				</div>
+				<p class="TutoText TutoTextTop">
+					Le principe est simple !<br>
+					<br>
+					Retrouvez les paires<br>
+					de photos similaires<br>
+					publiées sur Instagram<br>
+					plus vite que votre adversaire<br>
+					en retournant les cartes.
+				</p>
+				<p class="TutoText TutoTextBottom">
+					Votre adversaire dispose d’autres paires<br>
+					à assembler, et ses actions sont visibles<br>
+					sur votre écran. Cela peut ainsi vous aider<br>
+					comme vous contraindre.<br>
+					<br>
+					Bonne chance !
+				</p>
+				<div class="NavButtons rules StateTransition">
+				  <div class="Tap">C'est parti !</div>
+	      </div>
+
+	  		<div class="StateTransition" id="waiting">
+					<h2>Vous êtes prêt(e) ?</h2>
+					<p>En attente de votre adversaire<br>sur l'autre quai...</p>
+	  		</div>
+			</section>
+
+
+
+
+			<section class="Bloc game" data-background-color-score data-background-color>
+				<div id="gameCards" class="StateTransition"></div>
+	  		<div id="score" class="StateTransition">
+					<div id="foundScore">
+						<div class="scoreCards StateTransition"></div>
+						<div class="scoreNumber">0</div>
+						<div class="scoreLabel StateTransition">Vous</div>
+					</div>
+
+					<div id="foundByOtherScore">
+						<div class="scoreCards StateTransition"></div>
+						<div class="scoreNumber">0</div>
+						<div class="scoreLabel StateTransition">Adversaire</div>
+					</div>
+	  		</div>
+			</section>
+
+
+
+
+
+			<section class="Bloc gameEnded">
+				<div id="win">
+					<h2>Bravo, vous avez gagné !</h2>
+				</div>
+
+				<div id="lost">
+					<h2>Zut, raté pour cette fois…</h2>
+				</div>
+
+				<div id="gameEndedCards"></div>
+
+				<div class="NavButtons rejouer">
+					<div class="Tap ButtonRejouer">Rejouer</div>
+				</div>
+			</section>
+
+
+		</div>
+
+		<div class="Bubble__OtherReady">Votre adversaire est prêt !</div>
+
+		<div class="State" id="cantaccess">
+			<div class="colorBg">
+  			<img id="logo" src="/assets/<%= room %>/img/Logo.svg">
+				<h2>
+					Zut, il y a déjà <br>deux joueurs<br> sur la room <span class="CantAccessRoom"></span> :)
+				</h2>
+			</div>
+		</div>
+
+  </div>
+
+  <script type="text/javascript">
+    var room = '<%= room %>';
+    var dir = JSON.parse('<%- dir %>');
+		var host = '<%= CONFIG.settings.host %>';
+  </script>
+  <script src="/socket.io/socket.io.js"></script>
+	<script type="text/javascript" src="/assets/<%= room %>/js/jquery.min.js"></script>
+	<script type="text/javascript" src="/assets/<%= room %>/js/scripts.js"></script>
+</body>
+</html>
